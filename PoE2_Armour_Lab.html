@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>PoE2 Armour Lab</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg:      #2c1e12;
+            --card:    #fef7e0;
+            --card2:   #fffbf0;
+            --border:  #d9c8a9;
+            --accent:  #b57c2c;
+            --dark:    #3b2a1f;
+            --mid:     #5c3e1f;
+            --muted:   #8b7652;
+            --field:   #e8ddc4;
+            --rowalt:  #f5eed8;
+        }
+
+        body {
+            background: var(--bg);
+            background-image:
+                radial-gradient(circle at 15% 60%, rgba(100,50,10,.25) 0%, transparent 55%),
+                radial-gradient(circle at 85% 20%, rgba(80,30,5,.15) 0%, transparent 50%);
+            font-family: Georgia, 'Times New Roman', serif;
+            padding: 1.4rem;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .app { max-width: 1380px; margin: 0 auto; }
+
+        /* ── Header ─────────────────────────────────────────────────────── */
+        .app-header { text-align: center; padding: 0.6rem 0 1.4rem; }
+        .app-header h1 {
+            font-size: 2rem; font-weight: normal; letter-spacing: 3px;
+            color: #f0dba0; text-shadow: 0 2px 10px rgba(0,0,0,.6);
+        }
+        .app-header p { color: #c8aa70; font-size: 0.82rem; letter-spacing: 1.2px; margin-top: 0.25rem; }
+
+        /* ── Build Quick-Select ──────────────────────────────────────────── */
+        .build-row { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.4rem; }
+        .build-btn {
+            padding: 0.5rem 1.2rem; border-radius: 22px;
+            border: 2px solid rgba(217,200,169,0.4);
+            background: rgba(254,247,224,0.08); color: #f0dba0;
+            font-family: Georgia, serif; font-size: 0.82rem;
+            cursor: pointer; letter-spacing: 0.5px;
+        }
+        .build-btn:hover { background: rgba(181,124,44,.35); border-color: var(--accent); }
+        .build-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: bold; }
+
+        /* ── Card ────────────────────────────────────────────────────────── */
+        .card {
+            background: var(--card);
+            background-image: radial-gradient(circle at 25% 40%, rgba(210,180,140,.06) 2%, transparent 2.5%);
+            background-size: 32px 32px;
+            border-radius: 20px;
+            box-shadow: 0 10px 28px rgba(0,0,0,.32), 0 2px 4px rgba(0,0,0,.1);
+            padding: 1.3rem 1.6rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1.4rem;
+        }
+        .card-wh { border-left: 4px solid #7a3a9a; }
+        .card h2 {
+            font-size: 1.1rem; font-weight: normal; color: var(--mid);
+            border-bottom: 2px dotted var(--border);
+            padding-bottom: 0.4rem; margin-bottom: 1rem;
+        }
+        .card h2.wh-head { color: #5a1a8a; }
+
+        /* ── Layout ──────────────────────────────────────────────────────── */
+        .grid-2 { display: flex; flex-wrap: wrap; gap: 1.4rem; }
+        .col     { flex: 1; min-width: 260px; }
+
+        /* ── Form ────────────────────────────────────────────────────────── */
+        label {
+            display: block; font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: .8px; font-weight: 600;
+            color: #6b4c2c; margin: 0.85rem 0 0.22rem;
+        }
+        input[type="number"], select {
+            width: 100%; padding: 0.58rem 0.85rem;
+            font-size: 0.95rem; font-family: 'Segoe UI', system-ui, monospace;
+            background: var(--card2); border: 1px solid #cfbc8f;
+            border-radius: 14px; color: var(--dark); font-weight: 500;
+        }
+        input[type="range"] { width: 100%; accent-color: var(--accent); margin-top: 0.25rem; }
+        .sl-row { display: flex; align-items: center; gap: 0.5rem; }
+        .sl-row input[type="range"] { flex: 1; }
+        .sl-val {
+            background: var(--field); padding: 0.18rem 0.65rem;
+            border-radius: 14px; font-size: 0.78rem; font-weight: bold;
+            min-width: 52px; text-align: center;
+        }
+
+        /* ── Preset buttons ──────────────────────────────────────────────── */
+        .presets { display: flex; gap: 0.35rem; flex-wrap: wrap; margin: 0.45rem 0 0.2rem; }
+        .pbtn {
+            background: var(--field); border: 1px solid #bbaa80;
+            padding: 0.22rem 0.8rem; border-radius: 22px;
+            font-size: 0.7rem; font-weight: bold;
+            cursor: pointer; color: #4b341a; font-family: inherit;
+        }
+        .pbtn:hover { background: #d4c49a; }
+
+        /* ── Toggle ──────────────────────────────────────────────────────── */
+        .toggle-row {
+            display: flex; align-items: flex-start; gap: 0.6rem;
+            padding: 0.55rem 0.9rem; background: #f5ead0;
+            border-radius: 12px; border: 1px solid var(--border);
+            cursor: pointer; margin: 0.6rem 0;
+        }
+        .toggle-row input[type="checkbox"] {
+            width: 16px; height: 16px; margin-top: 0.12rem;
+            cursor: pointer; accent-color: var(--accent);
+        }
+        .toggle-title { font-size: 0.85rem; font-weight: bold; color: var(--mid); }
+        .toggle-desc  { font-size: 0.69rem; color: var(--muted); margin-top: 0.1rem; }
+
+        /* ── Stat rows ───────────────────────────────────────────────────── */
+        .stat-row {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #e2d4bb; padding: 0.5rem 0; font-size: 0.88rem; gap: 0.5rem;
+        }
+        .stat-row:last-child { border-bottom: none; }
+        .stat-label { font-weight: 600; color: var(--mid); flex: 1; }
+        .stat-val { font-family: monospace; font-weight: bold; white-space: nowrap; }
+        .sv-green  { color: #2b6b2b; }
+        .sv-red    { color: #8B0000; }
+        .sv-gold   { color: #8B5e00; }
+        .sv-purple { color: #5a0a8a; }
+        .sv-dim    { color: var(--muted); font-weight: normal; }
+
+        /* ── Verdict banner ──────────────────────────────────────────────── */
+        .verdict { border-radius: 16px; padding: 1rem 1.2rem; text-align: center; margin: 0.6rem 0 0.9rem; }
+        .verdict.under   { background: linear-gradient(135deg,#3b0000,#5a0a0a); border: 1px solid #7a3030; color: #ffcccc; }
+        .verdict.good    { background: linear-gradient(135deg,#1a3a1a,#284a28); border: 1px solid #3a6a3a; color: #ccffcc; }
+        .verdict.bloated { background: linear-gradient(135deg,#3b2000,#5a3a00); border: 1px solid #7a5000; color: #ffe0b2; }
+        .verdict-title { font-size: 1.45rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .verdict-sub   { font-size: 0.82rem; opacity: .88; }
+
+        /* ── Threat pills ────────────────────────────────────────────────── */
+        .threat-row { display: flex; gap: 0.45rem; flex-wrap: wrap; margin: 0.7rem 0; }
+        .tpill {
+            flex: 1; min-width: 80px; text-align: center;
+            border-radius: 10px; padding: 0.45rem 0.3rem; font-size: 0.72rem; font-weight: bold;
+        }
+        .tpill.pass { background: #c8f0c8; color: #1a4a1a; border: 1px solid #6a9a6a; }
+        .tpill.fail { background: #f0c8c8; color: #4a1a1a; border: 1px solid #9a6a6a; }
+        .tpill .tlabel { font-size: 0.62rem; font-weight: normal; display: block; margin-bottom: 0.15rem; }
+
+        /* ── Cap badge ───────────────────────────────────────────────────── */
+        .cap-badge {
+            display: inline-block; background: var(--accent); color: #fff;
+            padding: 0.08rem 0.55rem; border-radius: 16px;
+            font-size: 0.68rem; font-weight: bold; margin-left: 0.4rem; vertical-align: middle;
+        }
+        .cap-badge-purple { background: #7a3a9a; }
+
+        /* ── Info / Note ─────────────────────────────────────────────────── */
+        .note {
+            font-size: 0.7rem; color: var(--muted);
+            margin-top: 0.7rem; padding-top: 0.4rem;
+            border-top: 1px solid #ecdcaa; line-height: 1.55;
+        }
+        .info {
+            background: #f0e8d0; border-radius: 12px;
+            padding: 0.55rem 0.8rem; font-size: 0.78rem; color: var(--mid); margin: 0.6rem 0;
+        }
+        .info-purple {
+            background: #f0e0ff; border-radius: 12px;
+            padding: 0.55rem 0.8rem; font-size: 0.78rem; color: #3a1a6a; margin: 0.6rem 0;
+        }
+        .info-green {
+            background: #e0f5e0; border-radius: 12px;
+            padding: 0.55rem 0.8rem; font-size: 0.78rem; color: #1a4a1a; margin: 0.6rem 0;
+        }
+        .warn-bar {
+            background: #fff1e0; border-left: 4px solid #d8a54b;
+            padding: 0.65rem 0.9rem; border-radius: 0 12px 12px 0;
+            margin-bottom: 0.9rem; font-size: 0.8rem; line-height: 1.5;
+        }
+
+        /* ── WH survival table ───────────────────────────────────────────── */
+        .wh-tbl-wrap { overflow-x: auto; margin: 0.8rem 0; }
+        .wh-tbl { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .wh-tbl th, .wh-tbl td { border: 1px solid #c0a0d8; padding: 0.4rem 0.6rem; text-align: center; }
+        .wh-tbl th { background: #ead0f8; font-weight: bold; color: #3a1a5a; }
+        .wh-tbl td { background: #f8f0ff; }
+        .wh-tbl tr:nth-child(even) td { background: #f0e4ff; }
+        .wh-pass { color: #1a6a1a; font-weight: bold; }
+        .wh-fail { color: #8B0000; font-weight: bold; }
+
+        /* ── Reference tables ────────────────────────────────────────────── */
+        .tbl-wrap { overflow-x: auto; margin: 0.8rem 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+        th, td { border: 1px solid var(--border); padding: 0.42rem 0.5rem; text-align: center; }
+        th { background: var(--field); font-weight: bold; color: var(--dark); }
+        td { background: var(--card2); }
+        tr:nth-child(even) td { background: var(--rowalt); }
+        td.t-good { color: #2b6b2b; font-weight: bold; }
+        td.t-warn { color: #8B5e00; font-weight: bold; }
+        td.t-bad  { color: #8B0000; font-weight: bold; }
+        td.t-cap  { color: var(--accent); font-weight: bold; }
+
+        @media (max-width: 800px) {
+            body { padding: 0.8rem; }
+            .col { min-width: 100%; }
+            .app-header h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="app-header">
+    <h1>&#9876; ARMOUR LAB</h1>
+    <p>damage reduction &middot; effective hit pool &middot; conversion &middot; sorcery ward &middot; volley survivability</p>
+</div>
+
+<!-- Build Quick-Select -->
+<div class="build-row">
+    <button class="build-btn" id="preset-shaman"  onclick="loadPreset('shaman')">&#127807; Shaman</button>
+    <button class="build-btn" id="preset-smith"   onclick="loadPreset('smith')">&#9874; Smith of Kitava</button>
+    <button class="build-btn" id="preset-cof"     onclick="loadPreset('cof')">&#128293; Cloak of Flames</button>
+    <button class="build-btn" id="preset-wh"      onclick="loadPreset('wh')">&#127993; Witchhunter</button>
+    <button class="build-btn active" id="preset-custom" onclick="loadPreset('custom')">&#9881; Custom</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 1 — CHARACTER SETUP
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+    <h2>&#10084; Character Setup</h2>
+    <div class="warn-bar">
+        <strong>Effective Hit Pool (EHP)</strong> = Life + (Mana &times; MOM%) + ES. Armour targets (12&times; and 20&times;) are derived from EHP. For conversion builds, EHP determines the zero-armour kill floor threshold.
+    </div>
+    <div class="grid-2">
+        <div class="col">
+            <label>&#10084; Base Life Pool</label>
+            <input type="number" id="baseLife" value="3000" step="100">
+            <div class="presets">
+                <span class="pbtn" data-life="2000">2 000</span>
+                <span class="pbtn" data-life="2500">2 500</span>
+                <span class="pbtn" data-life="3000">3 000</span>
+                <span class="pbtn" data-life="3500">3 500</span>
+                <span class="pbtn" data-life="4000">4 000</span>
+            </div>
+            <label>&#129514; Mana Pool (for Mind over Matter)</label>
+            <input type="number" id="manaPool" value="0" step="100">
+            <label>&#128142; Energy Shield</label>
+            <input type="number" id="esPool" value="0" step="100">
+            <label>&#9889; % Damage taken from Mana before Life (MOM)</label>
+            <div class="sl-row">
+                <input type="range" id="momPct" min="0" max="100" step="5" value="0">
+                <span class="sl-val" id="momVal">0%</span>
+            </div>
+            <div class="presets">
+                <span class="pbtn" data-mom="10">10%</span>
+                <span class="pbtn" data-mom="20">20%</span>
+                <span class="pbtn" data-mom="30">30%</span>
+                <span class="pbtn" data-mom="40">40%</span>
+            </div>
+        </div>
+        <div class="col">
+            <div style="margin-top:0.9rem;">
+                <div class="stat-row">
+                    <span class="stat-label">Base Life</span>
+                    <span class="stat-val sv-dim" id="outLife">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">MOM buffer (Mana &times; MOM%)</span>
+                    <span class="stat-val sv-dim" id="outMOM">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Energy Shield</span>
+                    <span class="stat-val sv-dim" id="outES">&mdash;</span>
+                </div>
+                <div class="stat-row" style="border-top:2px solid #cfbc8f;margin-top:.4rem;padding-top:.6rem;">
+                    <span class="stat-label" style="font-size:1rem;">&#9889; Total EHP</span>
+                    <span class="stat-val sv-gold" style="font-size:1.1rem;" id="outEHP">&mdash;</span>
+                </div>
+            </div>
+            <div class="info" style="margin-top:.8rem;">
+                EHP = Life + (Mana &times; MOM%) + ES<br>
+                12&times;EHP and 20&times;EHP are the soft and hard armour caps for zero-conversion builds.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 2 — ARMOUR EVALUATOR + VERDICT
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+    <h2>&#128737; Armour Evaluator</h2>
+    <div class="grid-2">
+        <div class="col">
+            <label>&#128737; Current Armour</label>
+            <input type="number" id="armourInput" value="20000" step="1000">
+            <div class="presets">
+                <span class="pbtn" data-arm="0">0</span>
+                <span class="pbtn" data-arm="10000">10k</span>
+                <span class="pbtn" data-arm="20000">20k</span>
+                <span class="pbtn" data-arm="30000">30k</span>
+                <span class="pbtn" data-arm="50000">50k</span>
+                <span class="pbtn" data-arm="80000">80k</span>
+            </div>
+            <hr style="margin:1rem 0;">
+            <div class="stat-row">
+                <span class="stat-label">A_soft = 12 &times; EHP <span style="font-weight:normal;font-size:.75rem">(min &mdash; survives 1.7&times; hit)</span></span>
+                <span class="stat-val sv-gold" id="outSoft">&mdash;</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">A_hard = 20 &times; EHP <span style="font-weight:normal;font-size:.75rem">(max efficient &mdash; 2.0&times; hit)</span></span>
+                <span class="stat-val sv-gold" id="outHard">&mdash;</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Max survivable raw hit</span>
+                <span class="stat-val sv-green" id="outDmax">&mdash;</span>
+            </div>
+            <div class="stat-row" id="bloatedRow" style="display:none;">
+                <span class="stat-label">Excess armour &rarr; life equivalent</span>
+                <span class="stat-val sv-red" id="outWasted">&mdash;</span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="verdict under" id="verdictBanner">
+                <div class="verdict-title" id="verdictTitle">Evaluating&hellip;</div>
+                <div class="verdict-sub" id="verdictSub"></div>
+            </div>
+            <div class="threat-row">
+                <div class="tpill fail" id="tp15">
+                    <span class="tlabel">1.5&times; EHP hit</span>
+                    <span id="tp15need">&mdash;</span>
+                </div>
+                <div class="tpill fail" id="tp17">
+                    <span class="tlabel">1.7&times; EHP hit</span>
+                    <span id="tp17need">&mdash;</span>
+                </div>
+                <div class="tpill fail" id="tp20">
+                    <span class="tlabel">2.0&times; EHP hit</span>
+                    <span id="tp20need">&mdash;</span>
+                </div>
+            </div>
+            <div class="info">
+                <strong>Volley thresholds:</strong> Minimum armour to survive a hit of N&times; EHP.<br>
+                Formula: A* = 10 &times; D &times; (D &minus; EHP) / EHP<br>
+                1.5&times; &rarr; 7.5&times;EHP &nbsp;&middot;&nbsp; 1.7&times; &rarr; ~11.9&times;EHP &nbsp;&middot;&nbsp; 2.0&times; &rarr; 20&times;EHP
+            </div>
+            <div class="note">
+                <strong>Conversion note:</strong> The 12&ndash;20&times;EHP corridor assumes zero conversion. For Shaman (75% conversion), armour evaluates against 0.25H &mdash; the corridor applies to the <em>residual hit</em>, not the raw value. At &ge;2,500 life, Shaman needs zero armour for the physical residual of a 10,000 raw hit.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 3 — DAMAGE SIMULATION
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+    <h2>&#128293; Damage Simulation</h2>
+    <div class="grid-2">
+        <div class="col">
+            <label>&#9876; Raw Incoming Physical Hit</label>
+            <input type="number" id="rawHit" value="3000" step="100">
+            <div class="presets">
+                <span class="pbtn" data-hit="500">500</span>
+                <span class="pbtn" data-hit="1000">1k</span>
+                <span class="pbtn" data-hit="2000">2k</span>
+                <span class="pbtn" data-hit="4000">4k</span>
+                <span class="pbtn" data-hit="6000">6k</span>
+                <span class="pbtn" data-hit="8000">8k</span>
+                <span class="pbtn" data-hit="10000">10k</span>
+            </div>
+
+            <hr style="margin:.9rem 0 .4rem;">
+
+            <label style="margin-top:0;">Physical &rarr; Elemental Conversion</label>
+            <label class="toggle-row" for="cloakToggle">
+                <input type="checkbox" id="cloakToggle">
+                <div>
+                    <div class="toggle-title">&#128293; Cloak of Flames &mdash; lock conversion to 50%</div>
+                    <div class="toggle-desc">Tick to model Cloak of Flames exactly. Uncheck to set conversion manually.</div>
+                </div>
+            </label>
+
+            <label>&#9889; Total Conversion % (physical &rarr; elemental)</label>
+            <div class="sl-row">
+                <input type="range" id="convPct" min="0" max="100" step="1" value="0">
+                <span class="sl-val" id="convVal">0%</span>
+            </div>
+            <div class="presets">
+                <span class="pbtn" data-conv="0">0% (none)</span>
+                <span class="pbtn" data-conv="35">35% (Smith)</span>
+                <span class="pbtn" data-conv="50">50% (CoF)</span>
+                <span class="pbtn" data-conv="75">75% (Shaman)</span>
+            </div>
+
+            <label>&#128293; Max Elemental Resistance %</label>
+            <input type="number" id="maxRes" value="75" step="5" min="0" max="90">
+            <div class="presets">
+                <span class="pbtn" data-res="75">75% (base)</span>
+                <span class="pbtn" data-res="80">80%</span>
+                <span class="pbtn" data-res="85">85%</span>
+                <span class="pbtn" data-res="90">90% (Shaman cap)</span>
+            </div>
+
+            <label>&#128737; Armour Applies to Elemental (fraction 0&ndash;1)</label>
+            <input type="number" id="armourToEle" value="0" step="0.05" min="0" max="1">
+            <div class="presets">
+                <span class="pbtn" data-a2e="0">None</span>
+                <span class="pbtn" data-a2e="0.5">50%</span>
+                <span class="pbtn" data-a2e="1.0">Full (Shaman / Smith)</span>
+            </div>
+
+            <label>&#10024; Flat % Less Elemental Taken (after resistance)</label>
+            <input type="number" id="lessEle" value="0" step="1" min="0" max="90" placeholder="e.g. 10 for Shaman permanent modifier">
+            <div class="presets">
+                <span class="pbtn" data-lesse="0">0% (default)</span>
+                <span class="pbtn" data-lesse="10">10% (Shaman permanent)</span>
+                <span class="pbtn" data-lesse="20">20% (adaptive layer)</span>
+                <span class="pbtn" data-lesse="28">28% (stacked: 0.90&times;0.80)</span>
+            </div>
+
+            <label>&#9876; Crit Scenario &mdash; Blade Catcher (Smith of Kitava)</label>
+            <label class="toggle-row" for="bladeCatcherToggle">
+                <input type="checkbox" id="bladeCatcherToggle">
+                <div>
+                    <div class="toggle-title">&#9874; Blade Catcher: armour &rarr; 2A on critical hits</div>
+                    <div class="toggle-desc">Internal Layer already reduces crit damage bonus to zero (hit lands at base value). Blade Catcher then doubles effective armour against that flattened critical strike.</div>
+                </div>
+            </label>
+        </div>
+
+        <div class="col">
+            <div style="margin-top:.9rem;">
+                <div class="stat-row">
+                    <span class="stat-label">Physical portion (pre-armour)</span>
+                    <span class="stat-val sv-dim" id="outPhysPre">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Elemental portion (converted)</span>
+                    <span class="stat-val sv-dim" id="outElePre">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Effective armour used
+                        <span class="cap-badge cap-badge-purple" id="bladeTag" style="display:none;">2&times; BLADE CATCHER</span>
+                    </span>
+                    <span class="stat-val sv-dim" id="outEffArmour">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Physical DR (armour)
+                        <span class="cap-badge" id="physCapBadge" style="display:none;">90% CAP</span>
+                    </span>
+                    <span class="stat-val sv-gold" id="outPhysDR">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Elemental DR (armour-to-ele + resistance + less modifier)</span>
+                    <span class="stat-val sv-gold" id="outEleDR">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Physical taken after DR</span>
+                    <span class="stat-val sv-red" id="outPhysTaken">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Elemental taken after all reductions</span>
+                    <span class="stat-val sv-red" id="outEleTaken">&mdash;</span>
+                </div>
+                <div class="stat-row" style="border-top:2px solid #cfbc8f;margin-top:.4rem;padding-top:.6rem;">
+                    <span class="stat-label" style="font-size:1rem;">&#128293; Total Damage Taken</span>
+                    <span class="stat-val" style="font-size:1.05rem;" id="outTotal">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">vs EHP &mdash; survival verdict</span>
+                    <span class="stat-val" id="outSurvival">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Overall effective DR (total taken / raw hit)</span>
+                    <span class="stat-val sv-gold" id="outOverallDR">&mdash;</span>
+                </div>
+            </div>
+
+            <div class="info" id="convNote" style="margin-top:.8rem;">
+                Set a conversion % and elemental resistance to model conversion builds.
+            </div>
+            <div class="info-green" id="shamNote" style="display:none; margin-top:.4rem;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 4 — WITCHHUNTER SORCERY WARD
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="card card-wh">
+    <h2 class="wh-head">&#127993; Witchhunter &mdash; Sorcery Ward Calculator</h2>
+    <div class="info-purple">
+        <strong>Mechanics.</strong> <em>Obsessive Rituals</em>: 50% less armour and evasion; grants Sorcery Ward (SW) = 30% of post-penalty (armour + evasion), capped at 32,000. <em>Ceremonial Ablution</em>: SW covers all hit types &mdash; physical, elemental, and chaos. Sequence: armour DR first &rarr; SW absorbs post-DR remainder &rarr; ES &rarr; life takes overflow. SW recharges on a 6-second cooldown. Weapon-swap passive allocation lets culling strike and explode nodes sit on the secondary set at zero cost to the primary offensive allocation.
+    </div>
+    <div class="grid-2">
+        <div class="col">
+            <label>&#128737; Geared Armour (before Obsessive Rituals)</label>
+            <input type="number" id="whArmour" value="60000" step="1000">
+            <div class="presets">
+                <span class="pbtn" data-wha="30000">30k</span>
+                <span class="pbtn" data-wha="60000">60k</span>
+                <span class="pbtn" data-wha="90000">90k</span>
+                <span class="pbtn" data-wha="107000">107k (SW cap)</span>
+            </div>
+            <label>&#127993; Geared Evasion (before Obsessive Rituals, optional)</label>
+            <input type="number" id="whEvasion" value="0" step="1000">
+            <div class="presets">
+                <span class="pbtn" data-whe="0">None</span>
+                <span class="pbtn" data-whe="20000">20k</span>
+                <span class="pbtn" data-whe="40000">40k</span>
+                <span class="pbtn" data-whe="60000">60k hybrid</span>
+            </div>
+            <label>&#9876; Incoming Raw Physical Hit</label>
+            <input type="number" id="whHit" value="10000" step="500">
+            <div class="presets">
+                <span class="pbtn" data-whh="5000">5k</span>
+                <span class="pbtn" data-whh="8000">8k</span>
+                <span class="pbtn" data-whh="10000">10k</span>
+                <span class="pbtn" data-whh="12000">12k</span>
+                <span class="pbtn" data-whh="14000">14k</span>
+            </div>
+        </div>
+        <div class="col">
+            <div style="margin-top:.9rem;">
+                <div class="stat-row">
+                    <span class="stat-label">Post-penalty armour (&times;0.5)</span>
+                    <span class="stat-val sv-dim" id="whPostArmour">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Post-penalty evasion (&times;0.5)</span>
+                    <span class="stat-val sv-dim" id="whPostEvasion">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Sorcery Ward pool (30% &times; post-penalty, cap 32k)
+                        <span class="cap-badge cap-badge-purple" id="whCapBadge" style="display:none;">CAPPED</span>
+                    </span>
+                    <span class="stat-val sv-purple" id="whSW">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Life (from Section 1) + ES</span>
+                    <span class="stat-val sv-dim" id="whLifeES">&mdash;</span>
+                </div>
+                <div class="stat-row" style="border-top:2px solid #c0a0d8;margin-top:.4rem;padding-top:.6rem;">
+                    <span class="stat-label" style="font-size:1rem;">Total absorption (SW + Life + ES)</span>
+                    <span class="stat-val sv-purple" style="font-size:1.1rem;" id="whTotal">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Armour DR on incoming hit</span>
+                    <span class="stat-val sv-gold" id="whDR">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Post-DR damage</span>
+                    <span class="stat-val sv-dim" id="whPostDR">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">SW absorbs</span>
+                    <span class="stat-val sv-purple" id="whSWAbs">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Life + ES damage</span>
+                    <span class="stat-val" id="whLifeDmg">&mdash;</span>
+                </div>
+                <div class="stat-row" style="border-top:2px solid #c0a0d8;margin-top:.4rem;padding-top:.6rem;">
+                    <span class="stat-label" style="font-size:1rem;">Survival ceiling (raw physical)</span>
+                    <span class="stat-val sv-purple" style="font-size:1.1rem;" id="whCeiling">&mdash;</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top:1rem;">
+        <div style="font-size:.85rem;font-weight:bold;color:#4a1a7a;margin-bottom:.5rem;">Survival table at current parameters</div>
+        <div class="wh-tbl-wrap">
+            <table class="wh-tbl">
+                <thead>
+                    <tr>
+                        <th>Raw Hit (H)</th>
+                        <th>DR (post-penalty A)</th>
+                        <th>Post-DR Damage</th>
+                        <th>SW Absorbs</th>
+                        <th>Life + ES Damage</th>
+                        <th>Survives?</th>
+                    </tr>
+                </thead>
+                <tbody id="whSurvBody"></tbody>
+            </table>
+        </div>
+        <div class="note" style="color:#4a1a7a;">
+            Ceiling formula: H = [(SW+L+ES) + &radic;((SW+L+ES)&sup2; + 0.4&middot;(SW+L+ES)&middot;A<sub>post</sub>)] / 2. &dagger; = exact survival boundary.
+            Weapon-swap tip: culling strike (~11% kill efficiency) and explode on the secondary weapon set cost zero primary-set passive points.
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 5 — REQUIRED ARMOUR OPTIMIZER
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+    <h2>&#127919; Optimizer &mdash; Required Armour</h2>
+    <div class="grid-2">
+        <div class="col">
+            <label>&#127919; Target Physical DR %</label>
+            <div class="sl-row">
+                <input type="range" id="targetDR" min="0" max="90" step="5" value="60">
+                <span class="sl-val" id="targetDRVal">60%</span>
+            </div>
+            <div class="presets">
+                <span class="pbtn" data-dr="40">40%</span>
+                <span class="pbtn" data-dr="50">50%</span>
+                <span class="pbtn" data-dr="60">60%</span>
+                <span class="pbtn" data-dr="70">70%</span>
+                <span class="pbtn" data-dr="75">75%</span>
+                <span class="pbtn" data-dr="80">80%</span>
+            </div>
+            <label>&#9876; Against Raw Hit</label>
+            <input type="number" id="optHit" value="4000" step="500">
+            <div class="presets">
+                <span class="pbtn" data-optHit="2000">2k</span>
+                <span class="pbtn" data-optHit="4000">4k</span>
+                <span class="pbtn" data-optHit="6000">6k</span>
+                <span class="pbtn" data-optHit="8000">8k</span>
+                <span class="pbtn" data-optHit="10000">10k</span>
+            </div>
+        </div>
+        <div class="col">
+            <div style="margin-top:.9rem;">
+                <div class="stat-row">
+                    <span class="stat-label">Required armour for target DR</span>
+                    <span class="stat-val sv-gold" id="optArmour">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Required pool (zero armour, same survival)</span>
+                    <span class="stat-val sv-dim" id="optLife">&mdash;</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Armour for 90% cap on this hit</span>
+                    <span class="stat-val sv-dim" id="optCap">&mdash;</span>
+                </div>
+            </div>
+            <div class="info" style="margin-top:.8rem;">
+                Formula: A = DR &times; 10H / (1 &minus; DR)<br>
+                90% cap requires A &ge; 9 &times; H<br>
+                If required armour exceeds 40k, consider raising EHP or adding conversion instead.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 6 — REFERENCE TABLES
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+    <h2>&#128202; 12&times;EHP / 20&times;EHP Armour Target Table</h2>
+    <div class="tbl-wrap">
+        <table id="targetsTable">
+            <thead>
+                <tr>
+                    <th>EHP</th>
+                    <th>A_soft (12&times;)<br><small>min &mdash; survives 1.7&times; hit</small></th>
+                    <th>A_hard (20&times;)<br><small>max efficient &mdash; 2.0&times; hit</small></th>
+                    <th>D_max at A_soft</th>
+                    <th>D_max at A_hard</th>
+                    <th>DR at A_soft vs 3k hit</th>
+                    <th>DR at A_hard vs 3k hit</th>
+                </tr>
+            </thead>
+            <tbody id="targetsBody"></tbody>
+        </table>
+    </div>
+    <div class="note">
+        D_max = (10&times;EHP + &radic;(100&times;EHP&sup2; + 40&times;EHP&times;A)) / 20 &mdash; largest raw hit survivable at that armour. Applies to zero-conversion builds; for conversion builds use the corrected A* formula with H_eff = (1&minus;c)H.
+    </div>
+
+    <h2 style="margin-top:1.4rem;">&#128208; DR Matrix &mdash; Physical Only (Appendix E)</h2>
+    <p style="font-size:.78rem;color:var(--mid);margin-bottom:.5rem;">Armour rows 10k&ndash;100k &middot; Hit columns 100&ndash;10,000 &middot; DR = min(0.90, A/(A+10H))</p>
+    <div class="tbl-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Armour \ Hit</th>
+                    <th>H = 100</th>
+                    <th>H = 1,000</th>
+                    <th>H = 2,000</th>
+                    <th>H = 4,000</th>
+                    <th>H = 8,000</th>
+                    <th>H = 10,000</th>
+                </tr>
+            </thead>
+            <tbody id="drMatrixBody"></tbody>
+        </table>
+    </div>
+    <div class="note">
+        &dagger; = 90% hard cap. Green &ge;70% &middot; Orange 50&ndash;69% &middot; Red &lt;50%. Key observation: the DR drop from H=1,000 to H=10,000 at any armour value demonstrates why conversion (which reduces H<sub>eff</sub>) is structurally superior to armour stacking at endgame hit sizes. Matches Appendix E of the companion paper.
+    </div>
+</div>
+
+</div><!-- /.app -->
+
+<script>
+// ── Helpers ────────────────────────────────────────────────────────────────
+const $   = id => document.getElementById(id);
+const num = (id, fb=0) => { const v = parseFloat($(id)?.value); return isNaN(v) ? fb : v; };
+const fmt = n => Math.round(n).toLocaleString();
+const fmtPct = n => (n * 100).toFixed(1) + '%';
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+function dr(A, H) {
+    if (A <= 0 || H <= 0) return 0;
+    return Math.min(A / (A + 10 * H), 0.9);
+}
+function dmax(ehp, A) {
+    if (ehp <= 0) return 0;
+    return (10 * ehp + Math.sqrt(100 * ehp * ehp + 40 * ehp * A)) / 20;
+}
+function minArmourForThreat(ehp, mult) {
+    const D = mult * ehp;
+    return D <= ehp ? 0 : 10 * D * (D - ehp) / ehp;
+}
+function whCeiling(sw, life, es, Apost) {
+    const pool = sw + life + es;
+    return (pool + Math.sqrt(pool * pool + 0.4 * pool * Apost)) / 2;
+}
+
+// ── Build presets ──────────────────────────────────────────────────────────
+const PRESETS = {
+    shaman: { baseLife:3000, esPool:0, manaPool:0, momPct:0, armourInput:0,
+              rawHit:10000, convPct:75, maxRes:90, armourToEle:1, lessEle:10,
+              cloakToggle:false, bladeCatcherToggle:false },
+    smith:  { baseLife:3500, esPool:0, manaPool:0, momPct:0, armourInput:50000,
+              rawHit:10000, convPct:35, maxRes:90, armourToEle:1, lessEle:0,
+              cloakToggle:false, bladeCatcherToggle:false },
+    cof:    { baseLife:3000, esPool:0, manaPool:0, momPct:0, armourInput:36000,
+              rawHit:10000, convPct:50, maxRes:75, armourToEle:0, lessEle:0,
+              cloakToggle:true,  bladeCatcherToggle:false },
+    wh:     { baseLife:3000, esPool:0, manaPool:0, momPct:0, armourInput:30000,
+              rawHit:10000, convPct:0,  maxRes:75, armourToEle:0, lessEle:0,
+              cloakToggle:false, bladeCatcherToggle:false },
+};
+
+function loadPreset(name) {
+    document.querySelectorAll('.build-btn').forEach(b => b.classList.remove('active'));
+    $('preset-' + name).classList.add('active');
+    const p = PRESETS[name];
+    if (!p) { calc(); return; }
+    $('baseLife').value      = p.baseLife;
+    $('esPool').value        = p.esPool;
+    $('manaPool').value      = p.manaPool;
+    $('momPct').value        = p.momPct;
+    $('armourInput').value   = p.armourInput;
+    $('rawHit').value        = p.rawHit;
+    $('convPct').value       = p.convPct;
+    $('maxRes').value        = p.maxRes;
+    $('armourToEle').value   = p.armourToEle;
+    $('lessEle').value       = p.lessEle;
+    $('cloakToggle').checked         = p.cloakToggle;
+    $('bladeCatcherToggle').checked  = p.bladeCatcherToggle;
+    $('convPct').disabled            = p.cloakToggle;
+    if (name === 'wh') {
+        $('whArmour').value  = 60000;
+        $('whEvasion').value = 0;
+        $('whHit').value     = 10000;
+        document.querySelector('.card-wh').scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+    syncLabels();
+    calc();
+}
+
+// ── Main calculation ────────────────────────────────────────────────────────
+function calc() {
+    const life   = Math.max(1, num('baseLife', 3000));
+    const mana   = Math.max(0, num('manaPool'));
+    const es     = Math.max(0, num('esPool'));
+    const momPct = clamp(num('momPct') / 100, 0, 1);
+    const A      = Math.max(0, num('armourInput'));
+    const H      = Math.max(1, num('rawHit', 3000));
+    const conv   = $('cloakToggle').checked ? 0.5 : clamp(num('convPct') / 100, 0, 1);
+    const res    = clamp(num('maxRes', 75) / 100, 0, 0.9);
+    const a2e    = clamp(num('armourToEle'), 0, 1);
+    const lessE  = clamp(num('lessEle') / 100, 0, 1);
+    const blade  = $('bladeCatcherToggle').checked;
+    const tDR    = clamp(num('targetDR', 60) / 100, 0, 0.9);
+    const optH   = Math.max(1, num('optHit', 4000));
+
+    const ehp    = life + mana * momPct + es;
+
+    // Section 1 outputs
+    $('outLife').textContent = fmt(life);
+    $('outMOM').textContent  = `+${fmt(mana * momPct)} (${(momPct*100).toFixed(0)}% of ${fmt(mana)})`;
+    $('outES').textContent   = fmt(es);
+    $('outEHP').textContent  = fmt(ehp);
+
+    // Section 2 — armour evaluator
+    const soft = 12 * ehp, hard = 20 * ehp;
+    $('outSoft').textContent = fmt(soft);
+    $('outHard').textContent = fmt(hard);
+    $('outDmax').textContent = fmt(dmax(ehp, A));
+
+    const vBanner = $('verdictBanner');
+    if (A < soft) {
+        vBanner.className = 'verdict under';
+        $('verdictTitle').textContent = '⚠ Under-Invested';
+        $('verdictSub').textContent = `${fmt(A)} armour is below the minimum of ${fmt(soft)}. A 1.7× hit will kill.`;
+        $('bloatedRow').style.display = 'none';
+    } else if (A <= hard) {
+        vBanner.className = 'verdict good';
+        $('verdictTitle').textContent = '✓ Optimal Range';
+        $('verdictSub').textContent = `${fmt(A)} armour is well-balanced. Survives up to ${(dmax(ehp,A)/ehp).toFixed(2)}× EHP (${fmt(dmax(ehp,A))}).`;
+        $('bloatedRow').style.display = 'none';
+    } else {
+        vBanner.className = 'verdict bloated';
+        const excess = A - hard;
+        $('verdictTitle').textContent = '⚠ Bloated';
+        $('verdictSub').textContent = `${fmt(excess)} excess armour above cap — equivalent to ~${fmt(excess/12)} life instead.`;
+        $('bloatedRow').style.display = 'flex';
+        $('outWasted').textContent = `~${fmt(excess/12)} life (trade ${fmt(excess)} armour)`;
+    }
+
+    [{ id:'tp15', m:1.5 }, { id:'tp17', m:1.7 }, { id:'tp20', m:2.0 }].forEach(t => {
+        const need = minArmourForThreat(ehp, t.m);
+        const el = $(t.id), needEl = $(t.id + 'need');
+        el.className = 'tpill ' + (A >= need ? 'pass' : 'fail');
+        needEl.textContent = A >= need
+            ? `✓ Survives (need ${fmt(need)})`
+            : `✗ Need ${fmt(need)}`;
+    });
+
+    // Section 3 — damage simulation
+    const Aeff   = blade ? A * 2 : A;
+    const physPre = H * (1 - conv);
+    const elePre  = H * conv;
+    const physDRv = dr(Aeff, physPre);
+    const physTkn = physPre * (1 - physDRv);
+
+    const eleA    = Aeff * a2e;
+    const eleDRa  = dr(eleA, elePre);
+    const elePost = elePre * (1 - eleDRa);
+    const eleRes  = elePost * (1 - res);
+    const eleTkn  = eleRes * (1 - lessE);
+    const eleDRtot = elePre > 0 ? (1 - eleTkn / elePre) : 0;
+
+    const total = physTkn + eleTkn;
+    const ovrDR = 1 - total / H;
+    const surv  = total < ehp;
+
+    $('outPhysPre').textContent  = fmt(physPre);
+    $('outElePre').textContent   = fmt(elePre);
+    $('outEffArmour').textContent = fmt(Aeff) + (blade ? ' (2× crit)' : '');
+    $('outPhysDR').textContent   = fmtPct(physDRv);
+    $('outEleDR').textContent    = fmtPct(eleDRtot);
+    $('outPhysTaken').textContent = fmt(physTkn);
+    $('outEleTaken').textContent  = fmt(eleTkn);
+    $('outTotal').textContent     = fmt(total);
+    $('outTotal').className       = 'stat-val ' + (surv ? 'sv-green' : 'sv-red');
+    $('outOverallDR').textContent = fmtPct(ovrDR);
+    $('outSurvival').textContent  = surv
+        ? `✓ Survives (${fmt(total)} < ${fmt(ehp)} EHP)`
+        : `✗ Fatal (${fmt(total)} ≥ ${fmt(ehp)} EHP)`;
+    $('outSurvival').className    = 'stat-val ' + (surv ? 'sv-green' : 'sv-red');
+    $('bladeTag').style.display   = blade ? 'inline-block' : 'none';
+    $('physCapBadge').style.display = (Aeff >= 9 * physPre && physPre > 0) ? 'inline-block' : 'none';
+
+    // Conv note
+    if (conv > 0) {
+        $('convNote').innerHTML = `⚡ ${(conv*100).toFixed(0)}% conversion: physical portion ${fmt(physPre)} → ${fmt(physTkn)} taken; elemental portion ${fmt(elePre)} → ${fmt(eleTkn)} taken (${fmtPct(eleDRtot)} combined elemental DR).`;
+    } else {
+        $('convNote').innerHTML = `⚡ Pure physical hit — set a conversion % and elemental resistance to model conversion builds.`;
+    }
+
+    // Shaman note (shown when conv >= 70%)
+    const shamNote = $('shamNote');
+    if (conv >= 0.7) {
+        const residPhys  = H * (1 - conv);
+        const fireTkn    = H * conv * (1 - res) * (1 - lessE);
+        const tgtPool    = residPhys + fireTkn;
+        shamNote.style.display = 'block';
+        shamNote.innerHTML = `<strong>Shaman zero-armour check:</strong> residual physical = ${fmt(residPhys)}, fire component = ${fmt(fireTkn)}&thinsp;&rarr;&thinsp;target pool ≥ <strong>${fmt(tgtPool)}</strong> (${fmtPct(tgtPool/H)} of raw hit). Physical-only zero-armour floor: life ≥ ${fmt(residPhys)}.`;
+    } else {
+        shamNote.style.display = 'none';
+    }
+
+    // Section 4 — WH
+    calcWH(life, es);
+
+    // Section 5 — optimizer
+    const reqA = tDR >= 0.9 ? 9 * optH : (tDR * 10 * optH) / (1 - tDR);
+    $('optArmour').textContent = fmt(reqA);
+    $('optLife').textContent   = fmt(optH * (1 - tDR));
+    $('optCap').textContent    = fmt(9 * optH);
+
+    // Section 6 — tables
+    buildTargetsTable(ehp);
+    buildDRMatrix();
+    save();
+}
+
+function calcWH(life, es) {
+    const baseA  = Math.max(0, num('whArmour', 60000));
+    const baseE  = Math.max(0, num('whEvasion'));
+    const H      = Math.max(1, num('whHit', 10000));
+
+    const postA  = baseA * 0.5;
+    const postE  = baseE * 0.5;
+    const swRaw  = 0.3 * (postA + postE);
+    const sw     = Math.min(swRaw, 32000);
+    const capped = swRaw >= 32000;
+    const total  = sw + life + es;
+    const armDR  = dr(postA, H);
+    const postDR = H * (1 - armDR);
+    const swAbs  = Math.min(sw, postDR);
+    const lifeDmg = Math.max(0, postDR - sw);
+    const ceil   = whCeiling(sw, life, es, postA);
+
+    $('whPostArmour').textContent = fmt(postA);
+    $('whPostEvasion').textContent = fmt(postE);
+    $('whSW').textContent = fmt(sw);
+    $('whCapBadge').style.display = capped ? 'inline-block' : 'none';
+    $('whLifeES').textContent = `${fmt(life)} + ${fmt(es)} = ${fmt(life + es)}`;
+    $('whTotal').textContent  = fmt(total);
+    $('whDR').textContent     = fmtPct(armDR);
+    $('whPostDR').textContent = fmt(postDR);
+    $('whSWAbs').textContent  = fmt(swAbs);
+    $('whLifeDmg').textContent = fmt(lifeDmg);
+    $('whLifeDmg').className   = 'stat-val ' + (lifeDmg <= life + es ? 'sv-green' : 'sv-red');
+    $('whCeiling').textContent = fmt(ceil);
+
+    // Survival table
+    const ceilR  = Math.round(ceil);
+    const baseHits = [5000, 8000, 10000, 12000, 14000];
+    const allHits = [...new Set([
+        ...baseHits.filter(h => Math.abs(h - ceilR) > 300),
+        ceilR, ceilR + 500
+    ])].sort((a, b) => a - b);
+
+    const tbody = $('whSurvBody');
+    tbody.innerHTML = '';
+    allHits.forEach(h => {
+        const hDR    = dr(postA, h);
+        const hPost  = h * (1 - hDR);
+        const hSWAbs = Math.min(sw, hPost);
+        const hLife  = Math.max(0, hPost - sw);
+        const hSurv  = hLife <= life + es;
+        const isCeil = h === ceilR;
+        tbody.insertAdjacentHTML('beforeend', `
+            <tr${isCeil ? ' style="outline:2px solid #7a3a9a;"' : ''}>
+                <td><strong>${fmt(h)}</strong>${isCeil ? ' &dagger;' : ''}</td>
+                <td>${fmtPct(hDR)}</td>
+                <td>${fmt(hPost)}</td>
+                <td>${fmt(hSWAbs)}</td>
+                <td>${fmt(hLife)}</td>
+                <td class="${hSurv ? 'wh-pass' : 'wh-fail'}">${hSurv ? '✓ Yes' : '✗ No'}</td>
+            </tr>`);
+    });
+}
+
+function buildTargetsTable(curEHP) {
+    const refH = 3000;
+    const body = $('targetsBody');
+    body.innerHTML = '';
+    for (let ehp = 1500; ehp <= 7000; ehp += 500) {
+        const soft = 12*ehp, hard = 20*ehp;
+        const dms = dmax(ehp,soft), dmh = dmax(ehp,hard);
+        const drs = dr(soft,refH), drh = dr(hard,refH);
+        const hi  = curEHP && Math.abs(ehp - Math.round(curEHP/500)*500) < 250;
+        body.insertAdjacentHTML('beforeend', `
+            <tr${hi ? ' style="outline:2px solid #b57c2c;"' : ''}>
+                <td><strong>${fmt(ehp)}</strong></td>
+                <td>${fmt(soft)}</td><td>${fmt(hard)}</td>
+                <td>${fmt(dms)}</td><td>${fmt(dmh)}</td>
+                <td class="${drCls(drs)}">${fmtPct(drs)}</td>
+                <td class="${drCls(drh)}">${fmtPct(drh)}</td>
+            </tr>`);
+    }
+}
+
+function drCls(v) {
+    if (v >= 0.9)  return 't-cap';
+    if (v >= 0.70) return 't-good';
+    if (v >= 0.50) return 't-warn';
+    return 't-bad';
+}
+
+function buildDRMatrix() {
+    const arms = [10000,20000,30000,40000,50000,60000,70000,80000,90000,100000];
+    const hits = [100,1000,2000,4000,8000,10000];
+    const body = $('drMatrixBody');
+    body.innerHTML = '';
+    arms.forEach(A => {
+        let row = `<tr><td><strong>${fmt(A)}</strong></td>`;
+        hits.forEach(H => {
+            const v = dr(A, H);
+            row += `<td class="${drCls(v)}">${(v*100).toFixed(1)}%${v >= 0.9 ? ' &dagger;' : ''}</td>`;
+        });
+        row += '</tr>';
+        body.insertAdjacentHTML('beforeend', row);
+    });
+}
+
+// ── Persistence ────────────────────────────────────────────────────────────
+const LS_KEYS = ['baseLife','manaPool','esPool','momPct','armourInput',
+                 'rawHit','convPct','maxRes','armourToEle','lessEle',
+                 'targetDR','optHit','whArmour','whEvasion','whHit'];
+
+function save() {
+    LS_KEYS.forEach(k => localStorage.setItem('poe2_' + k, $(k)?.value));
+    localStorage.setItem('poe2_cloak', $('cloakToggle').checked ? '1' : '0');
+    localStorage.setItem('poe2_blade', $('bladeCatcherToggle').checked ? '1' : '0');
+}
+function load() {
+    LS_KEYS.forEach(k => {
+        const v = localStorage.getItem('poe2_' + k);
+        if (v !== null && $(k)) $(k).value = v;
+    });
+    $('cloakToggle').checked        = localStorage.getItem('poe2_cloak') === '1';
+    $('bladeCatcherToggle').checked = localStorage.getItem('poe2_blade') === '1';
+    $('convPct').disabled           = $('cloakToggle').checked;
+    syncLabels();
+}
+
+function syncLabels() {
+    $('momVal').textContent     = num('momPct').toFixed(0) + '%';
+    $('convVal').textContent    = ($('cloakToggle').checked ? 50 : num('convPct')).toFixed(0) + '%';
+    $('targetDRVal').textContent = num('targetDR', 60).toFixed(0) + '%';
+}
+
+// ── Event wiring ───────────────────────────────────────────────────────────
+LS_KEYS.forEach(k => $(k)?.addEventListener('input', () => { syncLabels(); calc(); }));
+
+$('cloakToggle').addEventListener('change', () => {
+    $('convPct').disabled = $('cloakToggle').checked;
+    if ($('cloakToggle').checked) $('convPct').value = 50;
+    syncLabels(); calc();
+});
+$('bladeCatcherToggle').addEventListener('change', () => calc());
+
+document.querySelectorAll('.pbtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const d = btn.dataset;
+        if (d.life)   $('baseLife').value      = d.life;
+        if (d.mom)    $('momPct').value         = d.mom;
+        if (d.arm)    $('armourInput').value    = d.arm;
+        if (d.hit)    $('rawHit').value         = d.hit;
+        if (d.conv)   { $('convPct').value = d.conv; $('cloakToggle').checked = false; $('convPct').disabled = false; }
+        if (d.res)    $('maxRes').value         = d.res;
+        if (d.a2e)    $('armourToEle').value    = d.a2e;
+        if (d.lesse)  $('lessEle').value        = d.lesse;
+        if (d.dr)     $('targetDR').value       = d.dr;
+        if (d.optHit) $('optHit').value         = d.optHit;
+        if (d.wha)    $('whArmour').value       = d.wha;
+        if (d.whe)    $('whEvasion').value      = d.whe;
+        if (d.whh)    $('whHit').value          = d.whh;
+        syncLabels(); calc();
+    });
+});
+
+// ── Init ───────────────────────────────────────────────────────────────────
+load();
+calc();
+</script>
+</body>
+</html>
