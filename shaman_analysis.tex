@@ -334,6 +334,30 @@ A useful concrete benchmark is when each build's mitigation falls below 90\% ---
 
 Shaman remains above 90\% mitigation through approximately H$\approx$2{,}600 (interpolated between the 92.8\% at H=2{,}000 and 88.3\% at H=4{,}000 table values). Shaman maintains the ``highly efficient'' mitigation regime for more than double the hit size that Smith can sustain before the same threshold is crossed.
 
+\subsection*{Optimal Smith Configuration: Armour-to-Elemental and Veil of Night}
+
+The analysis above treats Smith of Kitava as a pure-armour archetype with no elemental handling layer. At endgame investment, a structurally superior configuration emerges by combining three elements: passive investment in ``X\% of Armour applies to Elemental Damage'' nodes, a 35\% physical-to-elemental conversion source, and \textit{Veil of Night} as the chest slot.
+
+With 35\% conversion, the incoming hit splits into a physical component of $0.65H$ and an elemental component of $0.35H$. The physical component evaluates against armour normally; the elemental component evaluates against armour scaled by the armour-to-elemental percentage $Y$ (as established in the mathematical framework, Section 2):
+
+\[
+\text{DR}_{\text{phys}} = \frac{A}{A + 6.5H} \qquad \text{DR}_{\text{ele}} = \frac{Y \cdot A}{Y \cdot A + 3.5H}
+\]
+
+At $Y = 1.0$ (full armour applies to elemental) and $A = 200{,}000$, both components achieve high DR against a 10{,}000 raw physical hit:
+
+\begin{align*}
+\text{Physical DR:} \quad &\frac{200{,}000}{265{,}000} = 75.5\% \quad \Rightarrow \quad 6{,}500 \times 0.245 = 1{,}593 \text{ damage} \\
+\text{Elemental DR:} \quad &\frac{200{,}000}{235{,}000} = 85.1\% \quad \Rightarrow \quad 3{,}500 \times 0.149 = 522 \text{ damage} \\
+\text{Total damage taken:} \quad &1{,}593 + 522 = 2{,}115 \quad (78.9\%\text{ total mitigation})
+\end{align*}
+
+This approaches Shaman's 80.8\% at 25{,}000 armour --- at 8$\times$ the armour investment. The divergence analysis in the preceding subsections continues to apply at all intermediate armour values; the structural Smith weakness against hits above H$\approx$1{,}111 is unchanged below 100{,}000 armour. At the endgame ceiling, however, the armour-to-elemental configuration meaningfully closes the gap.
+
+\textbf{Veil of Night as the enabler.} Once armour-to-elemental scaling is in place, elemental resistances become redundant: the armour formula handles the converted elemental component directly, and the 0\% elemental resistance imposed by Veil of Night has no cost. The 50\% increased maximum life is pure gain --- a 3{,}500 base life pool becomes 5{,}250, which trivially absorbs the 2{,}115 damage computed above while freeing every elemental resistance affix on the character's gear for additional armour, life, or offensive investment.
+
+The minimum armour threshold for 75\% DR on the elemental component at H=10{,}000 is approximately 105{,}000 armour (derived from $A / (A + 35{,}000) = 0.75$). This is achievable at high gear investment and is the correct trigger point for equipping Veil of Night. Below this threshold, the 0\% elemental resistance leaves the elemental component unmitigated and Veil of Night is self-destructive. The build order is fixed: acquire armour-to-elemental passive nodes and reach the 105k armour threshold first; Veil of Night is the last major piece, not an early investment.
+
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{The 2{,}000 HP Benchmark and Survival Thresholds}
 
@@ -1419,18 +1443,38 @@ Against Turtle Charm's 1{,}522 expected damage (84.8\% mitigation), the standard
 
 The probability table in the preceding section rests on one assumption: block is passive and probabilistic at 75\%. A single condition inverts this entirely. Path of Exile 2 provides active block skills --- specifically \textbf{Raise Shield} and \textbf{Resonating Shield} --- that allow a player to guarantee a block on demand. When an active block is executed correctly, the Warbringer's block chance goes from 75\% (passive RNG) to 100\% (player-controlled), and Turtle Charm's 80\% less multiplier becomes guaranteed rather than probabilistic.
 
-In mapping, this changes nothing in practice --- the passive 75\% rate is sufficient and manual blocking every pack hit would be exhausting. In boss encounters, it transforms the build: instead of hoping that a boss slam rolls into the 75\% window, the player manually blocks the telegraphed strike and converts a potential one-shot into trivial damage ($0.16H$ before armour). Failure to execute the block still results in taking the full unmitigated hit, making it a skill-check rather than an RNG outcome --- but the 3-in-4 survival odds of the passive build become a decision the player controls, not a roll of the dice.
+In mapping, this changes nothing in practice --- the passive 75\% rate is sufficient and manual blocking every pack hit would be exhausting. In boss encounters, it transforms the build: instead of hoping that a boss slam rolls into the 75\% window, the player manually blocks the telegraphed strike and converts a potential one-shot into trivial damage ($0.16H$ before armour). Failure to execute the block still results in taking the full unmitigated hit, making it a skill-check rather than an RNG outcome.
 
-\textbf{Jade Heritage as the active-build complement.} Once manual blocking handles the boss slam, the Wooden Wall node is no longer the optimal choice for the remaining ascendancy point. \textbf{Jade Heritage} provides two things Wooden Wall does not: a terminal 10\% less damage taken multiplier applying to all incoming damage, and an active skill that converts accumulated jade stacks into \textbf{Guard} --- a temporary shield equal to 60\% of maximum life that absorbs damage before the life pool is reached.
+\textbf{Two mutually exclusive ascendancy paths.} Turtle Charm is mandatory on either path. The second ascendancy node allocates to either Wooden Wall (the totem route) or Jade Heritage --- these are not additive, and the build takes one or the other.
 
-\begin{itemize}
-    \item \textbf{Guard} functions as a cooldown damage sponge. Activated before a threatening hit, it interposes a pool equal to $0.60 \times L$ ahead of the life pool. At $L = 4{,}500$: Guard $= 2{,}700$. If the player fails the manual block skill check and the hit connects at $0.80 \times 10{,}000 = 8{,}000$ pre-armour, Guard absorbs the first 2{,}700 of post-armour damage before life is touched.
-    \item \textbf{The 10\% less terminal multiplier} applies to all damage taken regardless of block outcome, reducing both the blocked case and the unblocked case uniformly at the end of the reduction chain.
-\end{itemize}
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Wooden Wall vs.\ Jade Heritage: Constant Damage Reduction Comparison}}
+\begin{tabular}{p{3.0cm}p{5.5cm}p{4.2cm}}
+\toprule
+\textbf{Property} & \textbf{Wooden Wall (Totem Route)} & \textbf{Jade Heritage} \\
+\midrule
+\rowcolor{rowalt} Constant reduction & 20\% of damage $\to$ totem; player takes 80\% & 10\% less terminal; player takes 90\% \\
+Conditional mechanic & Requires active totem (near-100\% uptime on totem build) & Guard skill: 60\% of life as absorptive shield, on cooldown \\
+\rowcolor{rowalt} Totem dependency & Yes --- uptime is required for the layer to function & No \\
+\rowcolor{rowhi} \textbf{Verdict} & \textbf{Strictly superior constant reduction} & \textbf{Guard provides conditional buffer; weaker continuous reduction} \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{The constant-reduction comparison is unambiguous: Wooden Wall routes 20\% of every hit to the totem while Jade Heritage reduces only 10\% terminally. Jade Heritage's Guard skill provides a conditional absorptive buffer equal to 60\% of maximum life on a cooldown, which can be activated before a known hit --- but this is a reactive tool with a recharge period, not continuous damage reduction. In sustained encounters with reliable totem uptime, Wooden Wall is the superior defensive choice. One unresolved interaction: it is unclear whether Turtle Charm's 80\% less on blocked hits applies when the player is in the ``Encased in Jade'' state from Jade Heritage; if it does, the path comparison shifts marginally toward Jade Heritage for players who maintain the buff. The 10\% vs.\ 20\% reduction differential does not change regardless.}
+\end{minipage}
+\end{table}
+
+\textbf{Wooden Wall path: the totem as an independent DPS engine.} The strategic advantage of Wooden Wall extends beyond the 20\% redirect. The Warbringer's combat totems deal damage independently and automatically, requiring no player attention once placed. This creates a structural separation between the build's damage source and the player character that closely mirrors how minion builds operate: the totem runs its damage loop while the player allocates all attention to defensive execution --- manual blocks on telegraphed strikes, dodged mechanics, and positioning. The opportunity cost of taking Wooden Wall over Jade Heritage is therefore near-zero from a damage perspective: the totem enabling the mitigation layer is the same totem dealing damage.
+
+This architecture extends naturally to a weapon-swap variant. In one weapon set: combat totems as the primary damage source, enabling Wooden Wall's mitigation layer continuously. In the second weapon set: a shield for active blocking, optionally combined with a minion-summoning weapon. The result is two independent damage engines --- totems and minions --- running simultaneously while the player focuses entirely on defensive execution. Both damage sources require no player input once deployed. The build effectively plays itself offensively while the player plays it defensively --- the same division of responsibility that defines effective minion builds at the skill ceiling.
+
+\textbf{Jade Heritage as the alternative.} Players who prefer an active defensive mechanic without totem dependency may choose Jade Heritage. Guard activates a temporary absorptive shield equal to 60\% of maximum life ahead of the life pool; at $L = 4{,}500$: Guard $= 2{,}700$, a meaningful conditional buffer against a failed skill check. The 10\% less terminal multiplier applies to all damage regardless of block outcome. Jade Heritage is the correct choice when consistent totem uptime cannot be maintained or when the player prioritises the Guard skill's on-demand absorptive properties over Wooden Wall's continuous reduction.
 
 \textbf{Veil of Night and the HP breakpoint.} Achieving the eHP thresholds identified in the armour target table ($L \geq 5{,}000$ for 48k armour; $L \geq 4{,}000$ for 80k armour) is a gear-budget problem. \textit{Veil of Night} resolves this directly: it sets all elemental resistances to 0\% and grants 50\% increased maximum life. On a 3{,}000 base life pool, Veil of Night forces $L = 4{,}500$ --- a gain of 1{,}500 HP that reduces the worst-case armour requirement from 133k to approximately 68k. The lost elemental resistances must be recaptured through other slots, but the net trade is often favourable: 1{,}500 HP contributes more survivability than the 350--1{,}000 flat armour a conventional rare chest would provide, and it frees the chest's suffixes for resistance or offensive affixes. \textit{Hollow Mask} is the alternative: it preserves resistances while providing additional physical damage reduction, suited to players who cannot cap resistances elsewhere but want to stay in the armour-building path.
 
-\textbf{Updated verdict under active play.} The Warbringer with manual block and Jade Heritage is a meaningfully stronger defensive architecture than the passive baseline suggests. In mapping, passive 75\% block already produces better expected mitigation than Shaman; with active block available, every telegraphed boss slam is removed from the probability distribution entirely. Guard provides a deterministic damage buffer against the failure case. The build's ceiling is not constrained by armour formula limits or absorption pool caps --- it is constrained by player execution and the achievable eHP pool. This raises the skill floor above any other archetype examined in this paper, but it also means that a proficient player on this build has access to better worst-case survival than the passive numbers imply. It remains the most demanding defensive investment of the archetypes covered, requiring simultaneous commitment to block chance, armour, and life --- but it rewards that investment with a defensive efficiency that exceeds comparable Marauder-lineage builds and approaches viability at the same tier as the conversion and absorption archetypes, contingent on execution.
+\textbf{Updated verdict under active play.} The Warbringer with Turtle Charm, Wooden Wall, and manual blocking on boss-tier hits is the recommended high-skill-expression configuration. In mapping, passive 75\% block with Wooden Wall already produces better expected mitigation than Shaman (84.8\% vs.\ 80.8\% at A=50k); with manual block available on telegraphed slams, those hits leave the probability distribution entirely and become deterministic low-damage events. The totem provides continuous DPS with no player input required, and a weapon-swap to a shield set with minion support layers a second independent damage engine behind the same defensive stance. The build's ceiling is constrained by player execution and achievable eHP, not by armour formula limits or absorption pool caps. This raises the skill floor above any other archetype examined in this paper --- but it rewards that execution with the highest expected mitigation of any armour-anchored build and deterministic worst-case control over telegraphed boss-tier hits.
 
 \subsection*{Warbringer Positioning}
 
