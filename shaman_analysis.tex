@@ -53,7 +53,7 @@
     {\Large\bfseries Defensive Efficiency in Path of Exile 2:\\[0.2em]
     Physical Damage Mitigation\\[0.2em]
     Across the Ascendancy Spectrum} \\[0.4em]
-    {\normalsize Shaman, Infernalist, Witchhunter, Invoker, and the Smith of Kitava Benchmark}
+    {\normalsize Shaman, Infernalist, Witchhunter, Tactician, Invoker, and the Smith of Kitava Benchmark}
 }
 \author{Path of Exile 2 --- Defensive Layer Theory}
 \date{\small July 2026}
@@ -88,6 +88,8 @@
     \item \textbf{Passive Point Economy.} Shaman's entire conversion stack costs one passive tree notable, a few ascendancy notables, and Cloak of Flame. The 8--15 passive points Smith commits to armour scaling are freed for damage, sustain, or additional defensive layers --- enabling Shaman to simultaneously out-defend a dedicated armour archetype and retain budget flexibility.
 
     \item \textbf{Infernalist: Chaos Inoculation and the Hard Immunity Advantage.} The Infernalist (Witch ascendancy) achieves comparable or superior mitigation through a distinct conversion stack: 50--55\% physical-to-fire, 20\% physical-to-chaos eliminated entirely via Chaos Inoculation, and a reduced physical residual of 20--30\%. The CI keystone makes the chaos component a categorical zero rather than a near-zero residual, and simultaneously frees all chaos resistance affixes and life affixes on gear for Energy Shield and evasion. The Infernalist Full configuration (80\% total conversion + CI) achieves 85.3\% mitigation at H=10{,}000 --- surpassing standard Shaman at 80.8\% --- while providing hard chaos immunity at every hit size.
+
+    \item \textbf{Tactician: Deflection, Capped DR, and High Variance.} The Tactician (Mercenary ascendancy) achieves armour efficiency through ``Stay Light, Use Cover,'' which defends with 200\% of armour --- halving the armour required to reach any given DR --- while hard-capping both evasion and damage reduction at 50\%. ``Polish that Gear'' converts 20\% of armour into deflection rating; deflection reduces a hit by 40\% before armour evaluates. A deflected hit at the 50\% DR cap takes 30\% of its original value (70\% effective DR), comparable to Shaman. An undeflected hit at the cap takes 50\%, requiring 5{,}001 effective HP to survive a 10{,}000 raw hit --- identical to Smith of Kitava's requirement. Expected mitigation across the probability chain (25\% effective evasion, 75\% deflection with Glancing Blows) is 73.8\% at H=10{,}000, trailing Shaman's deterministic 80.8\%. The build is efficient when deflection fires; it is exposed when it does not.
 
     \item \textbf{Witchhunter: Sorcery Ward and the Absorption-Layer Ceiling.} The Witchhunter (Mercenary ascendancy) achieves the highest single-hit survival ceiling of the archetypes examined in this paper. Two ascendancy notables (Obsessive Rituals + Ceremonial Ablution) convert armour and evasion investment into a Sorcery Ward absorption pool (SW = 30\% of post-penalty armour+evasion, capped at 32{,}000) that intercepts all post-armour hit damage before it reaches life. At 60{,}000 geared armour (30{,}000 post-penalty) and L = 3{,}000 HP, SW = 9{,}000 --- absorbing the full post-armour remainder of a 10{,}000 raw hit with zero life damage. The derived survival ceiling is approximately H = 14{,}485, substantially exceeding both Shaman and Smith at comparable passive investment. No unique item is required.
 
@@ -1068,6 +1070,219 @@ Playstyle constraint & None & SW cooldown awareness & Meditate pre-combat \\
 \end{table}
 
 % ══════════════════════════════════════════════════════════════════════════════
+\newsection{Tactician: Deflection, Capped DR, and the Armour-Efficient Paradigm}
+
+\subsection*{Class Overview and Build Identity}
+
+The Tactician is the second ascendancy of the Mercenary base class and occupies an unusual position in the defensive landscape: its core mechanical identity --- supporting totems, crossbows, and minions at range --- is intelligible from the passive tree, but the defensive nodes required to access that identity consume the first two ascendancy slots before any offensive expression is possible. For most players, the Tactician is a build that becomes itself only after the campaign ends. This deferred payoff is not a mechanical flaw; it is a design constraint worth naming, because it shapes how one should evaluate the class's defensive architecture independent of its playstyle.
+
+The two near-mandatory defensive nodes are \textbf{Polish that Gear} and \textbf{Stay Light, Use Cover}. Together they define an archetype with a hard DR ceiling, a front-loaded damage reduction mechanic, and strong pressure toward ranged engagement. They also create a genuine tension in build optimisation: the DR cap imposed by Stay Light limits how much armour investment matters, the evasion cap it imposes is compounded by the Glancing Blows keystone, and the primary defensive win condition --- deflection --- depends on a probabilistic chain that the build can influence but never fully control.
+
+\subsection*{The Two Core Defensive Nodes}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Tactician Ascendancy Nodes --- Defensive Core}}
+\begin{tabular}{p{3.8cm}p{6.3cm}p{2.6cm}}
+\toprule
+\textbf{Node} & \textbf{Effect} & \textbf{Priority} \\
+\midrule
+\rowcolor{rowalt} Polish that Gear & Deflection rating $=$ 20\% of armour rating. Ailment threshold $=$ 100\% of evasion rating. & Mandatory \\
+Stay Light, Use Cover & Defend with 200\% of armour. Enemies have an accuracy penalty based on distance. Maximum chance to evade $=$ 50\%. Maximum damage reduction $=$ 50\%. & Near-mandatory \\
+\rowcolor{rowhi} Third/Fourth Choice & Build-defining offensive or totem/minion nodes --- accessible only after the defensive core is purchased. & Situational \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{``Polish that Gear'' is a prerequisite for ``Stay Light, Use Cover.'' The ``Near-mandatory'' label on Stay Light reflects the author's assessment: the 200\% armour defend modifier halves the armour investment required to reach any given DR, and the accuracy-from-distance penalty supports the crossbow/totem identity. A viable alternative skipping Stay Light is analysed in the Build Path Divergence section.}
+\end{minipage}
+\end{table}
+
+\subsection*{Deflection: The Front-Loaded Multiplier}
+
+Polish that Gear grants deflection rating equal to 20\% of armour rating. When a hit is deflected, damage is reduced by 40\%. The operative question for this analysis --- one that the game's tooltip does not resolve --- is whether this reduction applies \textit{before} or \textit{after} the armour formula evaluates.
+
+\begin{itemize}
+    \item \textbf{If front-loaded (deflect reduces hit size entering armour):} The armour formula evaluates against $0.6H$ rather than $H$. The armour formula produces better DR on a smaller effective hit, and the ordering strictly improves outcomes when armour is below the DR cap.
+    \item \textbf{If back-loaded (deflect reduces the post-armour remainder):} The armour formula evaluates against the full $H$. Deflect applies as a multiplier on the damage taken after armour DR.
+\end{itemize}
+
+At the 50\% DR cap imposed by Stay Light, the two orderings produce \textbf{identical results}:
+
+\[
+\text{Front-loaded: } 0.6H \times (1 - 0.50) = 0.30H
+\qquad
+\text{Back-loaded: } H \times (1 - 0.50) \times 0.60 = 0.30H
+\]
+
+The analysis below treats the DR cap as the planning target, where ordering is irrelevant. Below the cap, front-loading is strictly better: the armour formula operates on a smaller effective hit and yields higher DR at every armour value. A build that consistently reaches the 50\% DR cap on relevant hits loses nothing to the ambiguity; one that does not reach the cap benefits more if deflect is front-loaded.
+
+\textbf{Effective DR on a deflected hit at the cap:}
+\[
+\text{Damage taken} = 0.6H \times 0.50 = 0.30H \quad \Rightarrow \quad \text{Effective DR} = 70\%
+\]
+
+\textbf{Effective DR on an undeflected hit at the cap:}
+\[
+\text{Damage taken} = H \times 0.50 = 0.50H \quad \Rightarrow \quad \text{Effective DR} = 50\%
+\]
+
+\subsection*{Armour Targets Under 200\% Defend}
+
+The 200\% armour defend modifier means the DR formula evaluates 2A against the incoming hit, not A. The standard corridor (12--20$\times$L) was derived for the unmodified formula; it does not apply here.
+
+\[
+DR = \min\!\Bigl(0.50,\; \frac{2A}{2A + 10H}\Bigr)
+\]
+
+\textbf{Cap condition (no deflect):} $2A \geq 10H \Rightarrow A \geq 5H$. The armour required to guarantee 50\% DR against a raw hit $H$ is exactly $5H$ --- half of the standard zero-conversion requirement of $10H$.
+
+\textbf{Cap condition (with deflect):} The formula evaluates against $0.6H$, so $2A \geq 6H \Rightarrow A \geq 3H$.
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Revised Armour Corridor --- Tactician (200\% Defend, 50\% DR Cap)}}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Scenario} & \textbf{Cap Condition} & \textbf{Vs 2L Kill Threshold} & \textbf{Effective Corridor} \\
+\midrule
+\rowcolor{rowalt} Standard (no mod) & $A \geq 10H$ & $A = 20L$ & $12\times$--$20\times L$ \\
+Tactician, no deflect & $A \geq 5H$ & $A = 10L$ & $5\times$--$10\times L$ \\
+\rowcolor{rowalt} Tactician, with deflect & $A \geq 3H$ & $A = 6L$ & $3\times$--$6\times L$ \\
+\rowcolor{rowhi} Planning target (worst-case) & No deflect & $A = 10L$ & $\approx 8\times$--$10\times L$ \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{``Kill threshold'' assumes 50\% DR cap: maximum survivable hit = $2L$ (half is taken, half is absorbed by pool). Armour required for 50\% DR against that hit: $5 \times 2L = 10L$ (no deflect) or $3 \times 2L = 6L$ (with deflect). Because deflection is probabilistic, the prudent planning target is the no-deflect corridor of 8--10$\times L$. This is a structural reduction from the standard 12--20$\times L$ heuristic: the 200\% defend modifier provides the equivalent of doubled armour investment, halving the gearing cost to reach the DR cap. Additional armour beyond the cap condition yields zero marginal DR against the planning hit, because the 50\% cap is reached.}
+\end{minipage}
+\end{table}
+
+\subsection*{Glancing Blows and the Sequential Probability Chain}
+
+Glancing Blows is a keystone passive that inverts the luck of two defensive stats simultaneously: evasion rolls become \textit{unlucky} (roll twice, take the worse) and deflection rolls become \textit{lucky} (roll twice, take the better). For the Tactician, whose evasion is hard-capped at 50\% by Stay Light and whose deflection is the primary win condition, Glancing Blows is the correct keystone --- but it is important to understand what the tradeoff actually costs and pays.
+
+\textbf{Unlucky evasion at 50\% cap:}
+\[
+P(\text{evade}) = P(\text{both rolls succeed}) = 0.50 \times 0.50 = 0.25
+\]
+
+\textbf{Lucky deflection at base chance $d$:}
+\[
+P(\text{deflect}) = 1 - (1-d)^2 = 2d - d^2
+\]
+At $d = 0.50$: $P(\text{deflect}) = 0.75$. At $d = 0.60$: $P(\text{deflect}) = 0.84$.
+
+Glancing Blows trades 25 percentage points of evasion effectiveness (50\% $\to$ 25\% effective) for a large improvement in deflection rate. Whether this trade is favourable depends on the relative value of each avoidance layer, which the probability chain makes explicit.
+
+\textbf{Causal chain on an incoming hit:}
+\begin{enumerate}
+    \item Hit connects (accuracy check passes against evasion).
+    \item 25\% chance to evade --- hit is negated entirely. $P = 0.25$.
+    \item If not evaded (75\%), deflection roll. At $d = 0.50$: 75\% chance to deflect. $P(\text{not evade, deflect}) = 0.75 \times 0.75 = 0.5625$.
+    \item If not deflected (25\% of non-evaded): armour alone. $P(\text{not evade, not deflect}) = 0.75 \times 0.25 = 0.1875$.
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Expected Damage Taken at H=10{,}000 --- Tactician (A=50{,}000, 25\% Eff. Evasion, 75\% Eff. Deflect)}}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Outcome} & \textbf{Probability} & \textbf{DR} & \textbf{Damage Taken} & \textbf{Contribution} \\
+\midrule
+\rowcolor{rowalt} Evaded & 25.0\% & 100\% & 0 & 0 \\
+Not evaded, deflected & 56.25\% & 70.0\% & 3{,}000 & 1{,}688 \\
+\rowcolor{rowalt} Not evaded, not deflected & 18.75\% & 50.0\% & 5{,}000 & 938 \\
+\midrule
+\rowcolor{rowhi} \textbf{Expected} & \textbf{100\%} & \textbf{73.8\%} & --- & \textbf{2{,}625} \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{A=50{,}000 reaches the 50\% DR cap on undeflected hits at H=10{,}000 ($2 \times 50k = 100k \geq 10 \times 10k$). Deflected hits take 0.6$\times$10{,}000 at 50\% DR = 3{,}000. Non-deflected hits take 10{,}000 at 50\% DR = 5{,}000. The worst-case (non-evaded, non-deflected) requires 5{,}001 effective HP to survive --- identical to Smith of Kitava's requirement at the same hit ceiling, but reached on a class whose gear and passive budget is split across armour, evasion, life, and resistances. Expected mitigation of 73.8\% trails Shaman's passive 80.8\% despite heavier defensive investment.}
+\end{minipage}
+\end{table}
+
+The survival implication of the worst-case row is the class's defining constraint: the 18.75\% of hits that land without deflection require 5{,}001 effective HP. This is structurally identical to Smith of Kitava's requirement, but Tactician reaches this number on a mixed armour-evasion chassis that is competing for affixes across more defensive stat categories. Shaman, by contrast, requires only 1{,}923 HP to guarantee survival of the same hit --- passively, with no probability chain.
+
+\subsection*{The Ailment Threshold Benefit}
+
+Polish that Gear grants ailment threshold equal to 100\% of evasion rating. Ailment threshold determines how much of a hit's damage must land before an ailment is applied. At high evasion investment (50{,}000--70{,}000 evasion rating), the threshold is large enough that:
+
+\begin{itemize}
+    \item \textbf{Shock and freeze} --- which require a hit to exceed a threshold proportional to maximum life --- become functionally intermittent. At sufficient evasion investment, most endgame hits fall below the threshold and these ailments apply so rarely they cease to be a defensive concern.
+    \item \textbf{Ignite, bleed, and poison} --- damage-over-time ailments not governed by threshold in the same way --- still require charm-based removal.
+\end{itemize}
+
+This is not immunity; it is functional suppression of two of the most punishing ailments in endgame content (Shocked ground, freeze during a dangerous encounter) at the cost of evasion investment the build is already pursuing. The ailment suppression is a compounding secondary benefit, not the primary reason to invest in evasion.
+
+\subsection*{Build Path Divergence: Evasion Hybrid vs.\ Block-and-Armour}
+
+The foregoing analysis assumes the standard Tactician build: evasion capped at 50\% (unlucky to 25\%), deflection from 20\% of armour, and Stay Light, Use Cover providing 200\% armour defend. A second path is viable --- and in some respects more internally consistent --- that forgoes evasion entirely:
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Tactician Build Path Comparison}}
+\begin{tabular}{lll}
+\toprule
+\textbf{Property} & \textbf{Evasion Hybrid (Standard)} & \textbf{Block-and-Armour (Alt)} \\
+\midrule
+\rowcolor{rowalt} Ascendancy nodes & Polish that Gear + Stay Light & Polish that Gear only \\
+Avoidance layer & 25\% eff.\ evasion (unlucky 50\%) & 50\% block \\
+\rowcolor{rowalt} DR cap & 50\% (imposed by Stay Light) & None (uncapped armour DR) \\
+Armour defend & 200\% & Standard (100\%) \\
+\rowcolor{rowalt} Armour target & $5\times$--$10\times L$ & $10\times$--$20\times L$ (higher, no modifier) \\
+Deflect source & 20\% of armour & 20\% of armour (same) \\
+\rowcolor{rowalt} DR on large hits (H=10k) & 50\% hard cap & Uncapped; scales with armour investment \\
+Ailment threshold & Yes (evasion-dependent) & Reduced (less evasion) \\
+\rowcolor{rowalt} Gear budget pressure & High (armour, evasion, life, res) & Moderate (armour, life, res) \\
+\rowcolor{rowhi} \textbf{Win condition} & \textbf{Probabilistic: evade or deflect} & \textbf{Heavy deflect + high armour DR} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{The case for the Block-and-Armour path:} Forgoing Stay Light, Use Cover frees two ascendancy points, removes the 50\% DR cap, and removes the evasion cap. Replacing evasion with block (50\% block = 50\% avoidance, not penalised by Glancing Blows) provides equivalent or superior avoidance compared to the unlucky 25\% effective evasion the hybrid path achieves. With heavy armour investment, the deflection rate (lucky from Glancing Blows at 20\% of armour) rises with armour --- both deflect chance and raw armour DR increase simultaneously. If deflection applies front-loaded, a deflected hit at high armour values can achieve 60--70\% armour DR on the 0.6$H$ remainder, producing a total effective DR of 76--82\% on deflected hits --- approaching Shaman's passive 80.8\%.
+
+\textbf{The unresolved constraint:} Both paths depend on the same unknown: the actual deflection chance formula. If deflection rating of $0.2A$ at, say, $A = 100{,}000$ (deflect rating = 20{,}000) produces a high base chance, the lucky Glancing Blows roll yields a reliable 85\%+ deflect rate, and the Block-and-Armour path is efficient. If deflection rating scales poorly or has a hard cap unrelated to armour, the premise collapses. This is an empirical question --- not resolvable from the tooltip text alone --- and represents the primary measurement gap in this section's analysis.
+
+\subsection*{The Identity Crisis: Optimisation Without a Dominant Constraint Solver}
+
+The Tactician's core tension is this: the build imposes two independent scaling requirements (armour large enough to matter and evasion large enough for ailment threshold and avoidance) without providing a mechanism that converts one into the other at efficiency. The Invoker's ``\ldots and protect me from harm'' node converts evasion directly into armour. The Witchhunter's Sorcery Ward converts armour into an absorption pool. The Tactician converts armour into deflection rating (20\%) --- a valuable secondary benefit, but one whose payoff depends on a probability distribution rather than a guaranteed quantity.
+
+This produces the optimisation problem the user correctly identifies: you must plan armour for the worst-case (no deflect) and plan life pool for the worst-case (no evade, no deflect), but the build is rewarded most when both fire. The character who deflects consistently takes 3{,}000 from a 10{,}000 hit on 50{,}000 armour; the character who does not deflect takes 5{,}000 from the same hit and needs 5{,}001 effective HP to survive. These two planning targets do not converge.
+
+The Witchhunter resolves this tension structurally: Sorcery Ward absorbs the post-armour remainder whether or not a deflection occurred, providing a deterministic secondary layer. The Tactician has no equivalent. Its survival of extreme hits is conditional on the probability chain resolving favourably, which is an inherent property of the archetype rather than a gap correctable through investment.
+
+\subsection*{Tactician Positioning}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Tactician vs.\ Shaman vs.\ Witchhunter at H=10{,}000}}
+{\small
+\begin{tabular}{llll}
+\toprule
+\textbf{Property} & \textbf{Shaman} & \textbf{Witchhunter} & \textbf{Tactician} \\
+\midrule
+\rowcolor{rowalt} Mitigation mechanism & Conversion (DR suppression) & SW absorption & Deflect + capped DR \\
+Expected damage (H=10k) & 1{,}923 (passive) & 0 (SW intact) & 2{,}625 (probabilistic) \\
+\rowcolor{rowalt} Worst-case damage & 1{,}923 (deterministic) & 5{,}000+ (SW depleted) & 5{,}000 (no deflect) \\
+Min HP to survive worst case & 1{,}924 & 3{,}001 (+ SW buffer) & 5{,}001 \\
+\rowcolor{rowalt} Chaos coverage & Near-zero residual & SW absorbs post-DR & Armour DR only (no conversion) \\
+Armour target & Minimal (conversion does work) & 6$\times$--10$\times L$ (+ SW) & 8$\times$--10$\times L$ (half standard) \\
+\rowcolor{rowalt} DR cap & None (conversion asymptote) & 50\% (post-penalty) + SW & 50\% hard cap (Stay Light) \\
+Unique item required & Yes (Cloak of Flame) & No & No \\
+\rowcolor{rowalt} Build expression delay & None & None & Post-campaign only \\
+\rowcolor{rowhi} \textbf{Verdict} & \textbf{Lowest HP floor, passive} & \textbf{Highest one-shot ceiling} & \textbf{Efficient armour use; high variance} \\
+\bottomrule
+\end{tabular}
+}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{Tactician expected mitigation (73.8\%) trails Shaman (80.8\%) despite heavier combined investment, because the 50\% DR cap limits the ceiling on undeflected hits and the mixed gear requirements constrain life pool depth. Its structural advantage is armour efficiency: the 200\% defend modifier halves the armour required to reach the DR cap versus a zero-conversion build, making the armour target genuinely achievable. The build is rewarding under the probability chain --- deflect + DR produces 70\% effective DR, comparable to Shaman --- but cannot guarantee that chain fires on every hit, which is Shaman's unconditional guarantee.}
+\end{minipage}
+\end{table}
+
+% ══════════════════════════════════════════════════════════════════════════════
 \newsection{Conclusion}
 
 The hit-size spectrum analysis confirms and quantifies what the original insight identified: Shaman's conversion stack is not one defensive strategy among many --- it is a categorically more efficient approach than armour scaling across the endgame-relevant hit range, and the advantage compounds exactly where it matters most.
@@ -1086,6 +1301,6 @@ The hit-size spectrum analysis confirms and quantifies what the original insight
 
 The Shaman's configuration --- Cloak of Flame, three ascendancy conversion notables, one passive tree notable, and an elemental anointment --- is among the most point-efficient passive physical mitigation archetypes in Path of Exile 2's current state. It converts the armour formula's greatest weakness (hit-size scaling) into its greatest asset (small residual physical hits) while simultaneously collapsing the converted elemental portion through resistance and armour-to-elemental layers. The result is a build that survives the largest hits in the game on a 2{,}000 HP pool while freeing the passive budget for damage that other archetypes cannot afford to spend.
 
-The extended analysis in Sections 10--12 demonstrates that the Shaman's approach is one of four distinct efficient defensive paradigms, not the unique solution. The Infernalist Full configuration (80\% total conversion with Chaos Inoculation) achieves 85.3\% mitigation at H=10{,}000 --- surpassing the Shaman's 80.8\% --- by pushing conversion one step further and eliminating the chaos component categorically. The Witchhunter (Section 12) reaches a survival ceiling of approximately $H = 14{,}485$ at mid-endgame investment through Sorcery Ward absorption, which absorbs the full post-armour remainder of a 10{,}000 raw hit with zero life damage --- without a unique-item dependency. The Invoker operates on an entirely separate axis: 75--88\% of hits are avoided before any mitigation applies, and the hits that do land are handled by an evasion-derived armour pool and a pre-combat Energy Shield overflow via Meditate. These four archetypes --- Shaman, Infernalist, Witchhunter, and Invoker --- collectively demonstrate that Path of Exile 2's most efficient defensive builds share a common structural property: they reduce, convert, absorb, or avoid the effective damage rather than scaling raw armour to meet it. Each answers a different threat profile, and each is viable at high endgame investment.
+The extended analysis in Sections 10--13 demonstrates that the Shaman's approach is one of five distinct efficient defensive paradigms, not the unique solution. The Infernalist Full configuration (80\% total conversion with Chaos Inoculation) achieves 85.3\% mitigation at H=10{,}000 --- surpassing the Shaman's 80.8\% --- by pushing conversion one step further and eliminating the chaos component categorically. The Witchhunter (Section 12) reaches a survival ceiling of approximately $H = 14{,}485$ at mid-endgame investment through Sorcery Ward absorption, which absorbs the full post-armour remainder of a 10{,}000 raw hit with zero life damage --- without a unique-item dependency. The Invoker operates on an entirely separate axis: 75--88\% of hits are avoided before any mitigation applies, and the hits that do land are handled by an evasion-derived armour pool and a pre-combat Energy Shield overflow via Meditate. The Tactician (Section 13) introduces a fifth paradigm: deflection as a front-loaded multiplier that reduces the effective hit entering the armour formula, combined with a 200\% armour defend modifier that halves the armour investment required to reach the DR cap. Its expected mitigation of 73.8\% at H=10{,}000 trails Shaman's deterministic 80.8\%, and its worst-case survival requirement (5{,}001 HP) is structurally identical to Smith of Kitava's --- but it achieves this on an armour target of 8--10$\times L$ rather than 20$\times L$, and its probability chain rewards both evasion avoidance and deflection simultaneously. These five archetypes --- Shaman, Infernalist, Witchhunter, Tactician, and Invoker --- collectively demonstrate that Path of Exile 2's most efficient defensive builds share a common structural property: they reduce, convert, absorb, deflect, or avoid the effective damage rather than scaling raw armour to meet it. Each answers a different threat profile, and each is viable at high endgame investment.
 
 \end{document}
