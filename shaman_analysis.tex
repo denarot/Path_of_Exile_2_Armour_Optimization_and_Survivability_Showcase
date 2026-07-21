@@ -344,6 +344,31 @@ With 35\% conversion, the incoming hit splits into a physical component of $0.65
 \text{DR}_{\text{phys}} = \frac{A}{A + 6.5H} \qquad \text{DR}_{\text{ele}} = \frac{Y \cdot A}{Y \cdot A + 3.5H}
 \]
 
+$Y$ is not capped at 1.0 --- multiple ``X\% of Armour applies to Elemental Damage'' passive sources stack additively, making $Y = 1.5$--$2.0$ and higher achievable through dedicated investment. The armour required to reach 75\% elemental DR (the threshold above which elemental resistances become optional) scales inversely with $Y$:
+
+\[
+A_{75\%} = \frac{10.5 \cdot H}{Y}
+\]
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Armour Required for 75\% Elemental DR by $Y$ (35\% Conversion, $H = 10{,}000$ Ceiling)}}
+\begin{tabular}{rrrr}
+\toprule
+\textbf{$Y$ (Armour-to-Elemental)} & \textbf{Armour Required} & \textbf{Min $L$ for Corridor ($A \leq 20 \times L$)} & \textbf{Feasibility} \\
+\midrule
+\rowcolor{rowalt} 1.0 (100\%) & 105{,}000 & 5{,}250 & Requires high eHP + armour \\
+1.5 (150\%) & 70{,}000 & 3{,}500 & Achievable at moderate eHP \\
+\rowcolor{rowalt} 2.0 (200\%) & 52{,}500 & 2{,}625 & Widely achievable \\
+3.0 (300\%) & 35{,}000 & 1{,}750 & Accessible at minimal eHP investment \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{Min $L$ for Corridor is the life pool at which the armour threshold falls exactly at the top of the 12--20$\times L$ corridor ($A = 20 \times L$). $Y$-stacking converts elemental DR from an armour-ceiling problem into a passive-investment problem: the armour remains within the corridor while additional passive nodes extend the elemental formula's reach. All thresholds scale proportionally lower at realistic hit sizes below 10{,}000.}
+\end{minipage}
+\end{table}
+
 At $Y = 1.0$ and $A = 80{,}000$ (representative of the upper corridor at $L = 5{,}000$, where $12\text{--}20 \times L = 60\text{k--}100\text{k}$), the outcome against the theoretical 10{,}000 ceiling hit is:
 
 \begin{align*}
@@ -357,6 +382,10 @@ Pure-armour Smith at the same 80{,}000 armour takes $10{,}000 \times (1 - 80{,}0
 \textbf{Veil of Night as the enabler.} Once armour-to-elemental scaling is in place, elemental resistances become redundant: the armour formula handles the converted elemental component directly, and the 0\% elemental resistance imposed by Veil of Night has no cost. The 50\% increased maximum life is pure eHP gain --- a 3{,}500 base life pool becomes 5{,}250. This raises the 12--20$\times L$ armour corridor from 42k--70k to 63k--105k, so the armour target scales upward naturally alongside the eHP gain. The two variables compound: higher eHP justifies higher armour, and higher armour extracts more value from the armour-to-elemental layer. Veil of Night's primary mechanism here is raising eHP first; the armour target follows through the corridor formula.
 
 The correct build order is: acquire armour-to-elemental passive nodes first --- without them, the elemental component is unmitigated and Veil of Night's 0\% resistance is purely self-destructive. Once those nodes are in place, Veil of Night converts a resistance burden into a free eHP gain and natural corridor expansion.
+
+\textbf{The critical strike frontier.} Smith of Kitava's structural advantage in critical strike map content adds a further dimension to this configuration. Blade Catcher converts critical strikes so they deal base damage (removing the critical multiplier) and defends those hits at 200\% of armour rating --- effectively $2A$ in the DR formula for crits. Combined with Internal Layer, the Smith is structurally unaffected by critical strikes in a way no other archetype in this paper achieves. In crit-heavy content, Smith's effective armour doubles on the hits that would otherwise be lethal, pushing physical crit DR well above what the base armour value alone suggests; the armour-to-elemental layer extends this advantage to the converted elemental components of those same crits.
+
+The complete endgame Smith configuration --- 12--20$\times L$ armour within the corridor, $Y$-stacking to reach 75\%+ elemental DR, Veil of Night as a pure life multiplier, Blade Catcher providing crit immunity and $2A$ effective defence on crits --- achieves a defensive profile that is inferior to Shaman in general endgame content but that dominates the critical strike map frontier. In that content specifically, the hits that would one-shot other archetypes land at base damage against double effective armour, and the elemental components of those crits are handled by the armour formula rather than by resistances. Smith occupies a narrower but genuine niche: the armour-based specialist for content where critical strikes are the primary threat.
 
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{The 2{,}000 HP Benchmark and Survival Thresholds}
@@ -1462,7 +1491,7 @@ Conditional mechanic & Requires active totem (near-100\% uptime on totem build) 
 \end{tabular}
 \smallskip
 \begin{minipage}{\linewidth}
-\small\textit{The constant-reduction comparison is unambiguous: Wooden Wall routes 20\% of every hit to the totem while Jade Heritage reduces only 10\% terminally. Jade Heritage's Guard skill provides a conditional absorptive buffer equal to 60\% of maximum life on a cooldown, which can be activated before a known hit --- but this is a reactive tool with a recharge period, not continuous damage reduction. In sustained encounters with reliable totem uptime, Wooden Wall is the superior defensive choice. One unresolved interaction: it is unclear whether Turtle Charm's 80\% less on blocked hits applies when the player is in the ``Encased in Jade'' state from Jade Heritage; if it does, the path comparison shifts marginally toward Jade Heritage for players who maintain the buff. The 10\% vs.\ 20\% reduction differential does not change regardless.}
+\small\textit{The constant-reduction comparison is unambiguous: Wooden Wall routes 20\% of every hit to the totem while Jade Heritage reduces only 10\% terminally. Jade Heritage's Guard skill provides a conditional absorptive buffer equal to 60\% of maximum life on a cooldown --- but this is a reactive tool with a recharge period, not continuous damage reduction. The Encased in Jade interaction is resolved: the Encased in Jade state and manual block are mechanically exclusive --- a player cannot raise their shield while encased in jade. Passive RNG block can still proc while encased (applying Turtle Charm's 80\% less on those rolls), but this is unreliable and does not restore the deterministic control that defines the manual block ceiling. The 10\% vs.\ 20\% differential holds in all practical scenarios.}
 \end{minipage}
 \end{table}
 
@@ -1470,7 +1499,11 @@ Conditional mechanic & Requires active totem (near-100\% uptime on totem build) 
 
 This architecture extends naturally to a weapon-swap variant. In one weapon set: combat totems as the primary damage source, enabling Wooden Wall's mitigation layer continuously. In the second weapon set: a shield for active blocking, optionally combined with a minion-summoning weapon. The result is two independent damage engines --- totems and minions --- running simultaneously while the player focuses entirely on defensive execution. Both damage sources require no player input once deployed. The build effectively plays itself offensively while the player plays it defensively --- the same division of responsibility that defines effective minion builds at the skill ceiling.
 
-\textbf{Jade Heritage as the alternative.} Players who prefer an active defensive mechanic without totem dependency may choose Jade Heritage. Guard activates a temporary absorptive shield equal to 60\% of maximum life ahead of the life pool; at $L = 4{,}500$: Guard $= 2{,}700$, a meaningful conditional buffer against a failed skill check. The 10\% less terminal multiplier applies to all damage regardless of block outcome. Jade Heritage is the correct choice when consistent totem uptime cannot be maintained or when the player prioritises the Guard skill's on-demand absorptive properties over Wooden Wall's continuous reduction.
+\textbf{Jade Heritage as the alternative.} Jade Heritage is suboptimal for one-shot protection but situationally valid for specific content types. The decisive mechanical constraint: \textbf{Encased in Jade and manual block are exclusive} --- a player cannot raise their shield while encased in jade. Taking Jade Heritage therefore means abandoning the manual block ceiling entirely. Passive RNG block can still proc while encased (applying Turtle Charm's 80\% less on those rolls), but it is unreliable and does not restore the deterministic control that defines the Wooden Wall path's boss-kill value.
+
+Jade Heritage's Guard skill is most effective in sustained medium-hit content: many hits of moderate size that collectively threaten the life pool rather than a single catastrophic slam. Guard activates a temporary absorptive shield equal to 60\% of maximum life ($= 2{,}700$ at $L = 4{,}500$) ahead of the life pool on a cooldown that refills between waves of hits, providing a repeatable buffer against cumulative damage intake. Against a single large hit, Guard is a one-time buffer that may not cover the full damage and cannot refill before the next slam.
+
+The stun risk of manual blocking is also a legitimate factor: committing to a block action leaves the player exposed if the block is mis-timed or fails, and a stun in that window creates a vulnerability to immediate follow-up hits. The Encased in Jade state provides stun protection that has real defensive value in high-density encounters where a stun from a medium hit followed by a large hit is the actual kill condition. Against that threat profile specifically --- sustained pressure with stun-chain risk, not single-hit one-shot ceiling --- Jade Heritage is the correct choice. Its argument is not improving one-shot protection; it is managing the sustained-damage environment where stun is the primary threat.
 
 \textbf{Veil of Night and the HP breakpoint.} Achieving the eHP thresholds identified in the armour target table ($L \geq 5{,}000$ for 48k armour; $L \geq 4{,}000$ for 80k armour) is a gear-budget problem. \textit{Veil of Night} resolves this directly: it sets all elemental resistances to 0\% and grants 50\% increased maximum life. On a 3{,}000 base life pool, Veil of Night forces $L = 4{,}500$ --- a gain of 1{,}500 HP that reduces the worst-case armour requirement from 133k to approximately 68k. The lost elemental resistances must be recaptured through other slots, but the net trade is often favourable: 1{,}500 HP contributes more survivability than the 350--1{,}000 flat armour a conventional rare chest would provide, and it frees the chest's suffixes for resistance or offensive affixes. \textit{Hollow Mask} is the alternative: it preserves resistances while providing additional physical damage reduction, suited to players who cannot cap resistances elsewhere but want to stay in the armour-building path.
 
