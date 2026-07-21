@@ -336,27 +336,27 @@ Shaman remains above 90\% mitigation through approximately H$\approx$2{,}600 (in
 
 \subsection*{Optimal Smith Configuration: Armour-to-Elemental and Veil of Night}
 
-The analysis above treats Smith of Kitava as a pure-armour archetype with no elemental handling layer. At endgame investment, a structurally superior configuration emerges by combining three elements: passive investment in ``X\% of Armour applies to Elemental Damage'' nodes, a 35\% physical-to-elemental conversion source, and \textit{Veil of Night} as the chest slot.
+The analysis above treats Smith of Kitava as a pure-armour archetype with no elemental handling layer. A structurally superior configuration adds two elements: passive investment in ``X\% of Armour applies to Elemental Damage'' nodes and a 35\% physical-to-elemental conversion source. The armour target remains the 12--20$\times L$ corridor that binds all armour-based builds; the configuration does not change the planning constraint, it changes what each armour point accomplishes.
 
-With 35\% conversion, the incoming hit splits into a physical component of $0.65H$ and an elemental component of $0.35H$. The physical component evaluates against armour normally; the elemental component evaluates against armour scaled by the armour-to-elemental percentage $Y$ (as established in the mathematical framework, Section 2):
+With 35\% conversion, the incoming hit splits into a physical component of $0.65H$ and an elemental component of $0.35H$. The elemental component evaluates against armour scaled by the armour-to-elemental percentage $Y$:
 
 \[
 \text{DR}_{\text{phys}} = \frac{A}{A + 6.5H} \qquad \text{DR}_{\text{ele}} = \frac{Y \cdot A}{Y \cdot A + 3.5H}
 \]
 
-At $Y = 1.0$ (full armour applies to elemental) and $A = 200{,}000$, both components achieve high DR against a 10{,}000 raw physical hit:
+At $Y = 1.0$ and $A = 80{,}000$ (representative of the upper corridor at $L = 5{,}000$, where $12\text{--}20 \times L = 60\text{k--}100\text{k}$), the outcome against the theoretical 10{,}000 ceiling hit is:
 
 \begin{align*}
-\text{Physical DR:} \quad &\frac{200{,}000}{265{,}000} = 75.5\% \quad \Rightarrow \quad 6{,}500 \times 0.245 = 1{,}593 \text{ damage} \\
-\text{Elemental DR:} \quad &\frac{200{,}000}{235{,}000} = 85.1\% \quad \Rightarrow \quad 3{,}500 \times 0.149 = 522 \text{ damage} \\
-\text{Total damage taken:} \quad &1{,}593 + 522 = 2{,}115 \quad (78.9\%\text{ total mitigation})
+\text{Physical DR:} \quad &\frac{80{,}000}{145{,}000} = 55.2\% \quad \Rightarrow \quad 6{,}500 \times 0.448 = 2{,}912 \text{ damage} \\
+\text{Elemental DR:} \quad &\frac{80{,}000}{115{,}000} = 69.6\% \quad \Rightarrow \quad 3{,}500 \times 0.304 = 1{,}064 \text{ damage} \\
+\text{Total damage taken:} \quad &3{,}976 \quad (60.2\%\text{ total mitigation})
 \end{align*}
 
-This approaches Shaman's 80.8\% at 25{,}000 armour --- at 8$\times$ the armour investment. The divergence analysis in the preceding subsections continues to apply at all intermediate armour values; the structural Smith weakness against hits above H$\approx$1{,}111 is unchanged below 100{,}000 armour. At the endgame ceiling, however, the armour-to-elemental configuration meaningfully closes the gap.
+Pure-armour Smith at the same 80{,}000 armour takes $10{,}000 \times (1 - 80{,}000 / 180{,}000) = 5{,}556$ damage against the same hit (44.4\% mitigation). The armour-to-elemental configuration improves total mitigation by 15.8 percentage points at identical armour investment --- achieved entirely through the elemental handling layer, with no additional armour cost. This gap is the structural benefit of the configuration: it extracts more mitigation from the same armour value by extending the formula's coverage to the converted elemental portion. At the theoretical ceiling of $A = 200{,}000$ the total mitigation rises to 78.9\% (2{,}115 damage), approaching Shaman's 80.8\%, but this armour value exceeds the achievable gear range and is noted for completeness only. The realistic build operates in the 40k--100k achievable armour band, where the benefit is a real 10--20 percentage point improvement over pure-armour Smith at the same investment level, not a path to matching conversion archetypes.
 
-\textbf{Veil of Night as the enabler.} Once armour-to-elemental scaling is in place, elemental resistances become redundant: the armour formula handles the converted elemental component directly, and the 0\% elemental resistance imposed by Veil of Night has no cost. The 50\% increased maximum life is pure gain --- a 3{,}500 base life pool becomes 5{,}250, which trivially absorbs the 2{,}115 damage computed above while freeing every elemental resistance affix on the character's gear for additional armour, life, or offensive investment.
+\textbf{Veil of Night as the enabler.} Once armour-to-elemental scaling is in place, elemental resistances become redundant: the armour formula handles the converted elemental component directly, and the 0\% elemental resistance imposed by Veil of Night has no cost. The 50\% increased maximum life is pure eHP gain --- a 3{,}500 base life pool becomes 5{,}250. This raises the 12--20$\times L$ armour corridor from 42k--70k to 63k--105k, so the armour target scales upward naturally alongside the eHP gain. The two variables compound: higher eHP justifies higher armour, and higher armour extracts more value from the armour-to-elemental layer. Veil of Night's primary mechanism here is raising eHP first; the armour target follows through the corridor formula.
 
-The minimum armour threshold for 75\% DR on the elemental component at H=10{,}000 is approximately 105{,}000 armour (derived from $A / (A + 35{,}000) = 0.75$). This is achievable at high gear investment and is the correct trigger point for equipping Veil of Night. Below this threshold, the 0\% elemental resistance leaves the elemental component unmitigated and Veil of Night is self-destructive. The build order is fixed: acquire armour-to-elemental passive nodes and reach the 105k armour threshold first; Veil of Night is the last major piece, not an early investment.
+The correct build order is: acquire armour-to-elemental passive nodes first --- without them, the elemental component is unmitigated and Veil of Night's 0\% resistance is purely self-destructive. Once those nodes are in place, Veil of Night converts a resistance burden into a free eHP gain and natural corridor expansion.
 
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{The 2{,}000 HP Benchmark and Survival Thresholds}
