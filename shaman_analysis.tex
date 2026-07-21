@@ -53,7 +53,7 @@
     {\Large\bfseries Defensive Efficiency in Path of Exile 2:\\[0.2em]
     Physical Damage Mitigation\\[0.2em]
     Across the Ascendancy Spectrum} \\[0.4em]
-    {\normalsize Shaman, Infernalist, Witchhunter, Tactician, Invoker, and the Smith of Kitava Benchmark}
+    {\normalsize Shaman, Infernalist, Witchhunter, Tactician, Warbringer, Invoker, and the Smith of Kitava Benchmark}
 }
 \author{Path of Exile 2 --- Defensive Layer Theory}
 \date{\small July 2026}
@@ -88,6 +88,8 @@
     \item \textbf{Passive Point Economy.} Shaman's entire conversion stack costs one passive tree notable, a few ascendancy notables, and Cloak of Flame. The 8--15 passive points Smith commits to armour scaling are freed for damage, sustain, or additional defensive layers --- enabling Shaman to simultaneously out-defend a dedicated armour archetype and retain budget flexibility.
 
     \item \textbf{Infernalist: Chaos Inoculation and the Hard Immunity Advantage.} The Infernalist (Witch ascendancy) achieves comparable or superior mitigation through a distinct conversion stack: 50--55\% physical-to-fire, 20\% physical-to-chaos eliminated entirely via Chaos Inoculation, and a reduced physical residual of 20--30\%. The CI keystone makes the chaos component a categorical zero rather than a near-zero residual, and simultaneously frees all chaos resistance affixes and life affixes on gear for Energy Shield and evasion. The Infernalist Full configuration (80\% total conversion + CI) achieves 85.3\% mitigation at H=10{,}000 --- surpassing standard Shaman at 80.8\% --- while providing hard chaos immunity at every hit size.
+
+    \item \textbf{Warbringer: Block-as-Mitigation and the Mapping Specialist.} The Warbringer (Marauder ascendancy) converts block into a front-loaded damage multiplier via Turtle Charm: blocked hits deal 20\% of their original value to the player (80\% less), raising the effective block cap to 75\%. Wooden Wall adds a second front-loaded layer --- 20\% of damage taken goes to an active totem instead. Combined on a blocked hit: $0.20 \times 0.80 = 0.16H$ enters the armour formula. At A=100k, the expected mitigation across the probability chain (75\% block) is 89.5\% --- the highest of any armour-anchored archetype in this paper. The binding constraint is the 25\% of unblocked hits, which arrive at 80\% of their original value and impose a 3{,}557 HP minimum survival requirement at H=10{,}000. The build excels in mapping content where the block distribution averages out; it is exposed to single-hit variance in boss encounters, partially offset by Turtle Charm's unique ability to block otherwise unblockable hits.
 
     \item \textbf{Tactician: Deflection, Capped DR, and High Variance.} The Tactician (Mercenary ascendancy) achieves armour efficiency through ``Stay Light, Use Cover,'' which defends with 200\% of armour --- halving the armour required to reach any given DR --- while hard-capping both evasion and damage reduction at 50\%. ``Polish that Gear'' converts 20\% of armour into deflection rating; deflection reduces a hit by 40\% before armour evaluates. A deflected hit at the 50\% DR cap takes 30\% of its original value (70\% effective DR), comparable to Shaman. An undeflected hit at the cap takes 50\%, requiring 5{,}001 effective HP to survive a 10{,}000 raw hit --- identical to Smith of Kitava's requirement. Expected mitigation across the probability chain (25\% effective evasion, 75\% deflection with Glancing Blows) is 73.8\% at H=10{,}000, trailing Shaman's deterministic 80.8\%. The build is efficient when deflection fires; it is exposed when it does not.
 
@@ -1283,6 +1285,166 @@ Unique item required & Yes (Cloak of Flame) & No & No \\
 \end{table}
 
 % ══════════════════════════════════════════════════════════════════════════════
+\newsection{Warbringer: Block-as-Mitigation and the Mapping Specialist}
+
+\subsection*{Class Overview and Build Identity}
+
+The Warbringer is an ascendancy of the Marauder base class and represents an interesting adjacent case to Smith of Kitava: both are Marauder-lineage archetypes that lean into armour, block, and physical survivability, but the Warbringer resolves the armour formula's scaling weakness through a different structural intervention. Rather than using conversion or absorption, the Warbringer converts block chance into a front-loaded damage multiplier --- reducing hits that connect through its block roll to 20\% of their original value before armour evaluates. Combined with a totem-linked damage reduction layer, the Warbringer achieves excellent \textit{expected} mitigation across the hit-size spectrum. Its constraint is variance: the 25\% of hits that bypass block land at 80\% of their value and expose the same fundamental armour formula weakness that limits every non-converting archetype at large hit sizes.
+
+The build's natural home is totem-based content: high-uptime totems enable the secondary mitigation layer (Wooden Wall) near-continuously, and the ranged playstyle reduces the frequency of hits that reach the character at all. Against boss-tier content with single large strikes, the probabilistic nature of block creates the defining tension --- one the section explores in detail.
+
+\subsection*{The Two Core Defensive Nodes}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Warbringer Ascendancy Nodes --- Defensive Core}}
+\begin{tabular}{p{3.4cm}p{6.7cm}p{2.6cm}}
+\toprule
+\textbf{Node} & \textbf{Effect} & \textbf{Priority} \\
+\midrule
+\rowcolor{rowalt} Turtle Charm & Maximum block raised to 75\%. You take 20\% of the damage of blocked hits (80\% less --- confirmed front-loaded). Enables blocking of previously unblockable hits. & Mandatory \\
+Wooden Wall & 20\% of damage you would take is instead taken by your totem. Requires an active totem. & Mandatory \\
+\rowcolor{rowhi} Third/Fourth Choice & Offensive scaling, totem enhancement, or utility investment. & Situational \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{Turtle Charm's 80\% less on blocked hits is confirmed to apply before the armour formula --- the armour formula evaluates against 20\% of the original hit, not the full hit. Wooden Wall's 20\% reduction applies simultaneously, reducing the pre-armour value further. Both multipliers apply regardless of hit type (physical, elemental, chaos) provided the blocking condition and totem condition are met. Near-100\% totem uptime is assumed throughout this analysis given the Warbringer's identity as a totem build.}
+\end{minipage}
+\end{table}
+
+\subsection*{Combined Multipliers: The Blocked-Hit Arithmetic}
+
+With both nodes active and a hit successfully blocked, two front-loaded multipliers apply in sequence:
+
+\[
+\text{Turtle Charm (blocked):} \times 0.20 \qquad \text{Wooden Wall (totem up):} \times 0.80
+\]
+\[
+\text{Pre-armour effective hit (blocked):} = 0.20 \times 0.80 \times H = 0.16H \quad \Rightarrow \quad 84\%\ \text{less damage before armour}
+\]
+
+On an unblocked hit with Wooden Wall active:
+\[
+\text{Pre-armour effective hit (unblocked):} = 0.80H \quad \Rightarrow \quad 20\%\ \text{less damage before armour}
+\]
+
+The implications for the armour formula are stark. Armour is highly efficient against small hits (the formula's numerator dominates when $H_{\text{eff}} \ll A$) and poor against large hits (the denominator grows with $H$). By collapsing a 10{,}000 hit to a 1{,}600 effective hit on a blocked roll, the Warbringer places armour in its most efficient operating regime 75\% of the time --- while the other 25\% exposes armour to an 8{,}000 effective hit it cannot handle as efficiently.
+
+\subsection*{Hit-Size Survival Table}
+
+The following table uses A = 50{,}000 armour with near-100\% totem uptime (Wooden Wall always active). $P(\text{block}) = 0.75$.
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Warbringer Damage Outcomes at A=50{,}000 (Turtle Charm + Wooden Wall Active)}}
+{\small
+\begin{tabular}{rrrrrrr}
+\toprule
+\textbf{Hit} & \textbf{Eff.\ Hit (Blk)} & \textbf{Blk Dmg} & \textbf{Eff.\ Hit (No Blk)} & \textbf{No Blk Dmg} & \textbf{Expected} & \textbf{Eff.\ Mit.} \\
+\midrule
+\rowcolor{rowalt} 500 & 80 & 1 & 400 & 30 & \cellcolor{tierS}8 & \cellcolor{tierS}98.3\% \\
+1{,}000 & 160 & 5 & 800 & 110 & \cellcolor{tierS}31 & \cellcolor{tierS}96.9\% \\
+\rowcolor{rowalt} 2{,}000 & 320 & 19 & 1{,}600 & 388 & \cellcolor{tierS}111 & \cellcolor{tierS}94.4\% \\
+4{,}000 & 640 & 73 & 3{,}200 & 1{,}249 & \cellcolor{tierA}367 & \cellcolor{tierA}90.8\% \\
+\rowcolor{rowalt} 8{,}000 & 1{,}280 & 261 & 6{,}400 & 3{,}593 & \cellcolor{tierB}1{,}094 & \cellcolor{tierB}86.3\% \\
+\rowcolor{rowhi} 10{,}000 & 1{,}600 & 388 & 8{,}000 & 4{,}923 & \cellcolor{tierB}1{,}522 & \cellcolor{tierB}84.8\% \\
+\bottomrule
+\end{tabular}
+}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{``Eff.\ Hit'' is the effective hit size entering the armour formula after front-loaded multipliers. ``Blk Dmg'' and ``No Blk Dmg'' are the final damage values on each outcome. Expected = $0.75 \times \text{Blk Dmg} + 0.25 \times \text{No Blk Dmg}$. At H=10{,}000, the expected mitigation of 84.8\% exceeds Shaman's passive 80.8\% --- a counterintuitive result driven by armour's high efficiency against the 1{,}600 effective blocked hit. The 4{,}923 unblocked damage on the final row is the class-defining constraint: surviving this outcome requires 4{,}924 effective HP, more than double Shaman's 1{,}924 HP requirement.}
+\end{minipage}
+\end{table}
+
+The expected value result --- 84.8\% mitigation surpassing Shaman's deterministic 80.8\% --- is the build's genuine appeal in mapping content where many hits arrive and the block distribution averages out. Against a single boss slam where one non-block is fatal, the expected value is irrelevant; the 25\% non-block probability is the only number that matters.
+
+\subsection*{Armour Targets: The eHP Constraint}
+
+Unlike other conversion or absorption archetypes in this paper where armour recedes as a binding constraint, the Warbringer's planning target for worst-case survival is dictated jointly by armour and eHP. The armour required to guarantee survival of an unblocked $H = 10{,}000$ hit falls steeply as the life pool grows:
+
+\[
+A^* = \frac{10 \times 0.8H \times (0.8H - L)}{L}
+\]
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Armour Required to Survive Unblocked H=10{,}000 (Wooden Wall Active, by Life Pool)}}
+\begin{tabular}{rrrr}
+\toprule
+\textbf{Life Pool (L)} & \textbf{Eff.\ Hit (0.8H)} & \textbf{Required Armour} & \textbf{Multiple of L} \\
+\midrule
+\rowcolor{rowalt} 3{,}000 & 8{,}000 & 133{,}333 & 44.4$\times$ \\
+4{,}000 & 8{,}000 & 80{,}000 & 20.0$\times$ \\
+\rowcolor{rowalt} 5{,}000 & 8{,}000 & 48{,}000 & 9.6$\times$ \\
+6{,}000 & 8{,}000 & 26{,}667 & 4.4$\times$ \\
+\rowcolor{rowalt}\rowcolor{rowhi} \textbf{8{,}000} & \textbf{8{,}000} & \textbf{0} & \textbf{0} \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{The armour requirement falls quadratically with life pool growth. At $L = 3{,}000$, the armour required (133k) is not achievable within normal gearing. At $L = 5{,}000$, 48k armour --- achievable on a dedicated armour build --- guarantees survival. At $L = 8{,}000$ (equal to the effective unblocked hit), zero armour is needed: the pool absorbs the hit regardless. This table is the formal justification for the user's observation that the Warbringer's core constraint is eHP, not armour: raising the pool from 3k to 5k reduces the armour requirement from impractical (133k) to standard (48k). The recommended build path is an armour/Energy Shield hybrid where ES fills the pool to the 5k--6k range, enabling armour targets that are achievable through normal investment.}
+\end{minipage}
+\end{table}
+
+\subsection*{The Unblockable Hit Interaction}
+
+Turtle Charm enables the Warbringer to block hits flagged as unblockable --- including boss slams and telegraphed area attacks that every other archetype must dodge manually or absorb at full value. This is the build's most uniquely powerful defensive property and has no equivalent in the other archetypes examined in this paper.
+
+The practical evaluation is probabilistic. At 75\% block on a boss slam of magnitude $H$:
+
+\begin{itemize}
+    \item \textbf{75\% of occurrences:} Hit is blocked. Pre-armour damage = $0.16H$. Armour handles a tiny effective hit efficiently. The slam is survived trivially.
+    \item \textbf{25\% of occurrences:} Hit is not blocked. Pre-armour damage = $0.80H$ (Wooden Wall only). This is a large effective hit and survival depends entirely on whether the life pool and armour together absorb it.
+\end{itemize}
+
+Against a 10{,}000 raw slam at the gear levels in the table above: the 25\% non-block outcome deals 4{,}923 damage at A=50k or 3{,}556 damage at A=100k. Whether these values are survivable is entirely pool-dependent. On a 5{,}000 HP pool: a 4{,}923-damage outcome is survived by 77 HP at A=50k; a 3{,}556-damage outcome is survived comfortably at A=100k. On a 3{,}000 HP pool: neither is survivable.
+
+The user's framing is precise: ``you are playing an RNG game where you hope that you block the slam.'' The build offers a 3-in-4 success rate on the worst hits in the game --- a genuine advantage over builds that must dodge manually and rely on player execution --- but cannot guarantee survival without a sufficient eHP pool behind the 25\% failure case.
+
+\subsection*{Build Path: Standard Block vs.\ Turtle Charm}
+
+A Warbringer who skips Turtle Charm retains standard block mechanics (50\% chance, full immunity on blocked hits) and saves two ascendancy points. With Wooden Wall and a terminal 10\% less multiplier from another source:
+
+\begin{itemize}
+    \item \textbf{P(block) = 0.50:} Full immunity --- 0 damage taken.
+    \item \textbf{P(no block) = 0.50:} $0.80H$ from Wooden Wall, then armour DR, then $\times 0.90$ terminal multiplier.
+    \item \textbf{Expected (A=50k, H=10k):} $0.50 \times 0 + 0.50 \times 4{,}430 = 2{,}215$ --- 77.9\% expected mitigation.
+\end{itemize}
+
+Against Turtle Charm's 1{,}522 expected damage (84.8\% mitigation), the standard block path takes 46\% more expected damage per hit at equivalent armour. The unblocked worst-case damage is identical (the armour formula sees the same 0.8H), but the probability of triggering it is 50\% rather than 25\%. The trade-off for the two saved ascendancy points --- which can go to offensive or totem-enhancing nodes --- is a substantially higher expected damage intake per encounter and twice the probability of the worst-case outcome. Turtle Charm is the correct defensive choice when the ascendancy budget allows it.
+
+\subsection*{Warbringer Positioning}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Warbringer vs.\ Smith vs.\ Shaman at H=10{,}000}}
+{\small
+\begin{tabular}{llll}
+\toprule
+\textbf{Property} & \textbf{Shaman} & \textbf{Smith of Kitava} & \textbf{Warbringer (A=100k)} \\
+\midrule
+\rowcolor{rowalt} Mitigation mechanism & Conversion & Pure armour & Block + front-loaded mult. \\
+Expected damage & 1{,}923 (deterministic) & 5{,}000 & 1{,}055 \\
+\rowcolor{rowalt} Worst-case damage & 1{,}923 & 5{,}000 & 3{,}556 \\
+Min HP (worst case) & 1{,}924 & 5{,}001 & 3{,}557 \\
+\rowcolor{rowalt} Armour investment & Minimal (conversion floor) & 100k+ & 100k+ \\
+Chaos coverage & Near-zero residual & Dedication to Kitava & Armour DR only \\
+\rowcolor{rowalt} Blocks unblockable hits & No & No & Yes (Turtle Charm) \\
+Totem dependency & No & No & Near-mandatory (Wooden Wall) \\
+\rowcolor{rowalt} Best content & General endgame & Crit/chaos maps & Mapping, totem content \\
+\rowcolor{rowhi} \textbf{Verdict} & \textbf{Lowest HP floor, passive} & \textbf{Crit/chaos specialist} & \textbf{Best expected value; high variance} \\
+\bottomrule
+\end{tabular}
+}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{Warbringer at A=100k achieves the best expected mitigation of the three armour-anchored builds (89.5\% vs Shaman's 80.8\% vs Smith's 50\%). This result is counterintuitive but mathematically sound: armour is extraordinarily efficient against the 1{,}600 effective blocked hit (86.2\% DR), dragging the expected damage well below Shaman's passive threshold. The cost is the 3{,}557 HP minimum for the worst-case unblocked hit --- a requirement that Shaman never faces because its passive mitigation makes the worst case 1{,}923 regardless of block outcomes. The Warbringer is genuinely the best Marauder-lineage defensive archetype examined in this paper, but it does not match the investment efficiency of Shaman, Infernalist, or Witchhunter, which achieve superior or comparable expected mitigation at a fraction of the armour investment and without the life pool constraint imposed by the 25\% unblocked outcome.}
+\end{minipage}
+\end{table}
+
+% ══════════════════════════════════════════════════════════════════════════════
 \newsection{Conclusion}
 
 The hit-size spectrum analysis confirms and quantifies what the original insight identified: Shaman's conversion stack is not one defensive strategy among many --- it is a categorically more efficient approach than armour scaling across the endgame-relevant hit range, and the advantage compounds exactly where it matters most.
@@ -1301,6 +1463,6 @@ The hit-size spectrum analysis confirms and quantifies what the original insight
 
 The Shaman's configuration --- Cloak of Flame, three ascendancy conversion notables, one passive tree notable, and an elemental anointment --- is among the most point-efficient passive physical mitigation archetypes in Path of Exile 2's current state. It converts the armour formula's greatest weakness (hit-size scaling) into its greatest asset (small residual physical hits) while simultaneously collapsing the converted elemental portion through resistance and armour-to-elemental layers. The result is a build that survives the largest hits in the game on a 2{,}000 HP pool while freeing the passive budget for damage that other archetypes cannot afford to spend.
 
-The extended analysis in Sections 10--13 demonstrates that the Shaman's approach is one of five distinct efficient defensive paradigms, not the unique solution. The Infernalist Full configuration (80\% total conversion with Chaos Inoculation) achieves 85.3\% mitigation at H=10{,}000 --- surpassing the Shaman's 80.8\% --- by pushing conversion one step further and eliminating the chaos component categorically. The Witchhunter (Section 12) reaches a survival ceiling of approximately $H = 14{,}485$ at mid-endgame investment through Sorcery Ward absorption, which absorbs the full post-armour remainder of a 10{,}000 raw hit with zero life damage --- without a unique-item dependency. The Invoker operates on an entirely separate axis: 75--88\% of hits are avoided before any mitigation applies, and the hits that do land are handled by an evasion-derived armour pool and a pre-combat Energy Shield overflow via Meditate. The Tactician (Section 13) introduces a fifth paradigm: deflection as a front-loaded multiplier that reduces the effective hit entering the armour formula, combined with a 200\% armour defend modifier that halves the armour investment required to reach the DR cap. Its expected mitigation of 73.8\% at H=10{,}000 trails Shaman's deterministic 80.8\%, and its worst-case survival requirement (5{,}001 HP) is structurally identical to Smith of Kitava's --- but it achieves this on an armour target of 8--10$\times L$ rather than 20$\times L$, and its probability chain rewards both evasion avoidance and deflection simultaneously. These five archetypes --- Shaman, Infernalist, Witchhunter, Tactician, and Invoker --- collectively demonstrate that Path of Exile 2's most efficient defensive builds share a common structural property: they reduce, convert, absorb, deflect, or avoid the effective damage rather than scaling raw armour to meet it. Each answers a different threat profile, and each is viable at high endgame investment.
+The extended analysis in Sections 10--14 demonstrates that the Shaman's approach is one of six distinct efficient defensive paradigms, not the unique solution. The Infernalist Full configuration (80\% total conversion with Chaos Inoculation) achieves 85.3\% mitigation at H=10{,}000 --- surpassing the Shaman's 80.8\% --- by pushing conversion one step further and eliminating the chaos component categorically. The Witchhunter (Section 12) reaches a survival ceiling of approximately $H = 14{,}485$ at mid-endgame investment through Sorcery Ward absorption, which absorbs the full post-armour remainder of a 10{,}000 raw hit with zero life damage --- without a unique-item dependency. The Invoker operates on an entirely separate axis: 75--88\% of hits are avoided before any mitigation applies, and the hits that do land are handled by an evasion-derived armour pool and a pre-combat Energy Shield overflow via Meditate. The Tactician (Section 13) introduces a fifth paradigm: deflection as a front-loaded multiplier that reduces the effective hit entering the armour formula, combined with a 200\% armour defend modifier that halves the armour investment required to reach the DR cap. Its expected mitigation of 73.8\% at H=10{,}000 trails Shaman's deterministic 80.8\%, and its worst-case survival requirement (5{,}001 HP) is structurally identical to Smith of Kitava's --- but it achieves this on an armour target of 8--10$\times L$ rather than 20$\times L$, and its probability chain rewards both evasion avoidance and deflection simultaneously. The Warbringer (Section 14) adds a sixth paradigm: block converted into a front-loaded 80\% damage multiplier, producing the highest expected mitigation of any armour-anchored build (89.5\% at A=100k) at the cost of high variance on unblocked hits and a totem-uptime dependency for the secondary layer. These six archetypes --- Shaman, Infernalist, Witchhunter, Tactician, Warbringer, and Invoker --- collectively demonstrate that Path of Exile 2's most efficient defensive builds share a common structural property: they reduce, convert, absorb, deflect, or avoid the effective damage rather than scaling raw armour to meet it. Each answers a different threat profile, and each is viable at high endgame investment.
 
 \end{document}
