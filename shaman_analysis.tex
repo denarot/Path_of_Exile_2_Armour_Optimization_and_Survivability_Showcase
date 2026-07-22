@@ -323,10 +323,10 @@ At $H = 10{,}000$: $0.3625 \times 10{,}000 = 3{,}625$ damage taken. A Shaman wit
   & Smith $+$7.7\,pp \\
 \midrule
 5{,}686
-  & \cellcolor{tierD}28.5\%
+  & \cellcolor{tierD}30.5\%
   & \cellcolor{tierD}63.8\%
   & \cellcolor{tierD}63.8\%
-  & \cellcolor{tierB}85.8\%
+  & \cellcolor{tierB}85.5\%
   & Crossover \\
 \midrule
 8{,}000
@@ -369,7 +369,7 @@ At $H = 10{,}000$: $0.3625 \times 10{,}000 = 3{,}625$ damage taken. A Shaman wit
 \rowcolor{rowalt} 4{,}000 & 2{,}462 & 1{,}143 & 1{,}450 & 471 & 1{,}143 & 1{,}450 \\
 8{,}000 & 6{,}095 & 3{,}556 & 2{,}900 & 1{,}387 & 3{,}556 & 2{,}900 \\
 \midrule
-\rowcolor{rowhi} 10{,}000 & 8{,}000 & \textbf{5{,}000} & \textbf{3{,}625} & \textbf{1{,}923} & \textbf{5{,}001} & \textbf{3{,}625} \\
+\rowcolor{rowhi} 10{,}000 & 8{,}000 & \textbf{5{,}000} & \textbf{3{,}625} & \textbf{1{,}923} & \textbf{5{,}001} & \textbf{3{,}626} \\
 \bottomrule
 \end{tabular}
 }
@@ -492,7 +492,7 @@ The savings is \textbf{exactly 1{,}250 effective HP} --- the physical component 
 \end{tabular}
 \smallskip
 \begin{minipage}{\linewidth}
-\small\textit{Armour-to-Elemental (A-to-E) is sourced from Shaman ascendancy notables, not passive tree nodes --- it is available once those ascendancy slots are allocated. Adding 25{,}000 armour saves exactly 1{,}250 HP from the physical component at every hit size (always $0.5 \times 0.25H = 0.125H$). A-to-E then reduces elemental taken by a further 452 HP. Even the most conservative Shaman configuration (3{,}625 HP, 0 armour) requires 1{,}376 fewer effective HP than the minimum-viable Smith.}
+\small\textit{Armour-to-Elemental (A-to-E) is sourced from Shaman ascendancy notables, not passive tree nodes --- it is available once those ascendancy slots are allocated. Adding 25{,}000 armour saves exactly 1{,}250 HP from the physical component at every hit size (always $0.5 \times 0.25H = 0.125H$). A-to-E then reduces elemental taken by a further 452 HP. Even the most conservative Shaman configuration (3{,}626 HP minimum, 0 armour) requires 1{,}375 fewer effective HP than the minimum-viable Smith.}
 \end{minipage}
 \end{table}
 
@@ -531,7 +531,7 @@ The life-pool oscillation is reduced to noise. The health globe reads as stable 
 \midrule
 \rowcolor{rowalt} Baseline (25k arm.) & 8{,}000 & 8{,}001 & No & $-$4{,}376 \\
 Smith of Kitava (100k) & 5{,}000 & 5{,}001 & No & $-$1{,}376 \\
-\rowcolor{rowalt} \textbf{Shaman (0 arm, 75\% conv.)} & \textbf{3{,}625} & \textbf{3{,}625} & \textbf{Yes} & \textbf{+0} \\
+\rowcolor{rowalt} \textbf{Shaman (0 arm, 75\% conv.)} & \textbf{3{,}625} & \textbf{3{,}626} & \textbf{No (by 1 HP)} & \textbf{$-$1} \\
 Shaman (25k arm, full stack) & 1{,}923 & 1{,}924 & Yes (comfortable) & $+$1{,}702 \\
 \rowcolor{rowhi} Shaman (min-maxed) & 1{,}388 & 1{,}389 & Yes (ample margin) & $+$2{,}237 \\
 \bottomrule
@@ -813,7 +813,7 @@ The following table uses the same build parameters as prior sections (25{,}000 a
 
 \subsection*{Why the Baseline Underperforms Shaman Despite CI}
 
-At first glance, negating 20\% of a 10{,}000 hit (2{,}000 damage hard avoided) should place Infernalist ahead of Shaman. The number shows the opposite: Infernalist Baseline takes 2{,}136 versus Shaman's 1{,}922. The reason is the physical residual:
+At first glance, negating 20\% of a 10{,}000 hit (2{,}000 damage hard avoided) should place Infernalist ahead of Shaman. The number shows the opposite: Infernalist Baseline takes 2{,}136 versus Shaman's 1{,}923. The reason is the physical residual:
 
 \begin{itemize}
     \item Shaman: 25\% residual physical (2{,}500 effective hit) $\to$ armour DR = 50\% $\to$ 1{,}250 taken
