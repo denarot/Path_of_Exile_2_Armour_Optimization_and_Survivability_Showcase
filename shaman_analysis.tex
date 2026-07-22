@@ -17,6 +17,8 @@
 \usepackage{float}
 \usepackage{amsmath}
 \usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, citecolor=black]{hyperref}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 
 % ── Typography ────────────────────────────────────────────────────────────────
 \setstretch{1.15}
@@ -82,27 +84,27 @@
 \vspace{6pt}
 
 \begin{itemize}
-    \item \textbf{Conversion Stack (Corrected):} The Shaman converts 75\% of incoming physical damage to elemental --- 60\% to fire (Cloak of Flame 50\% + ascendancy 5\% + passive tree notable 5\%), 5\% each to cold, lightning, and a random element. Only 25\% remains physical. Prior analyses cited 60--70\%; the additional passive tree notable raises the total to 75\%.
+    \item \textbf{The Armour Formula Has a Structural Ceiling.} Path of Exile~2's damage reduction formula ($\text{DR} = A / (A + 10H)$) degrades nonlinearly with hit size. At the endgame hit ceiling ($H = 10{,}000$), 100{,}000 armour yields only 50\% DR --- requiring 5{,}001 effective HP to survive. Doubling the armour budget to 200{,}000 raises DR to only 66.7\%. The formula's denominator grows with $H$ faster than any achievable armour investment can compensate. Every competitive archetype examined in this paper circumvents this ceiling rather than overcoming it.
 
-    \item \textbf{Both Archetypes Look Comparable at Small Hits.} Against a 100-damage hit, a Smith of Kitava with 100{,}000 armour achieves 99.0\% mitigation and a Shaman with 25{,}000 armour and 75\% conversion achieves 99.5\%. The 0.5-percentage-point gap is meaningless in practice --- armour's formula is overwhelmingly efficient for any build at this scale, and the Shaman's conversion adds only fractional benefit when the raw hit is already small.
+    \item \textbf{Virtual HP: The Tier-Ranking Metric.} This paper ranks all archetypes by their Virtual HP multiplier, defined as $\text{VHP} = \text{eHP} / (1 - \text{DR\%})$. VHP collapses the full defensive configuration --- armour value, conversion, absorption, avoidance probability --- to a single figure: how many effective hit points the archetype creates relative to the pool it invests in. A 2.0$\times$ VHP multiplier means the build survives hits twice as large as its raw HP would imply; a 5.2$\times$ multiplier means it survives hits 5.2$\times$ its pool. The baseline armour formula at optimal investment yields 2.0$\times$. Every mechanism in this paper targets a higher multiple.
 
-    \item \textbf{Divergence is Continuous and Compounds with Hit Size.} From 1{,}000 to 10{,}000 incoming damage the gap grows from 5 to 30.8 percentage points. Smith of Kitava's 100{,}000 armour falls from 90.9\% to 50.0\% mitigation over this range. Shaman's 25{,}000 armour with conversion falls only from 95.9\% to 80.8\% --- the conversion suppresses the effective physical hit size at every point, keeping the armour formula in its efficient operating range.
-
-    \item \textbf{The 2{,}000 HP Survival Threshold.} At H=10{,}000 (the practical endgame hit ceiling), Shaman takes 1{,}923 damage. A 2{,}000 effective HP pool is sufficient to survive the largest hit in the game with 77 HP remaining. Smith takes 5{,}000 from the same hit and requires 5{,}001 effective HP to survive --- a 2.6$\times$ higher life requirement, demanding entirely different investment priorities.
-
-    \item \textbf{The Advantage Cannot Be Closed Through Armour Alone.} To match Shaman's total mitigation via armour with no conversion requires approximately 421{,}000 armour rating. Smith's practical ceiling of 100{,}000 achieves 50\% at the endgame hit ceiling versus Shaman's 80.8\% --- a structural gap, not an incremental one.
-
-    \item \textbf{Passive Point Economy.} Shaman's entire conversion stack costs one passive tree notable, a few ascendancy notables, and Cloak of Flame. The 8--15 passive points Smith commits to armour scaling are freed for damage, sustain, or additional defensive layers --- enabling Shaman to simultaneously out-defend a dedicated armour archetype and retain budget flexibility.
-
-    \item \textbf{Infernalist: Chaos Inoculation and the Hard Immunity Advantage.} The Infernalist (Witch ascendancy) achieves comparable or superior mitigation through a distinct conversion stack: 50--55\% physical-to-fire, 20\% physical-to-chaos eliminated entirely via Chaos Inoculation, and a reduced physical residual of 20--30\%. The CI keystone makes the chaos component a categorical zero rather than a near-zero residual, and simultaneously frees all chaos resistance affixes and life affixes on gear for Energy Shield and evasion. The Infernalist Full configuration (80\% total conversion + CI) achieves 85.3\% mitigation at H=10{,}000 --- surpassing standard Shaman at 80.8\% --- while providing hard chaos immunity at every hit size.
-
-    \item \textbf{Warbringer: Block-as-Mitigation and the Mapping Specialist.} The Warbringer (Marauder ascendancy) converts block into a front-loaded damage multiplier via Turtle Charm: blocked hits deal 20\% of their original value to the player (80\% less), raising the effective block cap to 75\%. Wooden Wall adds a second front-loaded layer --- 20\% of damage taken goes to an active totem instead. Combined on a blocked hit: $0.20 \times 0.80 = 0.16H$ enters the armour formula. At A=100k, the expected mitigation across the probability chain (75\% block) is 89.5\% --- the highest of any armour-anchored archetype in this paper. The binding constraint is the 25\% of unblocked hits, which arrive at 80\% of their original value and impose a 3{,}557 HP minimum survival requirement at H=10{,}000. The build excels in mapping content where the block distribution averages out; it is exposed to single-hit variance in boss encounters, partially offset by Turtle Charm's unique ability to block otherwise unblockable hits.
-
-    \item \textbf{Tactician: Deflection, Capped DR, and High Variance.} The Tactician (Mercenary ascendancy) achieves armour efficiency through ``Stay Light, Use Cover,'' which defends with 200\% of armour --- halving the armour required to reach any given DR --- while hard-capping both evasion and damage reduction at 50\%. ``Polish that Gear'' converts 20\% of armour into deflection rating; deflection reduces a hit by 40\% before armour evaluates. A deflected hit at the 50\% DR cap takes 30\% of its original value (70\% effective DR), comparable to Shaman. An undeflected hit at the cap takes 50\%, requiring 5{,}001 effective HP to survive a 10{,}000 raw hit --- identical to Smith of Kitava's requirement. Expected mitigation across the probability chain (25\% effective evasion, 75\% deflection with Glancing Blows) is 73.8\% at H=10{,}000, trailing Shaman's deterministic 80.8\%. The build is efficient when deflection fires; it is exposed when it does not.
+    \item \textbf{Binding Constraint: Conversion Releases the Armour Budget.} The character-sheet analysis in Section~3 establishes the paper's central diagnostic. Against $H = 10{,}000$, Smith of Kitava with 100{,}000 armour takes 5{,}000 damage; Shaman with 25{,}000 armour and 75\% physical-to-elemental conversion takes 1{,}923. Matching Shaman's 80.8\% total mitigation through armour alone requires approximately 421{,}000 armour rating --- beyond any achievable gear. The gap is structural: conversion suppresses the effective hit size before it enters the formula, making the same armour 4$\times$ more efficient per point. The 8--15 passive points Smith commits to armour scaling are freed on Shaman for damage, sustain, or additional defensive layers. This is not a performance margin --- it is a structural release of the build's binding constraint.
 
     \item \textbf{Witchhunter: Sorcery Ward and the Absorption-Layer Ceiling.} The Witchhunter (Mercenary ascendancy) achieves the highest single-hit survival ceiling of the archetypes examined in this paper. Two ascendancy notables (Obsessive Rituals + Ceremonial Ablution) convert armour and evasion investment into a Sorcery Ward absorption pool (SW = 30\% of post-penalty armour+evasion, capped at 32{,}000) that intercepts all post-armour hit damage before it reaches life. At 60{,}000 geared armour (30{,}000 post-penalty) and L = 3{,}000 HP, SW = 9{,}000 --- absorbing the full post-armour remainder of a 10{,}000 raw hit with zero life damage. The derived survival ceiling is approximately H = 14{,}485, substantially exceeding both Shaman and Smith at comparable passive investment. No unique item is required.
 
-    \item \textbf{Invoker: Avoidance-Primary Architecture and Conditional eHP Ceiling.} The Invoker (Monk ascendancy) achieves defensive efficiency through a fundamentally different paradigm: preventing hits from connecting via evasion and block, rather than suppressing damage on hits that land. The ``\ldots and protect me from harm'' ascendancy node unifies the evasion and armour pools, applying 65\% of base evasion as effective armour, so that investment in evasion simultaneously improves avoidance chance and provides armour DR. At 50\%+50\% evasion and block, 75\% of all hits are avoided before any mitigation layer applies. Against the hits that do land, Meditate --- a pre-combat skill that overflows Energy Shield to 1.5$\times$ --- provides the eHP buffer. The result is an archetype with lower per-hit DR than Shaman (27--41\% at H=10{,}000) but dramatically lower total encounter damage intake under optimal play.
+    \item \textbf{Infernalist: Chaos Inoculation and the Hard Immunity Advantage.} The Infernalist (Witch ascendancy) achieves comparable or superior mitigation through a distinct conversion stack: 50--55\% physical-to-fire, 20\% physical-to-chaos eliminated entirely via Chaos Inoculation, and a reduced physical residual of 20--30\%. The CI keystone makes the chaos component a categorical zero rather than a near-zero residual, and simultaneously frees all chaos resistance affixes and life affixes on gear for Energy Shield and evasion. The Infernalist Full configuration (80\% total conversion + CI) achieves 85.3\% mitigation at H=10{,}000 --- surpassing standard Shaman at 80.8\% --- while providing hard chaos immunity at every hit size.
+
+    \item \textbf{Shaman: Conversion Stack (Corrected).} The Shaman converts 75\% of incoming physical damage to elemental --- 60\% to fire (Cloak of Flame 50\% + ascendancy 5\% + passive tree notable 5\%), 5\% each to cold, lightning, and a random element. Only 25\% remains physical. Prior analyses cited 60--70\%; the additional passive tree notable raises the total to 75\%, reducing residual physical by 37.5\% and pushing total mitigation from the 63--70\% range to 80.8\% at the endgame hit ceiling.
+
+    \item \textbf{Invoker: Avoidance-Primary Architecture and Conditional eHP Ceiling.} The Invoker (Monk ascendancy) achieves defensive efficiency through a fundamentally different paradigm: preventing hits from connecting via evasion and block, rather than suppressing damage on hits that land. The ``\ldots and protect me from harm'' ascendancy node unifies the evasion and armour pools, applying 65\% of base evasion as effective armour, so that investment in evasion simultaneously improves avoidance chance and provides armour DR. At 50\%+50\% evasion and block, 75\% of all hits are avoided before any mitigation layer applies. Against the hits that do land, Meditate --- a pre-combat skill that overflows Energy Shield to 1.5$\times$ --- provides the eHP buffer. The result is an archetype with lower per-hit DR than Shaman (27--41\% at H=10{,}000) but comparable or lower total encounter damage intake under optimal play.
+
+    \item \textbf{Warbringer: Block-as-Mitigation and the Mapping Specialist.} The Warbringer (Marauder ascendancy) converts block into a front-loaded damage multiplier via Turtle Charm: blocked hits deal 20\% of their original value to the player (80\% less), raising the effective block cap to 75\%. Wooden Wall adds a second front-loaded layer --- 20\% of damage taken goes to an active totem instead. Combined on a blocked hit: $0.20 \times 0.80 = 0.16H$ enters the armour formula. At A=100k, the expected mitigation across the probability chain (75\% block) is 89.5\% --- the highest of any armour-anchored archetype in this paper. The binding constraint is the 25\% of unblocked hits, which arrive at 80\% of their original value and impose a 3{,}557 HP minimum survival requirement at H=10{,}000. The build excels in mapping content where the block distribution averages out; it is exposed to single-hit variance in boss encounters, partially offset by Turtle Charm's unique ability to block otherwise unblockable hits.
+
+    \item \textbf{Tactician: Deflection, Capped DR, and High Variance.} The Tactician (Mercenary ascendancy) achieves armour efficiency through ``Stay Light, Use Cover,'' which defends with 200\% of armour --- halving the armour required to reach any given DR --- while hard-capping both evasion and damage reduction at 50\%. ``Polish that Gear'' converts 20\% of armour into deflection rating; deflection reduces a hit by 40\% before armour evaluates. A deflected hit at the 50\% DR cap takes 30\% of its original value (70\% effective DR), comparable to Shaman. An undeflected hit at the cap takes 50\%, requiring 5{,}001 effective HP to survive a 10{,}000 raw hit --- identical to the Titan baseline. Expected mitigation across the probability chain (25\% effective evasion, 75\% deflection with Glancing Blows) is 73.8\% at H=10{,}000, trailing Shaman's deterministic 80.8\%. The build is efficient when deflection fires; it is exposed when it does not.
+
+    \item \textbf{Smith of Kitava: B-Tier --- Armour, Conversion, and the Critical Strike Frontier.} The Smith of Kitava (Marauder ascendancy) extends armour's reach to the elemental components of converted hits through ``X\% of Armour applies to Elemental Damage'' stacking ($Y$ factor, stackable beyond 1.0) paired with 35\% physical-to-elemental conversion. The Blade Catcher ascendancy node converts incoming critical strikes to base damage and defends those hits at 200\% of armour rating --- doubling effective armour against the hits that would otherwise be lethal. At standard endgame investment ($Y = 1.0$, $A = 80{,}000$), Smith achieves 60.2\% total mitigation and a 2.5$\times$ VHP multiplier, trailing S-Tier conversion archetypes in general content but dominating the critical-strike map frontier that no other archetype addressed in this paper matches.
+
+    \item \textbf{Titan: C-Tier --- The Armour Formula's Natural Floor.} The Titan (Warrior ascendancy) is the most direct expression of the ``armour big, life big'' paradigm and provides the paper's baseline reference. At 100{,}000 armour and 5{,}001 effective HP it survives the endgame ceiling hit by exactly one hit point, producing a 2.0$\times$ VHP multiplier. There is no suppression of effective hit size, no absorption pool, no avoidance layer. The Titan is a robust platform through mid-game and early endgame content where hit sizes remain in the formula's efficient range; it is not a competitive ceiling for the hardest content, and every archetype in this paper exceeds its 2.0$\times$ VHP floor.
 \end{itemize}
 
 \newpage
@@ -234,225 +236,333 @@ The passive points Shaman does not spend on armour go to damage, sustain, or add
 The armour formula's failure at scale is most clearly demonstrated by comparing two archetypes often discussed as alternatives: the Smith of Kitava (dedicated armour scaling) and the Shaman (physical-to-elemental conversion). This section presents that comparison as a worked example of three claims central to the paper's thesis:
 
 \begin{enumerate}
-    \item \textbf{Armour is inefficient against large hits} --- the DR formula's denominator grows linearly with hit size, collapsing DR\% exactly when it matters most.
-    \item \textbf{eHP is the binding constraint} --- the minimum life pool required to survive a given hit is dictated by what the formula allows through, and reducing that requirement via conversion is categorically more efficient than raising armour to compensate.
+    \item \textbf{Armour has a hard ceiling and a structural weakness} --- PoE~2's physical DR cap of 90\% bounds armour's advantage from above; the formula's quadratic degradation with hit size means DR collapses precisely when survival matters most.
+    \item \textbf{eHP is the binding constraint} --- the minimum life pool required to survive a given hit is dictated by what the formula allows through; reducing that requirement via conversion is categorically more efficient than raising armour to compensate.
     \item \textbf{Opportunity cost governs investment} --- the passive points and gear affixes required to bridge the armour gap between Smith and Shaman cannot be recovered from other areas of the character sheet.
 \end{enumerate}
 
-\subsection*{Build Parameters for the Comparison}
-
 \subsection*{Build Parameters}
 
-Three archetypes are compared throughout this analysis. Shaman and Baseline share identical armour values --- all Shaman mitigation improvement relative to Baseline is from conversion and elemental layers, not armour scaling.
+Three configurations are compared throughout this section. \textbf{Shaman (0 armour)} is the true baseline: 75\% physical-to-elemental conversion and 85\% elemental resistance caps, with zero passive investment in armour nodes. This is the Shaman before any armour-specific decision has been made. \textbf{Smith of Kitava} is parameterised by the 12--20$\times L$ corridor: to survive $H = 10{,}000$, Smith requires at minimum $L = 5{,}001$ effective HP; at the optimal corridor ceiling ($A = 20 \times L_{\min} = 100{,}000$), Smith takes exactly 5{,}000 damage and survives with 1 HP. This is the \textit{minimum viable} Smith configuration --- any lower armour or life combination within the corridor fails. The \textbf{Baseline} (25{,}000 armour, no conversion) provides the armour formula's reference floor.
 
 \begin{table}[htbp]
 \centering
 \caption{\textbf{Build Parameters for Cross-Archetype Comparison}}
-\begin{tabular}{lrrr}
+\begin{tabular}{lrrrr}
 \toprule
-\textbf{Parameter} & \textbf{Baseline} & \textbf{Smith of Kitava} & \textbf{Shaman} \\
+\textbf{Parameter} & \textbf{Baseline} & \textbf{Shaman (0 arm)} & \textbf{Shaman (25k arm$^\dagger$)} & \textbf{Smith (corridor min)} \\
 \midrule
-\rowcolor{rowalt} Armour Rating & 25{,}000 & 100{,}000 & 25{,}000 \\
-Conversion (phys $\to$ ele) & 0\% & 0\% & 75\% \\
-\rowcolor{rowalt} Armour-to-Elemental & 0\% & 0\% & 100\% \\
-Max Elemental Resistance & 75\% & 80\% & 85\% \\
-\rowcolor{rowalt} \textbf{Armour investment} & \textbf{1$\times$} & \textbf{4$\times$} & \textbf{1$\times$} \\
+\rowcolor{rowalt} Armour Rating & 25{,}000 & 0 & 25{,}000 & 100{,}000 \\
+Conversion (phys $\to$ ele) & 0\% & 75\% & 75\% & 0\% \\
+\rowcolor{rowalt} Armour-to-Elemental & 0\% & 0\% & 100\% (asc.) & 0\% \\
+Max Elemental Resistance & 75\% & 85\% & 85\% & 80\% \\
+\rowcolor{rowalt} Min HP to survive H=10k & $>$8{,}001 & 3{,}625 & 1{,}923 & 5{,}001 \\
+\rowcolor{rowhi} \textbf{Armour investment} & \textbf{1$\times$} & \textbf{0$\times$} & \textbf{1$\times$ (optional)} & \textbf{4$\times$ (mandatory)} \\
 \bottomrule
 \end{tabular}
 \smallskip
 \begin{minipage}{\linewidth}
-\small\textit{Note: Smith of Kitava's 100{,}000 armour represents heavy ascendancy and passive investment --- a realistic ceiling for a dedicated armour archetype. Shaman uses identical base armour to the Baseline build; all mitigation improvements come from conversion. Resistance differences reflect Shaman's access to the Primal Aegis ascendancy path and Smith's strong but less extreme resistance ceiling. Incoming hit is treated as 100\% physical in all cases; any elemental component exists only as converted damage within the Shaman's defensive stack.}
+\small\textit{$^\dagger$Shaman (25k arm) is an optional investment: 25{,}000 armour plus 100\% armour-to-elemental from Shaman ascendancy notables. Smith's 100{,}000 armour is derived from the corridor ($A = 20 \times 5{,}000$), not assumed; it is the minimum that keeps Smith alive at $H = 10{,}000$. PoE~2 caps physical DR at 90\%; any formula output above 90\% is delivered as 90\%, not the formula value --- this materially changes the small-hit comparison.}
 \end{minipage}
 \end{table}
 
-This section is the core analytical output: how total effective mitigation and absolute damage taken changes across every meaningful hit size in Path of Exile 2 content, from minor chip damage (100) through the practical one-shot threshold (10{,}000). All Shaman calculations use the per-element formula, which independently applies armour to each converted component and captures the near-elimination of the small cold/lightning/random portions.
+\subsection*{The 0-Armour Shaman Baseline}
+
+With zero armour, the Shaman's defensive stack consists entirely of conversion and elemental resistance. Against any incoming physical hit $H$:
+
+\begin{itemize}
+    \item Physical residual (25\%): $0.25H$ --- no damage reduction, taken at face value.
+    \item Fire component (60\%): $0.60H \times (1 - 0.85) = 0.09H$ --- handled entirely by 85\% resistance.
+    \item Cold / lightning / random (5\% each): $3 \times 0.05H \times 0.15 = 0.0225H$ --- handled by 85\% resistance.
+\end{itemize}
+
+Total damage taken $= (0.25 + 0.09 + 0.0225) \times H = 0.3625 \times H$. \textbf{Total mitigation: 63.75\% at every hit size.} Because neither conversion percentages nor resistance caps change with $H$, the 0-armour Shaman's mitigation is a horizontal line --- it does not degrade as hits scale.
+
+At $H = 10{,}000$: $0.3625 \times 10{,}000 = 3{,}625$ damage taken. A Shaman without a single passive point in armour nodes requires 3{,}625 effective HP to survive the endgame ceiling hit. Smith with 100{,}000 armour requires 5{,}001. \textit{The 0-armour conversion archetype already out-survives the maximum-armour archetype at the hit size that actually kills characters} --- before any armour has been added to the Shaman build.
 
 \subsection*{Effective Mitigation by Hit Size}
 
 \begin{table}[htbp]
 \centering
-\caption{\textbf{Total Effective Mitigation (\%) by Incoming Hit Size}}
+\caption{\textbf{Total Effective Mitigation (\%) by Incoming Hit Size --- 90\% DR Cap Applied}}
 \smallskip
 {\small
-\begin{tabular}{lrrrr}
+\begin{tabular}{lrrrrr}
 \toprule
-\textbf{Incoming Hit} & \textbf{Baseline (25k)} & \textbf{Smith of Kitava (100k)} & \textbf{Shaman (25k + 75\%)} & \textbf{Smith $\to$ Shaman Gap} \\
+\textbf{Incoming Hit} & \textbf{Baseline (25k)} & \textbf{Smith (100k)} & \textbf{Shaman (0 arm)} & \textbf{Shaman (25k arm$^\dagger$)} & \textbf{Smith vs.\ Shaman-0} \\
 \midrule
 100
-  & \cellcolor{tierS}96.2\%
-  & \cellcolor{tierS}99.0\%
-  & \cellcolor{tierS}99.5\%
-  & $+$0.5\,pp \\
+  & \cellcolor{tierA}90.0\%$^*$
+  & \cellcolor{tierA}90.0\%$^*$
+  & \cellcolor{tierD}63.8\%
+  & \cellcolor{tierS}96.4\%
+  & Smith $+$26.3\,pp \\
 500
   & \cellcolor{tierB}83.3\%
-  & \cellcolor{tierS}95.2\%
-  & \cellcolor{tierS}97.8\%
-  & $+$2.6\,pp \\
+  & \cellcolor{tierA}90.0\%$^*$
+  & \cellcolor{tierD}63.8\%
+  & \cellcolor{tierS}96.3\%
+  & Smith $+$26.3\,pp \\
 1{,}000
   & \cellcolor{tierC}71.4\%
-  & \cellcolor{tierA}90.9\%
-  & \cellcolor{tierS}95.9\%
-  & $+$5.0\,pp \\
+  & \cellcolor{tierA}90.0\%$^*$
+  & \cellcolor{tierD}63.8\%
+  & \cellcolor{tierS}95.5\%
+  & Smith $+$26.3\,pp \\
 2{,}000
   & \cellcolor{tierD}55.6\%
   & \cellcolor{tierB}83.3\%
-  & \cellcolor{tierA}92.8\%
-  & $+$9.5\,pp \\
+  & \cellcolor{tierD}63.8\%
+  & \cellcolor{tierA}92.7\%
+  & Smith $+$19.6\,pp \\
 4{,}000
   & \cellcolor{tierD}38.5\%
   & \cellcolor{tierC}71.4\%
-  & \cellcolor{tierB}88.3\%
-  & $+$16.9\,pp \\
+  & \cellcolor{tierD}63.8\%
+  & \cellcolor{tierB}88.2\%
+  & Smith $+$7.7\,pp \\
+\midrule
+5{,}686
+  & \cellcolor{tierD}28.5\%
+  & \cellcolor{tierD}63.8\%
+  & \cellcolor{tierD}63.8\%
+  & \cellcolor{tierB}85.8\%
+  & Crossover \\
+\midrule
 8{,}000
   & \cellcolor{tierD}23.8\%
   & \cellcolor{tierD}55.6\%
+  & \cellcolor{tierD}63.8\%
   & \cellcolor{tierB}82.7\%
-  & $+$27.1\,pp \\
-\midrule
+  & Shaman $+$8.3\,pp \\
 \rowcolor{rowhi}
 10{,}000
   & \cellcolor{tierD}20.0\%
   & \cellcolor{tierD}50.0\%
+  & \cellcolor{tierD}63.8\%
   & \cellcolor{tierB}80.8\%
-  & $+$30.8\,pp \\
+  & Shaman $+$13.8\,pp \\
 \bottomrule
 \end{tabular}
 }
 \smallskip
 \begin{minipage}{\linewidth}
-\small\textit{Cell shading by mitigation tier: \colorbox{tierS}{\strut\,dark green\,} $\geq$95\%, \colorbox{tierA}{\strut\,light green\,} 90--94\%, \colorbox{tierB}{\strut\,yellow\,} 80--89\%, \colorbox{tierC}{\strut\,orange\,} 70--79\%, \colorbox{tierD}{\strut\,red\,} $<$70\%. ``Gap'' is Shaman mitigation minus Smith mitigation in percentage points (pp). Per-element armour formula used for Shaman throughout; cold/lightning/random components (5\% of raw hit each) are nearly eliminated by armour before resistance applies.}
+\small\textit{$^*$DR cap applied: PoE~2 caps physical DR at 90\%. Smith's formula returns 99.0\% at H=100, 95.2\% at H=500, and 90.9\% at H=1{,}000 --- all floored to 90\%; the formula values are not delivered. Baseline is similarly capped below H$\approx$278. Shaman (0 arm) mitigation is flat at 63.75\% at all hit sizes: no armour means no hit-size-dependent term. Shaman (25k arm$^\dagger$) applies the 90\% cap per component; the composite total exceeds 90\% because 85\% resistance stacks multiplicatively on top of the capped armour DR for each elemental type. Cell shading: \colorbox{tierS}{\strut\,dark green\,} $\geq$95\%, \colorbox{tierA}{\strut\,light green\,} 90--94\%, \colorbox{tierB}{\strut\,yellow\,} 80--89\%, \colorbox{tierC}{\strut\,orange\,} 70--79\%, \colorbox{tierD}{\strut\,red\,} $<$70\%.}
 \end{minipage}
 \end{table}
-
-The colour gradient tells the full story. Reading Smith's column downward: four hit sizes in green (near-perfect), then yellow, orange, and two in red at the endgame ceiling. Reading Shaman's column: three hit sizes in dark green, one in light green, and the final three in yellow --- the conversion keeps the build in the efficient range of the armour formula at every point on the spectrum.
-
-Two observations stand out:
-
-\begin{enumerate}
-    \item \textbf{At H=100, both are green} --- the columns look practically identical (99.0\% vs 99.5\%). This confirms the user intuition that armour ``performs exceptionally well'' at low hit values regardless of build; the conversion adds almost no visible benefit here.
-    \item \textbf{At H=10{,}000, the columns are different tiers} (red vs yellow) with a 30.8 pp gap --- the same investment that produced negligible difference at small hits is now the difference between taking 50\% of a hit versus 19.2\%.
-\end{enumerate}
 
 \subsection*{Absolute Damage Taken by Hit Size}
 
 \begin{table}[htbp]
 \centering
-\caption{\textbf{Damage Taken (Absolute Values) by Incoming Hit Size}}
+\caption{\textbf{Damage Taken (Absolute Values) --- 90\% DR Cap Applied}}
 \smallskip
 {\small
-\begin{tabular}{lrrrrr}
+\begin{tabular}{lrrrrrr}
 \toprule
-\textbf{Hit} & \textbf{Baseline} & \textbf{Smith} & \textbf{Shaman} & \textbf{Min HP: Smith} & \textbf{Min HP: Shaman} \\
+\textbf{Hit} & \textbf{Baseline} & \textbf{Smith} & \textbf{Shaman (0 arm)} & \textbf{Shaman (25k arm)} & \textbf{Min HP: Smith} & \textbf{Min HP: Shaman (0 arm)} \\
 \midrule
-\rowcolor{rowalt}  100 &    4 &     1 & $<$1 &     1 & $<$1 \\
-    500 &   83 &    24 &   11 &    24 &   11 \\
-\rowcolor{rowalt} 1{,}000 &  286 &    91 &   41 &    91 &   41 \\
-  2{,}000 &  889 &   333 &  143 &   333 &  143 \\
-\rowcolor{rowalt} 4{,}000 & 2{,}462 & 1{,}143 &  469 & 1{,}143 &  469 \\
-  8{,}000 & 6{,}095 & 3{,}556 & 1{,}387 & 3{,}556 & 1{,}387 \\
+\rowcolor{rowalt} 100 & 10 & 10 & 36 & 4 & 10 & 36 \\
+500 & 83 & 50 & 181 & 18 & 50 & 181 \\
+\rowcolor{rowalt} 1{,}000 & 286 & 100 & 363 & 45 & 100 & 363 \\
+2{,}000 & 889 & 333 & 725 & 146 & 333 & 725 \\
+\rowcolor{rowalt} 4{,}000 & 2{,}462 & 1{,}143 & 1{,}450 & 471 & 1{,}143 & 1{,}450 \\
+8{,}000 & 6{,}095 & 3{,}556 & 2{,}900 & 1{,}387 & 3{,}556 & 2{,}900 \\
 \midrule
-\rowcolor{rowhi}10{,}000 & 8{,}000 & \textbf{5{,}000} & \textbf{1{,}923} & \textbf{5{,}001} & \textbf{1{,}923} \\
+\rowcolor{rowhi} 10{,}000 & 8{,}000 & \textbf{5{,}000} & \textbf{3{,}625} & \textbf{1{,}923} & \textbf{5{,}001} & \textbf{3{,}625} \\
 \bottomrule
 \end{tabular}
 }
 \smallskip
 \begin{minipage}{\linewidth}
-\small\textit{``Min HP'' is the minimum effective HP pool needed to survive a single hit of the listed size without dying (damage taken + 1). Baseline and Smith receive 100\% physical; no resistance applies. Shaman values use per-element calculation. All values rounded to nearest whole number. The Shaman / Smith ratio on taken damage grows from 2.1$\times$ at H=100 to 2.6$\times$ at H=10{,}000.}
+\small\textit{Smith values at H=100, 500, and 1{,}000 corrected for the 90\% DR cap (uncapped formula gave 1, 24, and 91 respectively --- mechanically unachievable). Shaman (0 arm) damage = $H \times 0.3625$ at all hit sizes. Shaman (25k arm) from per-element calculation with cap applied; matches the progression breakpoints table in Section~6. Smith outperforms 0-armour Shaman in absolute damage taken for H $<$ 5{,}686; Shaman outperforms for H $>$ 5{,}686.}
 \end{minipage}
 \end{table}
 
-At small hit sizes, both the damage-taken numbers and the minimum HP requirements are negligible for both builds --- a character with any meaningful life pool survives regardless. At the endgame ceiling, the minimum HP requirement diverges by more than 3{,}000: Shaman needs 1{,}923 HP, Smith needs 5{,}001 HP to guarantee survival against an identical raw hit.
+\namedsubsection{Armour Leads at Low Hits: The 90\% DR Cap Window}
 
-\namedsubsection{Why Both Look Comparable at Small Hits}
-
-At hit sizes of 100--500, the armour formula's denominator is dominated by the armour value $A$:
+Below $H \approx 1{,}111$, Smith's armour formula output exceeds the 90\% physical DR ceiling and is delivered as 90\%. Both Smith and the Baseline are simultaneously at the cap:
 
 \[
-H = 100{:} \quad \frac{100{,}000}{100{,}000 + 1{,}000} = 99.0\% \qquad \frac{25{,}000}{25{,}000 + 250} = 99.0\%
+H = 100{:} \quad \frac{100{,}000}{100{,}000 + 1{,}000} = 99.0\% \xrightarrow{\text{cap}} 90.0\% \qquad \frac{25{,}000}{25{,}000 + 250} = 99.0\% \xrightarrow{\text{cap}} 90.0\%
 \]
 
-When $A \gg 10H$, the formula approaches 100\% for any build with substantial armour. A Baseline build with only 25{,}000 armour already reaches 96.2\% at H=100. Smith and Shaman both sit in the 99\% range because the denominator addition ($10H = 1{,}000$) is negligible compared to $A$. Conversion adds fractional benefit: 0.46 damage vs.\ 1.0 damage. Both are effectively zero in context.
+In the capped regime, Smith's 4$\times$ armour advantage over the Baseline produces zero additional benefit --- both land at 90\% DR regardless. The formula \textit{feels} infallible at small hits, and within the cap it is. The cap also means Smith's physical takes are: 10 damage at H=100, 50 at H=500, 100 at H=1{,}000 --- not the 1, 24, 91 values the uncapped formula would imply.
 
-This is the operating regime where armour is ``exceptionally well'' --- and it is the regime that blinds pure-armour thinking to the problem. The armour formula feels infallible at small hits.
+The 0-armour Shaman is at 63.75\% in this regime --- meaningfully below Smith's capped 90\%. At H=1{,}000, the 250 physical residual lands at full value on a 0-armour Shaman; Smith absorbs 90\% and takes only 100. For general mapping content where hit sizes stay below H$\approx$2{,}000, Smith retains a real per-hit advantage over the zero-armour Shaman. \textit{This is the window where Smith's investment pays off.}
 
-\namedsubsection{The Break Point: Where Hit Size Threatens the Formula}
+\namedsubsection{The Crossover: Where Conversion Outperforms Armour}
 
-As $H$ grows past the 1{,}000--2{,}000 range, the term $10H$ becomes a meaningful fraction of $A$. The formula degrades:
+Smith's DR cap window closes at $H = 1{,}111$. Above this threshold, Smith's formula begins its decline:
 
 \begin{align*}
-H = 1{,}000{:} \quad \text{Smith} &= \frac{100{,}000}{110{,}000} = 90.9\% \\
+H = 1{,}111{:} \quad \text{Smith} &= \frac{100{,}000}{111{,}110} = 90.0\% \quad \text{(cap boundary)} \\
 H = 4{,}000{:} \quad \text{Smith} &= \frac{100{,}000}{140{,}000} = 71.4\% \\
 H = 10{,}000{:} \quad \text{Smith} &= \frac{100{,}000}{200{,}000} = 50.0\%
 \end{align*}
 
-Smith of Kitava has no mechanism to suppress $H$. Every additional 1{,}000 damage of incoming hit adds 10{,}000 to the denominator, and the formula's efficiency erodes in direct proportion. There is no passive investment that changes this --- armour can only scale $A$, and $A$ must grow faster than $10H$ to maintain DR, which requires exponentially more armour as hits scale.
+The Shaman (0 arm) remains at 63.75\% throughout. The crossover --- where Smith's declining DR curve meets Shaman's flat line --- occurs at:
 
-Shaman's conversion intercepts this degradation by \textit{permanently suppressing the value of $H$ the formula evaluates against}. A 10{,}000 raw physical hit arrives at the armour formula as:
+\[
+\frac{100{,}000}{100{,}000 + 10H} = 0.6375 \quad \Rightarrow \quad H = 5{,}686
+\]
+
+Above $H = 5{,}686$: the 0-armour Shaman outperforms Smith of Kitava (100k armour). Smith has no mechanism to suppress $H$; every additional 1{,}000 raw damage adds 10{,}000 to the formula's denominator. Conversion intercepts this by reducing $H$ at the source --- the formula sees a 2{,}500 physical component instead of a 10{,}000 hit, and the remaining 75\% never enters the formula at all.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=0.92\textwidth,
+    height=7.5cm,
+    xlabel={Incoming Hit Size ($H$)},
+    ylabel={Total Effective Mitigation (\%)},
+    xmin=0, xmax=10500,
+    ymin=30, ymax=100,
+    xtick={0,1111,2000,4000,5686,8000,10000},
+    xticklabels={0,1{,}111,2{,}000,4{,}000,5{,}686,8{,}000,10{,}000},
+    x tick label style={rotate=30, anchor=east, font=\small},
+    ytick={40,50,63.75,70,80,90,100},
+    yticklabels={40,50,63.8,70,80,90,100},
+    legend pos=south west,
+    legend style={font=\small},
+    grid=major,
+    grid style={dashed,gray!25},
+    tick label style={font=\small},
+]
+% Smith 100k (with 90% cap: flat to 1111, then declining)
+\addplot[color=red!80!black, thick] coordinates {
+    (0,90) (1111,90) (2000,83.3) (4000,71.4) (5686,63.75) (8000,55.6) (10000,50)
+};
+\addlegendentry{Smith of Kitava (A=100k, corridor min.)}
+
+% Shaman 0-armour (flat horizontal)
+\addplot[color=blue!80!black, thick, dashed] coordinates {
+    (0,63.75) (10000,63.75)
+};
+\addlegendentry{Shaman (0 armour --- conversion + resistance only)}
+
+% Shaman 25k arm + A-to-E
+\addplot[color=teal, thick, dotted] coordinates {
+    (0,96.4) (500,96.3) (1000,95.5) (2000,92.7) (4000,88.2) (8000,82.7) (10000,80.8)
+};
+\addlegendentry{Shaman (25k arm + A-to-E --- optional investment)}
+
+% Vertical dashed line at crossover
+\addplot[color=black!50, dashed, thin] coordinates {(5686,30) (5686,63.75)};
+
+% 90% cap reference line
+\addplot[color=gray!60, dashed, thin] coordinates {(0,90) (10500,90)};
+
+% Annotations
+\node[anchor=south, font=\footnotesize, fill=white, inner sep=1pt] at (axis cs:5686,35) {Crossover $H{=}5{,}686$};
+\node[anchor=west, font=\footnotesize, color=gray] at (axis cs:200,91.5) {90\% DR cap};
+\node[anchor=west, font=\footnotesize, color=blue!80!black] at (axis cs:6200,64.8) {63.75\% (flat)};
+
+\end{axis}
+\end{tikzpicture}
+\caption{\textbf{Total Effective Mitigation vs.\ Hit Size --- 90\% DR Cap Applied.} Smith of Kitava (red solid): capped at 90\% for $H \leq 1{,}111$, then declining to 50\% at the endgame ceiling. Shaman with no armour investment (blue dashed): a horizontal line at 63.75\% --- conversion and resistance are hit-size independent. Shaman with 25k armour and armour-to-elemental (teal dotted): a near-flat line from 96.4\% to 80.8\%, outperforming Smith at \textit{every} hit size because resistance layers push composite mitigation above the 90\% armour cap on small hits and conversion maintains efficiency on large hits. The crossover between Smith and 0-armour Shaman at $H=5{,}686$ marks where the 0-armour conversion build begins outperforming the corridor-optimal armour build.}
+\label{fig:mitigation_comparison}
+\end{figure}
+
+The figure captures the structural argument in one image. Smith's curve is a step function: horizontal at the 90\% cap, then falling off a cliff at $H = 1{,}111$. Shaman's 0-armour line is horizontal throughout. The crossover is not a close call at the endgame scale --- at $H = 10{,}000$, Smith is at 50\% while Shaman (0 arm) is at 63.75\%. All endgame boss strikes and map pinnacle encounters with genuine one-shot potential occur above $H = 2{,}000$; the majority of lethal content is above $H = 5{,}000$, which places it above the crossover. Smith's 90\% capped advantage applies only to non-lethal chip damage.
+
+\namedsubsection{The Armour Investment Decision}
+
+At $H = 10{,}000$, the 0-armour Shaman requires 3{,}625 effective HP to survive. The physical residual (2{,}500) reaches life without attenuation; the elemental components (1{,}125 at 85\% resistance) are fixed by the resistance caps and do not depend on armour. Adding armour changes the physical component only:
+
+\[
+\text{Physical saved by }A = 25{,}000{:} \quad 2{,}500 \times \frac{25{,}000}{50{,}000} = 1{,}250
+\]
+
+The savings is \textbf{exactly 1{,}250 effective HP} --- the physical component halved, independent of elemental resistance assumptions. Total damage falls to 2{,}375. The Shaman ascendancy's armour-to-elemental notables then extend armour coverage to each elemental component, reducing those from 1{,}125 to 673 and bringing the total to 1{,}923 --- the full-stack figure used in the archetype sections.
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Armour Investment Tiers --- Shaman at H=10{,}000}}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Configuration} & \textbf{Physical taken} & \textbf{Elemental taken} & \textbf{Total taken} & \textbf{Min HP} \\
+\midrule
+\rowcolor{rowalt} 0 armour (baseline) & 2{,}500 & 1{,}125 & 3{,}625 & 3{,}625 \\
+25k armour only (no A-to-E) & 1{,}250 & 1{,}125 & 2{,}375 & 2{,}375 \\
+\rowcolor{rowalt} 25k armour + 100\% A-to-E (asc.) & 1{,}250 & 673 & 1{,}923 & 1{,}923 \\
+\rowcolor{rowhi} Smith of Kitava (100k) & 5{,}000 & --- & 5{,}000 & 5{,}001 \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{Armour-to-Elemental (A-to-E) is sourced from Shaman ascendancy notables, not passive tree nodes --- it is available once those ascendancy slots are allocated. Adding 25{,}000 armour saves exactly 1{,}250 HP from the physical component at every hit size (always $0.5 \times 0.25H = 0.125H$). A-to-E then reduces elemental taken by a further 452 HP. Even the most conservative Shaman configuration (3{,}625 HP, 0 armour) requires 1{,}376 fewer effective HP than the minimum-viable Smith.}
+\end{minipage}
+\end{table}
+
+The investment question: is 1{,}250 effective HP or 25{,}000 armour the more accessible gain? For most Shaman builds, 1{,}250 effective HP can be sourced from life affixes on gear without entering armour cluster regions of the passive tree. Reaching 25{,}000 armour on a conversion build requires either armour-heavy gear rolls (competing with life and resistance affixes) or modest passive tree investment in armour clusters. Neither path is free; the relative cost depends on the specific build's passive tree position and gear budget.
+
+The comparison with Smith clarifies the asymmetry. Smith must commit to \textit{simultaneous} life and armour scaling constrained by the corridor: $A = 12\text{--}20 \times L$ means both resources must scale together. The Shaman decouples them: resistance handles the elemental majority, life handles the physical residual, and armour is optional scaling on top. Smith's binding constraint --- that both $A$ and $L$ must reach minimums simultaneously --- does not apply to a conversion archetype.
+
+\namedsubsection{Quality of Life: The Case for Armour on Shaman}
+
+The ceiling analysis establishes that conversion and resistance alone outperform Smith at $H = 10{,}000$. However, the hit-size spectrum covers more than boss strikes. In mapping and general endgame content, the character absorbs continuous moderate hits in the $H = 100$--$H = 2{,}000$ range. At 0 armour, each hit delivers its physical residual at face value:
 
 \begin{itemize}
-    \item \textbf{Physical component:} 2{,}500 effective hit --- the formula sees a 4$\times$ smaller hit
-    \item \textbf{Fire component (6{,}000):} handled by armour-to-elemental + 85\% resistance
-    \item \textbf{Cold/lightning/random (500 each):} nearly eliminated (83.3\% DR from armour alone)
+    \item $H = 100$: 25 physical + 11 elemental = 36 damage taken (36\% of the hit reaches the life pool)
+    \item $H = 1{,}000$: 250 physical + 113 elemental = 363 damage taken (36\% of hit)
 \end{itemize}
 
-The same 25{,}000 armour that gives 20\% DR against a 10{,}000 physical hit gives 50\% DR against the 2{,}500 physical component --- matching what Smith achieves with 100{,}000 armour on the full physical hit:
+Neither value is a one-shot threat. But the consistent 36\% bleed on moderate hits creates a continuous life-pool oscillation that degrades combat readability: the health globe fluctuates in proportion to incoming hit size rather than signalling genuine danger, and the physical residual is a raw number that scales linearly with map-content hit values. For players who track life pool depth as a real-time danger indicator, this is detectable noise.
 
-\[
-\text{Shaman vs 2{,}500: } \frac{25{,}000}{50{,}000} = 50.0\% \qquad = \qquad \text{Smith vs 10{,}000: } \frac{100{,}000}{200{,}000} = 50.0\%
-\]
+Adding 25{,}000 armour collapses both values toward the 90\% DR cap on the physical component. Because the Shaman's physical component is only 25\% of the original hit, the armour-to-physical crossover into the capped regime happens at the same original hit size as Smith: $H \leq 1{,}111$. Above that threshold, armour's DR on the physical residual still dramatically reduces it:
 
-The physical DR is identical. Then Shaman also eliminates 75\% of the hit through elemental layers. Smith has no equivalent layer.
+\begin{itemize}
+    \item $H = 100$: physical DR $= 90\%$ (capped) $\to$ 2.5 physical + $\approx$1 elemental $\approx$ 4 total (96\% composite)
+    \item $H = 1{,}000$: physical DR $= 90\%$ (capped) $\to$ 25 physical + $\approx$20 elemental $\approx$ 45 total (95.5\% composite)
+\end{itemize}
 
-\namedsubsection{The ``Below 90\%'' Threshold}
-
-A useful concrete benchmark is when each build's mitigation falls below 90\% --- a level at which damage taken becomes meaningful for a modestly invested life pool:
-
-\[
-\text{Smith below 90\%: } \frac{100{,}000}{100{,}000 + 10H} = 0.90 \quad \Rightarrow \quad H \approx 1{,}111
-\]
-
-Shaman remains above 90\% mitigation through approximately H$\approx$2{,}600 (interpolated between the 92.8\% at H=2{,}000 and 88.3\% at H=4{,}000 table values). Shaman maintains the ``highly efficient'' mitigation regime for more than double the hit size that Smith can sustain before the same threshold is crossed.
+The life-pool oscillation is reduced to noise. The health globe reads as stable across mapping content unless a genuinely dangerous hit arrives. Whether this quality-of-life gain justifies the 25{,}000 armour investment --- and the 1{,}250 HP reduction in the ceiling-survival floor it trades against acquiring additional HP --- is a player-preference decision, not a survivability argument. Players who value ceiling performance over daily-play smoothness may prefer the pure HP path; players who prefer a stable life globe in mapping should consider the armour investment even if pure HP is mathematically equivalent at the endgame ceiling.
 
 \subsection*{Minimum Survival at the Endgame Hit Ceiling}
-
-The largest single physical hits in Path of Exile 2 endgame content approach 10{,}000 raw damage. Against this ceiling, Shaman's full defensive stack produces 1{,}923 damage taken. A character with a 2{,}000 effective HP pool survives with 77 HP remaining (3.9\% buffer). This is not a marginal achievement --- 2{,}000 effective HP is a modest endgame life pool attainable without any dedicated life-stacking investment.
 
 \begin{table}[htbp]
 \centering
 \caption{\textbf{Survival Analysis --- 10{,}000 Raw Physical Hit (Endgame Ceiling)}}
 \begin{tabular}{lrrrr}
 \toprule
-\textbf{Build} & \textbf{Damage Taken} & \textbf{Min HP to Survive} & \textbf{Survives at 2{,}000 HP?} & \textbf{HP Remaining} \\
+\textbf{Build} & \textbf{Damage Taken} & \textbf{Min HP to Survive} & \textbf{Survives at 3{,}625 HP?} & \textbf{HP Remaining} \\
 \midrule
-\rowcolor{rowalt} Baseline (25k arm.) & 8{,}000 & 8{,}001 & No & $-$6{,}000 \\
-Smith of Kitava (100k) & 5{,}000 & 5{,}001 & No & $-$3{,}000 \\
-\rowcolor{rowalt} \textbf{Shaman (75\% conv.)} & \textbf{1{,}923} & \textbf{1{,}923} & \textbf{Yes} & \textbf{+77} \\
-Shaman (min-maxed) & 1{,}388 & 1{,}389 & Yes (comfortable) & $+$612 \\
+\rowcolor{rowalt} Baseline (25k arm.) & 8{,}000 & 8{,}001 & No & $-$4{,}376 \\
+Smith of Kitava (100k) & 5{,}000 & 5{,}001 & No & $-$1{,}376 \\
+\rowcolor{rowalt} \textbf{Shaman (0 arm, 75\% conv.)} & \textbf{3{,}625} & \textbf{3{,}625} & \textbf{Yes} & \textbf{+0} \\
+Shaman (25k arm, full stack) & 1{,}923 & 1{,}924 & Yes (comfortable) & $+$1{,}702 \\
+\rowcolor{rowhi} Shaman (min-maxed) & 1{,}388 & 1{,}389 & Yes (ample margin) & $+$2{,}237 \\
 \bottomrule
 \end{tabular}
 \smallskip
 \begin{minipage}{\linewidth}
-\small\textit{Min-maxed Shaman assumes 35{,}000 armour and 90\% max resistance. ``HP Remaining'' is effective HP pool minus damage taken; negative means the character dies on the hit. Smith would need approximately 5{,}000 effective HP to guarantee survival of the same hit, a requirement demanding heavy life, ES, or Mind over Matter investment on top of the already heavy armour commitment.}
+\small\textit{Reference pool set to 3{,}625 HP --- the minimum for 0-armour Shaman survival at the endgame ceiling. Smith at 100k armour cannot survive this hit at that pool; it requires 5{,}001 HP. Shaman with 25k armour and full ascendancy stack produces 1{,}702 HP of margin at the same reference pool. Min-maxed Shaman assumes 35{,}000 armour and 90\% max resistance.}
 \end{minipage}
 \end{table}
 
 \subsection*{The Mind over Matter Compound}
 
-Mind over Matter (MOM) redirects a portion of incoming damage to mana before it reaches life, creating an effective HP buffer from the mana pool. This interacts favourably with the Shaman's low final damage output:
+Mind over Matter (MOM) redirects a portion of incoming damage to mana before it reaches life, creating an effective HP buffer from the mana pool. Its value scales with how low the final damage number is.
 
-With 40\% of damage redirected to mana, a 1{,}923 total damage hit splits as:
+\textbf{0-armour Shaman} at 3{,}625 damage with 40\% MOM redirect:
+\[
+\text{Damage to life: } 3{,}625 \times 0.60 = 2{,}175 \qquad \text{Damage to mana: } 3{,}625 \times 0.40 = 1{,}450
+\]
+A Shaman with 2{,}500 life and 1{,}500 mana survives: life absorbs 2{,}175 (survives at 325 HP), mana absorbs 1{,}450 (depleted). MOM converts the 3{,}625 ceiling into an achievable 2{,}500 life requirement.
+
+\textbf{Full-stack Shaman} (25k armour, 1{,}923 taken) with 40\% MOM:
 \[
 \text{Damage to life: } 1{,}923 \times 0.60 = 1{,}154 \qquad \text{Damage to mana: } 1{,}923 \times 0.40 = 769
 \]
+A Shaman with 1{,}500 life and 800 mana survives: life absorbs 1{,}154 (survives at 346 HP), mana absorbs 769 (depleted). The required mana pool is only 769 --- a modest number achievable without dedicated investment.
 
-A Shaman with 1{,}500 life and 800 mana survives the endgame ceiling hit: life absorbs 1{,}154 (survives at 346 HP), mana absorbs 769 (depleted but absorbed). The \textit{required mana pool to cover the MOM redirect} is only 769 --- a small number that does not demand dedicated investment.
-
-Smith attempting MOM against a 5{,}000-damage hit:
+\textbf{Smith} at 5{,}000 damage with 40\% MOM:
 \[
 \text{Damage to life: } 5{,}000 \times 0.60 = 3{,}000 \qquad \text{Damage to mana: } 5{,}000 \times 0.40 = 2{,}000
 \]
-
-Smith now requires both 3{,}001 life \textit{and} 2{,}001 mana simultaneously --- consuming gear affixes and passive points in two separate stats while still wearing the heaviest armour investment possible. MOM is a multiplier on Shaman's already-low damage intake; it is a band-aid on Smith's fundamental survivability problem.
+Smith requires both 3{,}001 life \textit{and} 2{,}001 mana simultaneously --- consuming gear affixes and passive points in two separate resources while sustaining the heaviest armour investment possible. MOM compounds Shaman's already-low damage intake into a minimal combined resource requirement; on Smith it treats a structural survivability deficit rather than multiplying an existing advantage.
 
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Witchhunter: Sorcery Ward and the Absorption-Layer Paradigm}
@@ -865,6 +975,7 @@ Shaman can simultaneously out-defend a committed armour archetype and out-damage
 \toprule
 \textbf{Stage} & \textbf{Conv.} & \textbf{Armour} & \textbf{A-to-E} & \textbf{Max Res} & \textbf{Taken} & \textbf{Mitigation} \\
 \midrule
+0-Armour Baseline & 75\% & 0 & 0\% & 85\% & 3{,}625 & 63.75\% \\
 \rowcolor{rowalt} Early Maps & 50\% & 15{,}000 & 50\% & 75\% & 4{,}934 & 50.7\% \\
 Mid Red Maps & 60\% & 20{,}000 & 75\% & 80\% & 3{,}627 & 63.7\% \\
 \rowcolor{rowalt} Late Endgame & 75\% & 25{,}000 & 100\% & 85\% & 1{,}923 & 80.8\% \\
@@ -873,11 +984,41 @@ Mid Red Maps & 60\% & 20{,}000 & 75\% & 80\% & 3{,}627 & 63.7\% \\
 \end{tabular}
 \smallskip
 \begin{minipage}{\linewidth}
-\small\textit{Early Maps assumes Cloak of Flame equipped but partial ascendancy investment; no passive tree notable or anointment yet. Min-maxed does not include the ``less elemental taken'' multiplicative layer, which would push effective mitigation to approximately 87--89\%. Even at Early Maps, Cloak of Flame alone (50\% conversion) exceeds the Baseline build's mitigation at all hit sizes above H=500 and matches or beats Smith of Kitava below H=2{,}000.}
+\small\textit{0-Armour Baseline: full 75\% conversion stack assembled (Cloak of Flame + all ascendancy notables + passive tree notable + anointment) with zero armour investment; represents the theoretical floor before any armour decision is made. Early Maps assumes Cloak of Flame equipped but partial ascendancy investment; no passive tree notable or anointment yet; 63.75\% flat mitigation beats Early Maps (50.7\%) because Early Maps has reduced conversion and lower resistance caps. Min-maxed does not include the ``less elemental taken'' multiplicative layer, which would push effective mitigation to approximately 87--89\%.}
 \end{minipage}
 \end{table}
 
 The breakpoint table illustrates a key property of this configuration: the Shaman is not a late-game gimmick. Even with Cloak of Flame alone and no other conversion source (Early Maps), the build takes 4{,}934 damage from a 10{,}000 hit --- equivalent to a Baseline build with roughly 40{,}000 armour, without having invested a single passive point in armour scaling.
+
+\namedsubsection{Shaman Positioning}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Shaman vs.\ Degenerate Gamblers at H=10{,}000}}
+{\small
+\begin{tabular}{lllll}
+\toprule
+\textbf{Property} & \textbf{Shaman} & \textbf{Invoker} & \textbf{Warbringer} & \textbf{Tactician} \\
+\midrule
+\rowcolor{rowalt} Tier & S (Deterministic) & A (Gambler) & A (Gambler) & A (Gambler) \\
+VHP/eHP & 5.2$\times$ & $>$5$\times$ encounter & 6.6$\times$ exp / 2.0$\times$ wc & 3.8$\times$ exp / 2.0$\times$ wc \\
+\rowcolor{rowalt} Expected damage & 1{,}923 & 1{,}818 (25\% land) & 1{,}055 & 2{,}625 \\
+Worst-case damage & 1{,}923 & 7{,}270 (no Meditate) & 3{,}556 & 5{,}000 \\
+\rowcolor{rowalt} Variance & Zero (deterministic) & High & Moderate & Moderate \\
+Skill activation & No & Meditate (pre-combat) & Manual block & Totem placement \\
+\rowcolor{rowalt} Min HP, worst case & 1{,}924 & $\approx$5{,}000 ES & 3{,}557 & 5{,}001 \\
+Unique item required & Yes (Cloak of Flame) & No & No & No \\
+\rowcolor{rowhi} \textbf{Verdict} & \textbf{S-Tier floor, passive} & \textbf{Encounter-efficient, bursty} & \textbf{Best expected; variance floor} & \textbf{DR-efficient; variance floor} \\
+\bottomrule
+\end{tabular}
+}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{Invoker expected damage: 25\% of hits land at 7{,}270 each (27.3\% DR at 50k evasion); expected per hit = 1{,}818. Warbringer and Tactician figures from their respective positioning sections. Shaman's S-Tier placement rests on determinism: its worst case equals its expected case because conversion is unconditional. Each Gambler's expected mitigation is competitive with or exceeds Shaman's, but their worst-case damage demands 1.8--3.8$\times$ the HP investment Shaman requires to absorb a single endgame hit. The skill floor is higher on each Gambler --- Meditate for Invoker, manual block for Warbringer, totem management for Tactician --- and variance rises further when those mechanics are unavailable, mistimed, or already spent.}
+\end{minipage}
+\end{table}
+
+Shaman's S-Tier classification is a claim about floor, not ceiling. The Witchhunter's absorption ceiling ($H \approx 14{,}485$) is higher; Infernalist Full's VHP multiplier (6.8$\times$) is higher; Warbringer's expected damage per hit (1{,}055) is lower. Shaman's defining property is that none of its performance is conditional. Every hit, every encounter, every probability roll: the build delivers 80.8\% total mitigation at standard investment with no skill activation, no cooldown, and no unique item dependency beyond a single chest slot. The three Degenerate Gamblers that follow are not weaker archetypes --- their expected performance is competitive. They carry variance Shaman does not.
 
 % ══════════════════════════════════════════════════════════════════════════════
 \newpage
