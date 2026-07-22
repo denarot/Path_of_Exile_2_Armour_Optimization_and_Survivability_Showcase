@@ -88,7 +88,7 @@
 
     \item \textbf{Virtual HP: The Tier-Ranking Metric.} This paper ranks all archetypes by their Virtual HP multiplier, defined as $\text{VHP} = \text{eHP} / (1 - \text{DR\%})$. VHP collapses the full defensive configuration --- armour value, conversion, absorption, avoidance probability --- to a single figure: how many effective hit points the archetype creates relative to the pool it invests in. A 2.0$\times$ VHP multiplier means the build survives hits twice as large as its raw HP would imply; a 5.2$\times$ multiplier means it survives hits 5.2$\times$ its pool. The baseline armour formula at optimal investment yields 2.0$\times$. Every mechanism in this paper targets a higher multiple.
 
-    \item \textbf{Binding Constraint: Conversion Releases the Armour Budget.} The character-sheet analysis in Section~3 establishes the paper's central diagnostic. Against $H = 10{,}000$, Smith of Kitava with 100{,}000 armour takes 5{,}000 damage; Shaman with 25{,}000 armour and 75\% physical-to-elemental conversion takes 1{,}923. Matching Shaman's 80.8\% total mitigation through armour alone requires approximately 421{,}000 armour rating --- beyond any achievable gear. The gap is structural: conversion suppresses the effective hit size before it enters the formula, making the same armour 4$\times$ more efficient per point. The 8--15 passive points Smith commits to armour scaling are freed on Shaman for damage, sustain, or additional defensive layers. This is not a performance margin --- it is a structural release of the build's binding constraint.
+    \item \textbf{Binding Constraint: Conversion Releases the Armour Budget.} The character-sheet analysis in Section~3 establishes the paper's central diagnostic. A 0-armour Shaman --- with 75\% conversion and 85\% elemental resistance caps but no armour investment whatsoever --- takes 3{,}625 damage at $H = 10{,}000$, flat at every hit size. Smith of Kitava with 100{,}000 armour takes 5{,}000. Before Shaman has committed a single passive point to armour scaling, conversion alone outperforms the maximum-armour archetype at the hit sizes that actually kill characters. With optional 25{,}000 armour and armour-to-elemental from the ascendancy, the same Shaman takes 1{,}923 (80.8\% total mitigation). Matching that figure through armour alone requires approximately 421{,}000 armour --- beyond any achievable gear. The gap is structural: conversion suppresses the effective hit size before it enters the formula, making the same armour 4$\times$ more efficient per point. The 8--15 passive points Smith commits to armour scaling are freed on Shaman for damage, sustain, or additional defensive layers. This is not a performance margin --- it is a structural release of the build's binding constraint.
 
     \item \textbf{Witchhunter: Sorcery Ward and the Absorption-Layer Ceiling.} The Witchhunter (Mercenary ascendancy) achieves the highest single-hit survival ceiling of the archetypes examined in this paper. Two ascendancy notables (Obsessive Rituals + Ceremonial Ablution) convert armour and evasion investment into a Sorcery Ward absorption pool (SW = 30\% of post-penalty armour+evasion, capped at 32{,}000) that intercepts all post-armour hit damage before it reaches life. At 60{,}000 geared armour (30{,}000 post-penalty) and L = 3{,}000 HP, SW = 9{,}000 --- absorbing the full post-armour remainder of a 10{,}000 raw hit with zero life damage. The derived survival ceiling is approximately H = 14{,}485, substantially exceeding both Shaman and Smith at comparable passive investment. No unique item is required.
 
@@ -544,25 +544,40 @@ Shaman (25k arm, full stack) & 1{,}923 & 1{,}924 & Yes (comfortable) & $+$1{,}70
 
 \subsection*{The Mind over Matter Compound}
 
-Mind over Matter (MOM) redirects a portion of incoming damage to mana before it reaches life, creating an effective HP buffer from the mana pool. Its value scales with how low the final damage number is.
-
-\textbf{0-armour Shaman} at 3{,}625 damage with 40\% MOM redirect:
+In Path of Exile~2, Mind over Matter (MOM) operates as a full pre-life shield: \textbf{100\% of incoming damage is taken from the mana pool before any reaches life}. All hit damage depletes mana first; only the portion that exceeds the mana pool overflows to life. The eHP pool for single-hit survival is therefore fully additive:
 \[
-\text{Damage to life: } 3{,}625 \times 0.60 = 2{,}175 \qquad \text{Damage to mana: } 3{,}625 \times 0.40 = 1{,}450
+\text{Effective eHP (full MOM)} = \text{Life} + \text{Mana}
 \]
-A Shaman with 2{,}500 life and 1{,}500 mana survives: life absorbs 2{,}175 (survives at 325 HP), mana absorbs 1{,}450 (depleted). MOM converts the 3{,}625 ceiling into an achievable 2{,}500 life requirement.
+Mana is not a percentage reducer --- it is a second life pool. The survival requirement does not change; the character sheet now has two pools that jointly cover it.
 
-\textbf{Full-stack Shaman} (25k armour, 1{,}923 taken) with 40\% MOM:
+The partial variant --- passives granting ``10\% of damage taken from mana before life'' --- routes only 10\% of each hit to mana and 90\% to life. Mana depletes at a tenth the rate, preserving skill-casting ability far longer. If the mana pool holds at least $L/9$ (where $L$ is the life pool), the effective HP the life pool can absorb becomes:
 \[
-\text{Damage to life: } 1{,}923 \times 0.60 = 1{,}154 \qquad \text{Damage to mana: } 1{,}923 \times 0.40 = 769
+\text{Effective eHP (10\% variant)} = \frac{L}{0.9} \qquad \text{(minimum mana: } L/9\text{)}
 \]
-A Shaman with 1{,}500 life and 800 mana survives: life absorbs 1{,}154 (survives at 346 HP), mana absorbs 769 (depleted). The required mana pool is only 769 --- a modest number achievable without dedicated investment.
 
-\textbf{Smith} at 5{,}000 damage with 40\% MOM:
-\[
-\text{Damage to life: } 5{,}000 \times 0.60 = 3{,}000 \qquad \text{Damage to mana: } 5{,}000 \times 0.40 = 2{,}000
-\]
-Smith requires both 3{,}001 life \textit{and} 2{,}001 mana simultaneously --- consuming gear affixes and passive points in two separate resources while sustaining the heaviest armour investment possible. MOM compounds Shaman's already-low damage intake into a minimal combined resource requirement; on Smith it treats a structural survivability deficit rather than multiplying an existing advantage.
+The core eHP requirement from the survival tables in this section does not change under either variant. What changes is which character-sheet resources cover that requirement, and the operational risk profile of each path.
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{MOM eHP --- Shaman Tiers vs.\ Smith at H=10{,}000}}
+\begin{tabular}{lrrll}
+\toprule
+\textbf{Build} & \textbf{Damage} & \textbf{MOM type} & \textbf{Effective eHP} & \textbf{Min mana needed} \\
+\midrule
+\rowcolor{rowalt} Shaman (0 arm) & 3{,}625 & None & Life $\geq$ 3{,}625 & 0 \\
+Shaman (0 arm) & 3{,}625 & 10\% partial & Life $/ 0.9 \geq$ 3{,}625 & $L / 9 \approx 363$ \\
+\rowcolor{rowalt} Shaman (0 arm) & 3{,}625 & Full MOM & Life $+$ Mana $\geq$ 3{,}625 & any split $\geq$ 3{,}625 \\
+Shaman (25k arm, full stack) & 1{,}923 & Full MOM & Life $+$ Mana $\geq$ 1{,}923 & any split $\geq$ 1{,}923 \\
+\rowcolor{rowhi} Smith of Kitava (100k) & 5{,}000 & Full MOM & Life $+$ Mana $\geq$ 5{,}001 & any split $\geq$ 5{,}001 \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{Full MOM makes life and mana fully fungible for single-hit survival: any combination summing to the required total survives the hit. The 10\% partial variant requires only a small mana pool ($L/9$) to fully activate its 1.11$\times$ life multiplier. Neither variant reduces the damage that must be absorbed --- both shift which resources absorb it. Full MOM drawbacks: mana depletion prevents skill casting, halves mana regeneration rate, and requires mana flask recovery between threatening encounters; a second large hit before mana restores hits the life pool at full value.}
+\end{minipage}
+\end{table}
+
+The comparative advantage of MOM on Shaman vs.\ Smith is not a compounding of conversion efficiency --- it is that Shaman arrives with a lower damage requirement, so the mana (or life) budget needed to cover the MOM pool is proportionally smaller. A 0-armour Shaman pursuing full MOM needs a combined pool of 3{,}625 from any mix of life and mana. Smith needs 5{,}001 --- and must build that pool on top of 100{,}000 armour, compressing the character-sheet budget across three resources simultaneously. The risk profile of a depleted mana pool is also worse on Smith: mana recovery returns 5{,}000 eHP to Smith's shield; the same event returns only 3{,}625 on Shaman, but the Shaman's life pool is the entire floor during recovery while Smith's is capped at 3{,}001 (if split evenly).
 
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Witchhunter: Sorcery Ward and the Absorption-Layer Paradigm}
@@ -792,7 +807,7 @@ The following table uses the same build parameters as prior sections (25{,}000 a
 }
 \smallskip
 \begin{minipage}{\linewidth}
-\small\textit{``Inf.\ Base'' = Infernalist baseline: 50\% fire, 20\% chaos (CI = 0), 30\% physical. ``Inf.\ Full'' = Infernalist full: 55\% fire, 20\% chaos (CI = 0), 5\% random, 20\% physical. Shaman column reproduced from Section 3 for reference. All configurations use 25{,}000 armour, 100\% armour-to-elemental, 85\% max elemental resistance. Note that the Infernalist Baseline takes \textit{more} damage than Shaman at all hit sizes despite CI, because the larger physical residual (30\% vs 25\%) more than offsets the chaos exemption at this armour level. The Full configuration resolves this and outperforms Shaman at every hit size.}
+\small\textit{``Inf.\ Base'' = Infernalist baseline: 50\% fire, 20\% chaos (CI = 0), 30\% physical. ``Inf.\ Full'' = Infernalist full: 55\% fire, 20\% chaos (CI = 0), 5\% random, 20\% physical. Shaman column reproduced from Section 3 for reference (25k armour configuration). All configurations use 25{,}000 armour, 100\% armour-to-elemental, 85\% max elemental resistance. For consistency with the 0-armour Shaman baseline established in Section~3: 0-armour Infernalist Baseline takes 3{,}750 at H=10{,}000 (3{,}000 physical + 750 fire after 85\% res; CI eliminates the 20\% chaos component regardless of armour); 0-armour Infernalist Full takes 2{,}900 (2{,}000 physical + 825 fire + 75 random). Infernalist Full outperforms the 0-armour Shaman (3{,}625) even at zero armour, because CI eliminates 2{,}000 damage categorically and the reduced physical residual (20\%) keeps the formula's denominator small. Infernalist Baseline (3{,}750) does not: the 30\% physical residual costs more than CI recovers at 0 armour. Note that the Infernalist Baseline takes \textit{more} damage than the 25k-armour Shaman at all hit sizes despite CI, because the larger physical residual (30\% vs 25\%) more than offsets the chaos exemption at this armour level. The Full configuration resolves this and outperforms Shaman at every hit size.}
 \end{minipage}
 \end{table}
 
@@ -1014,7 +1029,7 @@ Unique item required & Yes (Cloak of Flame) & No & No & No \\
 }
 \smallskip
 \begin{minipage}{\linewidth}
-\small\textit{Invoker expected damage: 25\% of hits land at 7{,}270 each (27.3\% DR at 50k evasion); expected per hit = 1{,}818. Warbringer and Tactician figures from their respective positioning sections. Shaman's S-Tier placement rests on determinism: its worst case equals its expected case because conversion is unconditional. Each Gambler's expected mitigation is competitive with or exceeds Shaman's, but their worst-case damage demands 1.8--3.8$\times$ the HP investment Shaman requires to absorb a single endgame hit. The skill floor is higher on each Gambler --- Meditate for Invoker, manual block for Warbringer, totem management for Tactician --- and variance rises further when those mechanics are unavailable, mistimed, or already spent.}
+\small\textit{Shaman figures (1{,}923 / 1{,}923) assume full-stack configuration: 75\% conversion, 25{,}000 armour, 100\% armour-to-elemental, 85\% max resistance. The 0-armour Shaman baseline (Section~3) takes 3{,}625 at H=10{,}000 --- deterministically lower than Smith (5{,}000), lower than Invoker worst-case (7{,}270), and comparable to Warbringer worst-case (3{,}556); all HP requirements in this table must be met for the full-stack configuration shown. Invoker expected damage: 25\% of hits land at 7{,}270 each (27.3\% DR at 50k evasion); expected per hit = 1{,}818. Warbringer and Tactician figures from their respective positioning sections. Shaman's S-Tier placement rests on determinism: its worst case equals its expected case because conversion is unconditional. Each Gambler's expected mitigation is competitive with or exceeds Shaman's, but their worst-case damage demands 1.8--3.8$\times$ the HP investment the full-stack Shaman requires. The skill floor is higher on each Gambler --- Meditate for Invoker, manual block for Warbringer, totem management for Tactician --- and variance rises further when those mechanics are unavailable, mistimed, or already spent.}
 \end{minipage}
 \end{table}
 
