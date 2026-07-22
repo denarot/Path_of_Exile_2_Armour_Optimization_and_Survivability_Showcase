@@ -31,6 +31,12 @@
     \vspace{4pt}
 }
 
+
+% ── Named subsection: appears in TOC without numbering ────────────────────────
+\newcommand{\namedsubsection}[1]{%
+    \subsection*{#1}%
+    \addcontentsline{toc}{subsection}{#1}%
+}
 % ── Mitigation tier colours (per-cell, hit-size tables) ───────────────────────
 % Green = efficient; red = the armour formula is losing badly
 \definecolor{tierS}{HTML}{B8E6BB}   % >=95%  -- dark green
@@ -71,6 +77,7 @@
 
 % ── Executive Summary ─────────────────────────────────────────────────────────
 \section*{Executive Summary}
+\addcontentsline{toc}{section}{Executive Summary}
 \hrule height 0.75pt
 \vspace{6pt}
 
@@ -284,7 +291,7 @@ At small hit sizes, both the damage-taken numbers and the minimum HP requirement
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Smith of Kitava vs.\ Shaman: The Divergence Narrative}
 
-\subsection*{Why Both Look Comparable at Small Hits}
+\namedsubsection{Why Both Look Comparable at Small Hits}
 
 At hit sizes of 100--500, the armour formula's denominator is dominated by the armour value $A$:
 
@@ -296,7 +303,7 @@ When $A \gg 10H$, the formula approaches 100\% for any build with substantial ar
 
 This is the operating regime where armour is ``exceptionally well'' --- and it is the regime that blinds pure-armour thinking to the problem. The armour formula feels infallible at small hits.
 
-\subsection*{The Break Point: Where Hit Size Threatens the Formula}
+\namedsubsection{The Break Point: Where Hit Size Threatens the Formula}
 
 As $H$ grows past the 1{,}000--2{,}000 range, the term $10H$ becomes a meaningful fraction of $A$. The formula degrades:
 
@@ -324,7 +331,7 @@ The same 25{,}000 armour that gives 20\% DR against a 10{,}000 physical hit give
 
 The physical DR is identical. Then Shaman also eliminates 75\% of the hit through elemental layers. Smith has no equivalent layer.
 
-\subsection*{The ``Below 90\%'' Threshold}
+\namedsubsection{The ``Below 90\%'' Threshold}
 
 A useful concrete benchmark is when each build's mitigation falls below 90\% --- a level at which damage taken becomes meaningful for a modestly invested life pool:
 
@@ -334,7 +341,7 @@ A useful concrete benchmark is when each build's mitigation falls below 90\% ---
 
 Shaman remains above 90\% mitigation through approximately H$\approx$2{,}600 (interpolated between the 92.8\% at H=2{,}000 and 88.3\% at H=4{,}000 table values). Shaman maintains the ``highly efficient'' mitigation regime for more than double the hit size that Smith can sustain before the same threshold is crossed.
 
-\subsection*{Optimal Smith Configuration: Armour-to-Elemental and Veil of Night}
+\namedsubsection{Optimal Smith Configuration: Armour-to-Elemental and Veil of Night}
 
 The analysis above treats Smith of Kitava as a pure-armour archetype with no elemental handling layer. A structurally superior configuration adds two elements: passive investment in ``X\% of Armour applies to Elemental Damage'' nodes and a 35\% physical-to-elemental conversion source. The armour target remains the 12--20$\times L$ corridor that binds all armour-based builds; the configuration does not change the planning constraint, it changes what each armour point accomplishes.
 
@@ -542,13 +549,13 @@ The breakpoint table illustrates a key property of this configuration: the Shama
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Infernalist: Chaos Inoculation and the 20\% Hard Immunity}
 
-\subsection*{Class Overview}
+\namedsubsection{Class Overview}
 
 The Infernalist is an ascendancy of the Witch base class and occupies a unique categorical position in the conversion hierarchy. Like Shaman, it accesses physical-to-other-damage-taken conversion through an ascendancy notable --- but the target element is chaos rather than elemental, and the interaction with the Keystone Passive Skill \textbf{Chaos Inoculation (CI)} transforms what would otherwise be a near-zero elemental reduction into a categorical hard immunity. This distinction, examined precisely, separates Infernalist from every other defensive archetype discussed in this document.
 
 The Infernalist's ascendancy notable \textit{Altered Flesh} converts 20\% of all physical damage taken to chaos damage. Combined with Cloak of Flame (50\% physical to fire), the baseline conversion stack reaches 70\%, leaving 30\% residual physical. With CI active, the 20\% chaos portion ceases to interact with armour or resistance --- it simply does not happen. The build is immune to it.
 
-\subsection*{Conversion Stack: Two Configurations}
+\namedsubsection{Conversion Stack: Two Configurations}
 
 \begin{table}[htbp]
 \centering
@@ -572,7 +579,7 @@ The Infernalist's ascendancy notable \textit{Altered Flesh} converts 20\% of all
 \end{minipage}
 \end{table}
 
-\subsection*{The Categorical Distinction: Hard Immunity vs.\ Near-Zero Reduction}
+\namedsubsection{The Categorical Distinction: Hard Immunity vs.\ Near-Zero Reduction}
 
 All previous builds in this document reduce elemental contributions to near-zero through sequential layers (armour-to-elemental, resistance, less-elemental-taken). ``Near-zero'' is not zero. At H=10{,}000, Shaman's cold, lightning, and random elemental components each resolve to approximately 12 damage after all layers --- small, but nonzero, and the total elemental contribution still represents 671 damage before the ``less elemental taken'' multiplier.
 
@@ -586,7 +593,7 @@ At H=10{,}000, CI avoids \textbf{exactly 2{,}000 damage} --- hard, not as a limi
 
 This also addresses chaos damage from other sources entirely. In current Path of Exile 2 endgame content, chaos damage is among the most lethal because it bypasses most conventional mitigation. CI converts this from the build's most dangerous threat into its most completely nullified one.
 
-\subsection*{Hit-Size Comparison: Infernalist vs.\ Shaman}
+\namedsubsection{Hit-Size Comparison: Infernalist vs.\ Shaman}
 
 The following table uses the same build parameters as prior sections (25{,}000 armour, 100\% armour-to-elemental, 85\% max resistance), with CI accounting for the full 20\% chaos exemption.
 
@@ -628,7 +635,7 @@ The 386-unit increase in physical damage taken (1{,}636 vs 1{,}250) exceeds the 
 
 This resolves cleanly when the Full optional stack is active. Reducing physical residual to 20\% (2{,}000 effective hit) gives 55.6\% armour DR and 889 damage taken --- well below Shaman's physical component --- producing the 1{,}469 total that outperforms Shaman.
 
-\subsection*{Accelerating Returns on Conversion: The Scaling Efficiency Argument}
+\namedsubsection{Accelerating Returns on Conversion: The Scaling Efficiency Argument}
 
 Each additional 5 percentage points of physical-to-other conversion is worth \textit{more} than the previous 5 percentage points. This is a direct consequence of the fact that the gain is calculated against a shrinking denominator (the remaining physical residual):
 
@@ -674,7 +681,7 @@ The Full configuration requires Molten Being (passive tree notable, non-trivial 
 
 At moderate ES pools ($<$4{,}000), the Full configuration likely provides a superior marginal survival guarantee per passive point than additional ES would. At very large ES pools ($>$6{,}000), the baseline configuration's survival floor is already comfortable, and the Molten Being path may be less efficient than ES amplification. The decision is build-stage dependent.
 
-\subsection*{Infernalist Positioning}
+\namedsubsection{Infernalist Positioning}
 
 \begin{table}[htbp]
 \centering
@@ -701,7 +708,7 @@ The Infernalist represents a genuine alternative defensive powerhouse rather tha
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Invoker: Avoidance, Evasion-as-Armour, and the Conditional eHP Ceiling}
 
-\subsection*{Class Overview and Defensive Paradigm}
+\namedsubsection{Class Overview and Defensive Paradigm}
 
 The Invoker is an ascendancy of the Monk base class and represents a categorically different defensive architecture from the conversion builds documented in preceding sections. Where Shaman and Infernalist achieve passive per-hit mitigation by suppressing the effective hit size through physical-to-elemental conversion, the Invoker achieves defensive efficiency through \textit{avoidance} --- preventing hits from connecting at all --- backed by a novel ascendancy mechanic that converts evasion rating into armour for the hits that do land.
 
@@ -709,7 +716,7 @@ This distinction carries a practical cost that gives the build its informal labe
 
 In exchange for this constraint, the Invoker achieves gear and passive point efficiency that rivals Shaman's, through a completely different mechanism: near-zero need for life affixes, chaos resistance affixes, or spirit affixes on gear, freeing the entire affix budget for evasion and Energy Shield. The resulting eHP pool, amplified by Meditate, is conditionally larger than what most other archetypes can reach at comparable investment.
 
-\subsection*{The Three Mandatory Ascendancy Nodes}
+\namedsubsection{The Three Mandatory Ascendancy Nodes}
 
 The Invoker has four ascendancy choice slots. Three are near-mandatory for the defensive architecture described in this section; the fourth is available for damage or situational utility.
 
@@ -732,7 +739,7 @@ Lead me through grace\ldots & Gain spirit for each $X$ points of combined evasio
 \end{minipage}
 \end{table}
 
-\subsection*{Meditate: The Conditional eHP Ceiling}
+\namedsubsection{Meditate: The Conditional eHP Ceiling}
 
 \textit{Meditate}, granted by \textit{Faith is a Choice}, allows the Invoker to overflow their Energy Shield to 1.5$\times$ its maximum value. This overflow cannot be achieved through regeneration or flask mechanics alone --- it requires actively channelling Meditate outside of combat.
 
@@ -780,7 +787,7 @@ The apparent detriment (no explicit spirit gear) is in practice a benefit. Spiri
 
 The Invoker resolves two resource pressures simultaneously (spirit and defensive stats) with a single gear pursuit. Other archetypes must solve them separately.
 
-\subsection*{``\ldots and protect me from harm'' --- The Armour-Evasion Unification}
+\namedsubsection{``\ldots and protect me from harm'' --- The Armour-Evasion Unification}
 
 This is the key defensive node and the primary reason the Invoker belongs in a document about defensive efficiency. Its two effects:
 
@@ -885,7 +892,7 @@ When a hit penetrates both evasion and block, the Invoker faces the raw damage r
 
 The table makes explicit what the playstyle label implies: the Invoker's survival against ceiling-tier hits is \textit{contingent} on Meditate. A 5{,}000 ES Invoker who enters a boss room without meditating faces a 7{,}273 damage hit on a 5{,}000 ES pool and dies. The same character who meditates has 7{,}500 effective eHP and survives by 227 points. The margin is not large, which is why the 12$\times$--20$\times$ evasion optimality range and ongoing ES investment remain important --- they push the meditate ceiling higher and provide more room for error.
 
-\subsection*{Combined Avoidance: Evasion and Block}
+\namedsubsection{Combined Avoidance: Evasion and Block}
 
 The Invoker's primary defence against all hits --- including the largest --- is not mitigating them but preventing them from connecting. With a spear and buckler setup providing near-cap block (50--65\%) layered over evasion chance (50--65\%), the combined hit avoidance is:
 
@@ -914,7 +921,7 @@ P(\text{hit avoidance}) = 1 - (1 - e)(1 - b)
 \end{minipage}
 \end{table}
 
-\subsection*{Per-Encounter Damage Expectation vs.\ Shaman}
+\namedsubsection{Per-Encounter Damage Expectation vs.\ Shaman}
 
 The Invoker and Shaman arrive at comparable per-encounter defensive outcomes through opposite mechanics. Consider 20 hits at H=1{,}000 in a typical encounter:
 
@@ -941,7 +948,7 @@ Several additional mechanics compound the Invoker's defensive and offensive effi
     \item \textbf{Spear and Buckler Synergy:} The reference configuration (spear + buckler) provides the near-50\% block baseline. Combined with the evasion values described above, this produces the 82--88\% avoidance band. Exploring whether shield-focused passive nodes can push block toward 60--65\% while preserving evasion investment is likely the highest-leverage path to improving the Invoker's ceiling, as 65\% evasion + 65\% block (87.8\% avoidance) represents a substantially different risk profile than the 50\%+50\% baseline.
 \end{itemize}
 
-\subsection*{Invoker Positioning}
+\namedsubsection{Invoker Positioning}
 
 \begin{table}[htbp]
 \centering
@@ -971,13 +978,13 @@ Playstyle constraint & None & Meditate before challenging encounters \\
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Witchhunter: Sorcery Ward and the Absorption-Layer Paradigm}
 
-\subsection*{Class Overview and Defensive Paradigm}
+\namedsubsection{Class Overview and Defensive Paradigm}
 
 The Witchhunter is an ascendancy of the Mercenary base class and represents the third distinct defensive architecture examined in this analysis. Where Shaman and Infernalist achieve mitigation by suppressing the effective hit size through physical-to-elemental conversion, and where the Invoker achieves efficiency through avoidance, the Witchhunter sidesteps the armour formula's structural weakness---its quadratic degradation against large hits---through a fundamentally different mechanism: an absorption layer that intercepts post-armour damage before it reaches the life pool.
 
 This distinction is categorical. Damage reduction (DR) scales as $A/(A+10H)$, which collapses toward zero as $H$ grows regardless of armour investment. An absorption pool absorbs a flat quantum of post-DR damage without degrading with hit size. Against very large hits, the Witchhunter's Sorcery Ward (SW) therefore provides more reliable protection per point of investment than additional armour provides. The Witchhunter achieves this without a unique-item dependency, making its defensive model fully accessible in Solo Self-Found, Hardcore, and HC-SSF contexts.
 
-\subsection*{The Two Mandatory Ascendancy Nodes}
+\namedsubsection{The Two Mandatory Ascendancy Nodes}
 
 The Witchhunter's absorption stack requires two of its four ascendancy notables. These are non-negotiable; the remaining two slots are available for offensive or utility investment.
 
@@ -999,7 +1006,7 @@ Ceremonial Ablution & Extends SW coverage from elemental hit damage to \textit{a
 \end{minipage}
 \end{table}
 
-\subsection*{Sorcery Ward Mechanics}
+\namedsubsection{Sorcery Ward Mechanics}
 
 Sorcery Ward operates as an absorption layer placed between the armour DR step and the life pool in the damage sequence:
 
@@ -1021,7 +1028,7 @@ SW recharges fully on a 6-second cooldown. Once depleted by a hit, SW is unavail
 
 Reaching the 32{,}000 SW cap requires a post-penalty armour+evasion pool of approximately 107{,}000, or approximately 213{,}000 before the 50\% penalty --- confirming that 9{,}000 is a realistic and achievable mid-endgame figure.
 
-\subsection*{Hit-Size Survival Table}
+\namedsubsection{Hit-Size Survival Table}
 
 The following table applies DR = $A/(A+10H)$ at the post-penalty armour of 30{,}000, then deducts the post-DR remainder from SW = 9{,}000, with overflow reaching life at $L = 3{,}000$.
 
@@ -1048,7 +1055,7 @@ The following table applies DR = $A/(A+10H)$ at the post-penalty armour of 30{,}
 
 The survival ceiling of approximately $H = 14{,}485$ against a raw physical hit substantially exceeds what Shaman or Smith can achieve at comparable investment and life pool. The Witchhunter's SW pool achieves this without any unique-item requirement, passive-point over-investment, or Energy Shield stacking --- purely from two ascendancy notables applied to the same armour investment other builds treat as a DR source.
 
-\subsection*{Cross-Damage-Type Coverage}
+\namedsubsection{Cross-Damage-Type Coverage}
 
 Ceremonial Ablution extends SW coverage to physical, elemental, and chaos hit damage simultaneously. This is structurally superior to the other archetypes' chaos defences:
 
@@ -1095,7 +1102,7 @@ Allocated to the secondary weapon set, both nodes cost zero primary-set passive 
     \item \textbf{50\% less armour:} The Obsessive Rituals penalty reduces effective armour to half of geared investment. The standard 12$\times$--20$\times$ armour optimality corridor implies a corresponding increase in geared armour targets. However, each additional point of geared armour simultaneously improves DR and expands SW --- making armour investment more efficient per passive point for a Witchhunter than for a zero-SW build at the same armour tier.
 \end{itemize}
 
-\subsection*{Witchhunter Positioning}
+\namedsubsection{Witchhunter Positioning}
 
 \begin{table}[htbp]
 \centering
@@ -1127,13 +1134,13 @@ Playstyle constraint & None & SW cooldown awareness & Meditate pre-combat \\
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Tactician: Deflection, Capped DR, and the Armour-Efficient Paradigm}
 
-\subsection*{Class Overview and Build Identity}
+\namedsubsection{Class Overview and Build Identity}
 
 The Tactician is the second ascendancy of the Mercenary base class and occupies an unusual position in the defensive landscape: its core mechanical identity --- supporting totems, crossbows, and minions at range --- is intelligible from the passive tree, but the defensive nodes required to access that identity consume the first two ascendancy slots before any offensive expression is possible. For most players, the Tactician is a build that becomes itself only after the campaign ends. This deferred payoff is not a mechanical flaw; it is a design constraint worth naming, because it shapes how one should evaluate the class's defensive architecture independent of its playstyle.
 
 The two near-mandatory defensive nodes are \textbf{Polish that Gear} and \textbf{Stay Light, Use Cover}. Together they define an archetype with a hard DR ceiling, a front-loaded damage reduction mechanic, and strong pressure toward ranged engagement. They also create a genuine tension in build optimisation: the DR cap imposed by Stay Light limits how much armour investment matters, the evasion cap it imposes is compounded by the Glancing Blows keystone, and the primary defensive win condition --- deflection --- depends on a probabilistic chain that the build can influence but never fully control.
 
-\subsection*{The Two Core Defensive Nodes}
+\namedsubsection{The Two Core Defensive Nodes}
 
 \begin{table}[htbp]
 \centering
@@ -1153,7 +1160,7 @@ Stay Light, Use Cover & Defend with 200\% of armour. Enemies have an accuracy pe
 \end{minipage}
 \end{table}
 
-\subsection*{Deflection: The Front-Loaded Multiplier}
+\namedsubsection{Deflection: The Front-Loaded Multiplier}
 
 Polish that Gear grants deflection rating equal to 20\% of armour rating. When a hit is deflected, damage is reduced by 40\%. The operative question for this analysis --- one that the game's tooltip does not resolve --- is whether this reduction applies \textit{before} or \textit{after} the armour formula evaluates.
 
@@ -1182,7 +1189,7 @@ The analysis below treats the DR cap as the planning target, where ordering is i
 \text{Damage taken} = H \times 0.50 = 0.50H \quad \Rightarrow \quad \text{Effective DR} = 50\%
 \]
 
-\subsection*{Armour Targets Under 200\% Defend}
+\namedsubsection{Armour Targets Under 200\% Defend}
 
 The 200\% armour defend modifier means the DR formula evaluates 2A against the incoming hit, not A. The standard corridor (12--20$\times$L) was derived for the unmodified formula; it does not apply here.
 
@@ -1213,7 +1220,7 @@ Tactician, no deflect & $A \geq 5H$ & $A = 10L$ & $5\times$--$10\times L$ \\
 \end{minipage}
 \end{table}
 
-\subsection*{Glancing Blows and the Sequential Probability Chain}
+\namedsubsection{Glancing Blows and the Sequential Probability Chain}
 
 Glancing Blows is a keystone passive that inverts the luck of two defensive stats simultaneously: evasion rolls become \textit{unlucky} (roll twice, take the worse) and deflection rolls become \textit{lucky} (roll twice, take the better). For the Tactician, whose evasion is hard-capped at 50\% by Stay Light and whose deflection is the primary win condition, Glancing Blows is the correct keystone --- but it is important to understand what the tradeoff actually costs and pays.
 
@@ -1271,7 +1278,7 @@ Polish that Gear grants ailment threshold equal to 100\% of evasion rating. Ailm
 
 This is not immunity; it is functional suppression of two of the most punishing ailments in endgame content (Shocked ground, freeze during a dangerous encounter) at the cost of evasion investment the build is already pursuing. The ailment suppression is a compounding secondary benefit, not the primary reason to invest in evasion.
 
-\subsection*{Build Path Divergence: Evasion Hybrid vs.\ Block-and-Armour}
+\namedsubsection{Build Path Divergence: Evasion Hybrid vs.\ Block-and-Armour}
 
 The foregoing analysis assumes the standard Tactician build: evasion capped at 50\% (unlucky to 25\%), deflection from 20\% of armour, and Stay Light, Use Cover providing 200\% armour defend. A second path is viable --- and in some respects more internally consistent --- that forgoes evasion entirely:
 
@@ -1308,7 +1315,7 @@ This produces the optimisation problem the user correctly identifies: you must p
 
 The Witchhunter resolves this tension structurally: Sorcery Ward absorbs the post-armour remainder whether or not a deflection occurred, providing a deterministic secondary layer. The Tactician has no equivalent. Its survival of extreme hits is conditional on the probability chain resolving favourably, which is an inherent property of the archetype rather than a gap correctable through investment.
 
-\subsection*{Tactician Positioning}
+\namedsubsection{Tactician Positioning}
 
 \begin{table}[htbp]
 \centering
@@ -1340,13 +1347,13 @@ Unique item required & Yes (Cloak of Flame) & No & No \\
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Warbringer: Block-as-Mitigation and the Mapping Specialist}
 
-\subsection*{Class Overview and Build Identity}
+\namedsubsection{Class Overview and Build Identity}
 
 The Warbringer is an ascendancy of the Marauder base class and represents an interesting adjacent case to Smith of Kitava: both are Marauder-lineage archetypes that lean into armour, block, and physical survivability, but the Warbringer resolves the armour formula's scaling weakness through a different structural intervention. Rather than using conversion or absorption, the Warbringer converts block chance into a front-loaded damage multiplier --- reducing hits that connect through its block roll to 20\% of their original value before armour evaluates. Combined with a totem-linked damage reduction layer, the Warbringer achieves excellent \textit{expected} mitigation across the hit-size spectrum. Its constraint is variance: the 25\% of hits that bypass block land at 80\% of their value and expose the same fundamental armour formula weakness that limits every non-converting archetype at large hit sizes.
 
 The build's natural home is totem-based content: high-uptime totems enable the secondary mitigation layer (Wooden Wall) near-continuously, and the ranged playstyle reduces the frequency of hits that reach the character at all. Against boss-tier content with single large strikes, the probabilistic nature of block creates the defining tension --- one the section explores in detail.
 
-\subsection*{The Two Core Defensive Nodes}
+\namedsubsection{The Two Core Defensive Nodes}
 
 \begin{table}[htbp]
 \centering
@@ -1366,7 +1373,7 @@ Wooden Wall & 20\% of damage you would take is instead taken by your totem. Requ
 \end{minipage}
 \end{table}
 
-\subsection*{Combined Multipliers: The Blocked-Hit Arithmetic}
+\namedsubsection{Combined Multipliers: The Blocked-Hit Arithmetic}
 
 With both nodes active and a hit successfully blocked, two front-loaded multipliers apply in sequence:
 
@@ -1384,7 +1391,7 @@ On an unblocked hit with Wooden Wall active:
 
 The implications for the armour formula are stark. Armour is highly efficient against small hits (the formula's numerator dominates when $H_{\text{eff}} \ll A$) and poor against large hits (the denominator grows with $H$). By collapsing a 10{,}000 hit to a 1{,}600 effective hit on a blocked roll, the Warbringer places armour in its most efficient operating regime 75\% of the time --- while the other 25\% exposes armour to an 8{,}000 effective hit it cannot handle as efficiently.
 
-\subsection*{Hit-Size Survival Table}
+\namedsubsection{Hit-Size Survival Table}
 
 The following table uses A = 50{,}000 armour with near-100\% totem uptime (Wooden Wall always active). $P(\text{block}) = 0.75$.
 
@@ -1413,7 +1420,7 @@ The following table uses A = 50{,}000 armour with near-100\% totem uptime (Woode
 
 The expected value result --- 84.8\% mitigation surpassing Shaman's deterministic 80.8\% --- is the build's genuine appeal in mapping content where many hits arrive and the block distribution averages out. Against a single boss slam where one non-block is fatal, the expected value is irrelevant; the 25\% non-block probability is the only number that matters.
 
-\subsection*{Armour Targets: The eHP Constraint}
+\namedsubsection{Armour Targets: The eHP Constraint}
 
 Unlike other conversion or absorption archetypes in this paper where armour recedes as a binding constraint, the Warbringer's planning target for worst-case survival is dictated jointly by armour and eHP. The armour required to guarantee survival of an unblocked $H = 10{,}000$ hit falls steeply as the life pool grows:
 
@@ -1441,7 +1448,7 @@ A^* = \frac{10 \times 0.8H \times (0.8H - L)}{L}
 \end{minipage}
 \end{table}
 
-\subsection*{The Unblockable Hit Interaction}
+\namedsubsection{The Unblockable Hit Interaction}
 
 Turtle Charm enables the Warbringer to block hits flagged as unblockable --- including boss slams and telegraphed area attacks that every other archetype must dodge manually or absorb at full value. This is the build's most uniquely powerful defensive property and has no equivalent in the other archetypes examined in this paper.
 
@@ -1456,7 +1463,7 @@ Against a 10{,}000 raw slam at the gear levels in the table above: the 25\% non-
 
 The user's framing is precise: ``you are playing an RNG game where you hope that you block the slam.'' The build offers a 3-in-4 success rate on the worst hits in the game --- a genuine advantage over builds that must dodge manually and rely on player execution --- but cannot guarantee survival without a sufficient eHP pool behind the 25\% failure case.
 
-\subsection*{Build Path: Standard Block vs.\ Turtle Charm}
+\namedsubsection{Build Path: Standard Block vs.\ Turtle Charm}
 
 A Warbringer who skips Turtle Charm retains standard block mechanics (50\% chance, full immunity on blocked hits) and saves two ascendancy points. With Wooden Wall and a terminal 10\% less multiplier from another source:
 
@@ -1468,7 +1475,7 @@ A Warbringer who skips Turtle Charm retains standard block mechanics (50\% chanc
 
 Against Turtle Charm's 1{,}522 expected damage (84.8\% mitigation), the standard block path takes 46\% more expected damage per hit at equivalent armour. The unblocked worst-case damage is identical (the armour formula sees the same 0.8H), but the probability of triggering it is 50\% rather than 25\%. The trade-off for the two saved ascendancy points --- which can go to offensive or totem-enhancing nodes --- is a substantially higher expected damage intake per encounter and twice the probability of the worst-case outcome. Turtle Charm is the correct defensive choice when the ascendancy budget allows it.
 
-\subsection*{Manual Block and the Active Defense Variant}
+\namedsubsection{Manual Block and the Active Defense Variant}
 
 The probability table in the preceding section rests on one assumption: block is passive and probabilistic at 75\%. A single condition inverts this entirely. Path of Exile 2 provides active block skills --- specifically \textbf{Raise Shield} and \textbf{Resonating Shield} --- that allow a player to guarantee a block on demand. When an active block is executed correctly, the Warbringer's block chance goes from 75\% (passive RNG) to 100\% (player-controlled), and Turtle Charm's 80\% less multiplier becomes guaranteed rather than probabilistic.
 
@@ -1509,7 +1516,7 @@ The stun risk of manual blocking is also a legitimate factor: committing to a bl
 
 \textbf{Updated verdict under active play.} The Warbringer with Turtle Charm, Wooden Wall, and manual blocking on boss-tier hits is the recommended high-skill-expression configuration. In mapping, passive 75\% block with Wooden Wall already produces better expected mitigation than Shaman (84.8\% vs.\ 80.8\% at A=50k); with manual block available on telegraphed slams, those hits leave the probability distribution entirely and become deterministic low-damage events. The totem provides continuous DPS with no player input required, and a weapon-swap to a shield set with minion support layers a second independent damage engine behind the same defensive stance. The build's ceiling is constrained by player execution and achievable eHP, not by armour formula limits or absorption pool caps. This raises the skill floor above any other archetype examined in this paper --- but it rewards that execution with the highest expected mitigation of any armour-anchored build and deterministic worst-case control over telegraphed boss-tier hits.
 
-\subsection*{Warbringer Positioning}
+\namedsubsection{Warbringer Positioning}
 
 \begin{table}[htbp]
 \centering
