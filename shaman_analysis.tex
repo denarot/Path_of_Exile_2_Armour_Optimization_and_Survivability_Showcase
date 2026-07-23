@@ -162,6 +162,51 @@ Matching the Shaman's \textit{total} effective mitigation (80.8\%) through armou
 
 \textbf{421{,}000 armour is not achievable in Path of Exile 2.} The mitigation ceiling of Shaman's 25{,}000 armour plus 75\% conversion cannot be replicated through armour investment at any practical scale.
 
+\subsection*{The Armour Optimisation Corridor: Formal Derivation of the 12$\times$--20$\times L$ Planning Constraint}
+
+For any pure-armour build, the minimum armour required to survive a physical hit of size $D$ on a life pool of size $L$ follows directly from the survival condition. Damage taken is:
+
+\[
+\text{taken} = D\!\left(1 - \frac{A}{A + 10D}\right) = \frac{10D^2}{A + 10D}
+\]
+
+Survival requires taken $\leq L$:
+
+\[
+\frac{10D^2}{A + 10D} \leq L
+\]
+
+Multiply both sides by $(A + 10D)$ and isolate $A$:
+
+\[
+10D^2 \leq L(A + 10D) \quad \Rightarrow \quad LA \geq 10D^2 - 10LD \quad \Rightarrow \quad A \geq \frac{10D(D - L)}{L}
+\]
+
+When $D \leq L$ the right-hand side is non-positive --- the hit cannot kill the character regardless of armour. The binding regime is $D > L$.
+
+\textbf{Expressing the threat as a multiple of the life pool.} Write $D = kL$ where $k > 1$ is the threat ratio (how many times the life pool the incoming hit represents). Substituting:
+
+\[
+A^* = \frac{10(kL)(kL - L)}{L} = \frac{10kL \cdot L(k-1)}{L} = 10k(k-1) \cdot L
+\]
+
+The $L$'s cancel entirely. The minimum required armour is a pure multiple of the life pool, and that multiple depends \textit{only on the threat ratio} $k$, not on the absolute pool size:
+
+\[
+\boxed{A^* = 10k(k-1) \cdot L}
+\]
+
+Plugging in two reference threat ratios establishes the planning corridor:
+
+\begin{itemize}
+    \item \textbf{Soft cap} ($k = 1.7$ --- hit 70\% larger than the pool): $A^* = 10(1.7)(0.7)L = 11.9L \approx 12L$
+    \item \textbf{Hard cap} ($k = 2.0$ --- hit exactly twice the pool): $A^* = 10(2.0)(1.0)L = 20L$
+\end{itemize}
+
+This is the origin of the $12\times$--$20\times L$ corridor used throughout this paper as the planning constraint for pure-armour archetypes.
+
+\textbf{Caveats.} The anchors $k = 1.7$ and $k = 2.0$ are not derived --- they represent an assumed threat window, the largest untelegraphed hit the build is budgeted to facetank. Because $A^* = 10k(k-1)L$ is quadratic in $k$, the corridor is sensitive to this assumption: moving from $k = 2.0$ to $k = 3.0$ doubles the armour requirement ($A^* = 60L$) while the pool only tripled in threat. The binding empirical unknown is the actual hit-size distribution at a given content tier, which is why the paper's main analysis targets the pessimistic ceiling of $H = 10{,}000$. For conversion builds, substitute the residual physical component $(1 - c) \cdot D$ for $D$ before applying the formula, where $c$ is the total conversion fraction; this collapses the armour requirement by a factor of $(1-c)^2$ relative to an unconverting build at the same pool --- the algebraic origin of why Shaman's 75\% conversion reduces its armour requirement so dramatically.
+
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Virtual HP: The Unifying Metric}
 
@@ -243,7 +288,7 @@ The armour formula's failure at scale is most clearly demonstrated by comparing 
 
 \subsection*{Build Parameters}
 
-Three configurations are compared throughout this section. \textbf{Shaman (0 armour)} is the true baseline: 75\% physical-to-elemental conversion and 85\% elemental resistance caps, with zero passive investment in armour nodes. This is the Shaman before any armour-specific decision has been made. \textbf{Titan baseline (pure-armour archetype)} is parameterised by the 12--20$\times L$ corridor: to survive $H = 10{,}000$, the pure-armour archetype requires at minimum $L = 5{,}001$ effective HP; at the corridor ceiling ($A = 20 \times L_{\min} = 100{,}000$), it takes exactly 5{,}000 damage and survives with 1 HP. This is the \textit{minimum viable} pure-armour configuration --- any lower armour or life within the corridor fails. The \textbf{Baseline} (25{,}000 armour, no conversion) provides the armour formula's reference floor.
+Three configurations are compared throughout this section. \textbf{Shaman (0 armour)} is the true baseline: 75\% physical-to-elemental conversion and 85\% elemental resistance caps, with zero passive investment in armour nodes. This is the Shaman before any armour-specific decision has been made. \textbf{Titan baseline (pure-armour archetype)} is parameterised by the 12--20$\times L$ corridor (derived in Section~1 via $A^* = 10k(k-1)L$): to survive $H = 10{,}000$, the pure-armour archetype requires at minimum $L = 5{,}001$ effective HP; at the corridor ceiling ($A = 20 \times L_{\min} = 100{,}000$), it takes exactly 5{,}000 damage and survives with 1 HP. This is the \textit{minimum viable} pure-armour configuration --- any lower armour or life within the corridor fails. The \textbf{Baseline} (25{,}000 armour, no conversion) provides the armour formula's reference floor.
 
 \begin{table}[htbp]
 \centering
