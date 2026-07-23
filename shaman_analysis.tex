@@ -516,6 +516,121 @@ Whether the practical endgame hit ceiling falls above or below $H = 5{,}686$ is 
 
 Until top-end hit magnitudes are empirically confirmed, this paper targets the pessimistic ceiling ($H = 10{,}000$) --- the scenario where conversion archetypes are unambiguously superior. If confirmed endgame content clusters below $H = 5{,}686$, the Titan archetype and Smith of Kitava may dominate the practical Pareto optimization frontier at higher opportunity cost and passive point expenditure.
 
+\namedsubsection{The Crossover Spectrum: Armour Investment Across Progression Milestones}
+
+The 100{,}000-armour Titan baseline represents near-maximum endgame investment. At earlier progression stages --- realistic armour values achievable through normal gear and moderate passive-tree commitment --- the entire armour curve shifts left: both the 90\% DR cap boundary and the crossover with 0-armour Shaman occur at proportionally smaller hit sizes.
+
+The crossover follows directly from setting the armour DR equal to Shaman's flat 63.75\%:
+
+\[
+\frac{A}{A + 10H^*} = 0.6375 \quad \Rightarrow \quad H^* = \frac{A \times (1 - 0.6375)}{10 \times 0.6375} = \frac{0.3625\, A}{6.375} \approx \frac{A}{17.6}
+\]
+
+The crossover scales linearly with armour: every 10{,}000 additional armour rating shifts the crossover rightward by $\approx 569$ hit-size units.
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Crossover Hit Size and 90\% Cap Boundary by Armour Investment Level}}
+\begin{tabular}{rrrrp{4.5cm}}
+\toprule
+\textbf{Armour ($A$)} & \textbf{DR cap below} & \textbf{Crossover $H^*$} & \textbf{Implied $L$ ($A=12L$)} & \textbf{Progression context} \\
+\midrule
+\rowcolor{rowalt} 25{,}000 & $H \leq 278$ & 1{,}422 & 2{,}083 & Early maps \\
+36{,}000 & $H \leq 400$ & 2{,}047 & 3{,}000 & Mid-tier maps \\
+\rowcolor{rowalt} 48{,}000 & $H \leq 533$ & 2{,}729 & 4{,}000 & Late maps / early endgame \\
+100{,}000 & $H \leq 1{,}111$ & 5{,}686 & 8{,}333 & Near-maximum endgame \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{Implied $L$ uses the corridor soft cap $A = 12L$. DR cap boundary solves $A/(A+10H)=0.90$; below this threshold, the armour build is at the 90\% cap and the incremental DR advantage over Shaman is at its maximum (26.25 pp). At the soft-cap corridor, $H^* \approx 0.68L$ for every armour level: the crossover consistently falls at 68\% of the life pool, regardless of absolute values.}
+\end{minipage}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=0.92\textwidth,
+    height=8.5cm,
+    xlabel={Incoming Hit Size ($H$)},
+    ylabel={Physical DR (\%)},
+    xmin=0, xmax=10500,
+    ymin=15, ymax=100,
+    xtick={0,1000,2000,3000,4000,5000,6000,8000,10000},
+    xticklabels={0,1{,}000,2{,}000,3{,}000,4{,}000,5{,}000,6{,}000,8{,}000,10{,}000},
+    x tick label style={rotate=30, anchor=east, font=\small},
+    ytick={20,30,40,50,63.75,70,80,90,100},
+    yticklabels={20,30,40,50,63.8,70,80,90,100},
+    legend pos=north east,
+    legend style={font=\small, fill=white, fill opacity=0.9},
+    grid=major,
+    grid style={dashed,gray!25},
+    tick label style={font=\small},
+]
+
+% A=25k -- early maps
+\addplot[color=orange!90!black, thick] coordinates {
+    (0,90) (278,90) (500,83.3) (1000,71.4) (1422,63.75)
+    (2000,55.6) (3000,45.5) (5000,33.3) (8000,23.8) (10000,20.0)
+};
+\addlegendentry{A=25{,}000 --- early maps ($H^*$=1{,}422)}
+
+% A=36k -- mid maps
+\addplot[color=green!70!black, thick] coordinates {
+    (0,90) (400,90) (500,87.8) (1000,78.3) (2000,64.3)
+    (2047,63.75) (3000,54.5) (5000,41.9) (8000,31.0) (10000,26.5)
+};
+\addlegendentry{A=36{,}000 --- mid maps ($H^*$=2{,}047)}
+
+% A=48k -- late maps
+\addplot[color=teal, thick] coordinates {
+    (0,90) (533,90) (1000,82.8) (2000,70.6) (2729,63.75)
+    (3000,61.5) (5000,49.0) (8000,37.5) (10000,32.4)
+};
+\addlegendentry{A=48{,}000 --- late maps ($H^*$=2{,}729)}
+
+% A=100k -- near-max endgame
+\addplot[color=red!80!black, thick] coordinates {
+    (0,90) (1111,90) (2000,83.3) (4000,71.4) (5686,63.75)
+    (8000,55.6) (10000,50.0)
+};
+\addlegendentry{A=100{,}000 --- near-max endgame ($H^*$=5{,}686)}
+
+% Shaman 0-arm (flat)
+\addplot[color=blue!80!black, thick, dashed] coordinates {
+    (0,63.75) (10000,63.75)
+};
+\addlegendentry{Shaman 0-armour --- flat 63.75\%}
+
+% 90% cap reference
+\addplot[color=gray!60, dashed, thin] coordinates {(0,90) (10500,90)};
+
+% Vertical dashed lines at each crossover
+\addplot[color=orange!70!black, dashed, thin] coordinates {(1422,15) (1422,63.75)};
+\addplot[color=green!60!black,  dashed, thin] coordinates {(2047,15) (2047,63.75)};
+\addplot[color=teal!80!black,   dashed, thin] coordinates {(2729,15) (2729,63.75)};
+\addplot[color=red!60!black,    dashed, thin] coordinates {(5686,15) (5686,63.75)};
+
+% Crossover labels on x-axis area
+\node[anchor=north, font=\scriptsize, rotate=90, color=orange!90!black] at (axis cs:1422,39) {$H^*_{25\text{k}}$=1{,}422};
+\node[anchor=north, font=\scriptsize, rotate=90, color=green!70!black]  at (axis cs:2047,39) {$H^*_{36\text{k}}$=2{,}047};
+\node[anchor=north, font=\scriptsize, rotate=90, color=teal]            at (axis cs:2729,39) {$H^*_{48\text{k}}$=2{,}729};
+\node[anchor=north, font=\scriptsize, rotate=90, color=red!80!black]    at (axis cs:5686,39) {$H^*_{100\text{k}}$=5{,}686};
+
+\node[anchor=west, font=\footnotesize, color=gray]          at (axis cs:200,91.5) {90\% DR cap};
+\node[anchor=west, font=\footnotesize, color=blue!80!black] at (axis cs:6800,65.2) {63.75\%};
+
+\end{axis}
+\end{tikzpicture}
+\caption{\textbf{Physical DR vs.\ Hit Size at Four Armour Investment Levels.} Each armour curve is horizontal at the 90\% DR cap for small hits, then declines. The crossover with Shaman's flat 63.75\% line (blue dashed) shifts leftward with lower armour investment: A=25{,}000 (orange, early maps) crosses at $H=1{,}422$; A=36{,}000 (green, mid maps) at $H=2{,}047$; A=48{,}000 (teal, late maps) at $H=2{,}729$; A=100{,}000 (red, near-maximum endgame) at $H=5{,}686$. To the left of each crossover the armour build has superior DR\%; to the right, 0-armour Shaman is superior. The three lower curves represent realistic progression-stage armour values, demonstrating that 100{,}000-armour Titan is the outlier, not the representative case.}
+\label{fig:crossover_spectrum}
+\end{figure}
+
+The figure makes two points simultaneously. First, every armour investment level eventually loses to 0-armour Shaman above its crossover threshold --- there is no armour value that maintains DR superiority at the endgame hit ceiling. Second, the threshold moves substantially with investment: at early-map armour values (25{,}000), the crossover arrives at $H = 1{,}422$; to push it to $H = 5{,}686$ requires four times the armour and a correspondingly larger life pool under the corridor constraint.
+
+The practical implication is that the armour build's DR\% advantage is confined to a regime --- below each $H^*$ --- where neither build can be one-shot on a life pool at the corridor minimum. At the soft-cap corridor ($A = 12L$), $H^* \approx 0.68L$: the crossover is always below the pool size. A hit that is 68\% of your life pool is dangerous but not a one-shot threat. The build choice that determines \textit{one-shot survival} is therefore always made in the regime where 0-armour Shaman already has the DR\% advantage. The armour build's advantage in the sub-crossover regime is real --- it produces a more stable health globe and better quality-of-life under continuous moderate incoming damage --- but it is a comfort advantage, not a survival-ceiling advantage.
+
 \namedsubsection{The Armour Investment Decision}
 
 At $H = 10{,}000$, the 0-armour Shaman requires 3{,}625 effective HP to survive. The physical residual (2{,}500) reaches life without attenuation; the elemental components (1{,}125 at 85\% resistance) are fixed by the resistance caps and do not depend on armour. Adding armour changes the physical component only:
