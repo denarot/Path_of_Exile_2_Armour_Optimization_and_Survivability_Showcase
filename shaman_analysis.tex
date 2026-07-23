@@ -88,7 +88,7 @@
 
     \item \textbf{Virtual HP: The Tier-Ranking Metric.} This paper ranks all archetypes by their Virtual HP multiplier, defined as $\text{VHP} = \text{eHP} / (1 - \text{DR\%})$. VHP collapses the full defensive configuration --- armour value, conversion, absorption, avoidance probability --- to a single figure: how many effective hit points the archetype creates relative to the pool it invests in. A 2.0$\times$ VHP multiplier means the build survives hits twice as large as its raw HP would imply; a 5.2$\times$ multiplier means it survives hits 5.2$\times$ its pool. The baseline armour formula at optimal investment yields 2.0$\times$. Every mechanism in this paper targets a higher multiple.
 
-    \item \textbf{Binding Constraint: Conversion Releases the Armour Budget.} The character-sheet analysis in Section~3 establishes the paper's central diagnostic. A 0-armour Shaman --- with 75\% conversion and 85\% elemental resistance caps but no armour investment whatsoever --- takes 3{,}625 damage at $H = 10{,}000$, flat at every hit size. Smith of Kitava with 100{,}000 armour takes 5{,}000. Before Shaman has committed a single passive point to armour scaling, conversion alone outperforms the maximum-armour archetype at the hit sizes that actually kill characters. With optional 25{,}000 armour and armour-to-elemental from the ascendancy, the same Shaman takes 1{,}923 (80.8\% total mitigation). Matching that figure through armour alone requires approximately 421{,}000 armour --- beyond any achievable gear. The gap is structural: conversion suppresses the effective hit size before it enters the formula, making the same armour 4$\times$ more efficient per point. The 8--15 passive points Smith commits to armour scaling are freed on Shaman for damage, sustain, or additional defensive layers. This is not a performance margin --- it is a structural release of the build's binding constraint.
+    \item \textbf{Binding Constraint: Conversion Releases the Armour Budget.} The character-sheet analysis in Section~3 establishes the paper's central diagnostic. A 0-armour Shaman --- with 75\% conversion and 85\% elemental resistance caps but no armour investment whatsoever --- takes 3{,}625 damage at $H = 10{,}000$, flat at every hit size. The Titan archetype with 100{,}000 armour (pure-armour case; Smith of Kitava's full ascendancy profile, which adds 35\% conversion and Blade Catcher, is analyzed separately at 2.5$\times$ VHP) takes 5{,}000. Before Shaman has committed a single passive point to armour scaling, conversion alone outperforms the maximum-armour archetype at the hit sizes that actually kill characters. With optional 25{,}000 armour and armour-to-elemental from the ascendancy, the same Shaman takes 1{,}923 (80.8\% total mitigation). Matching that figure through armour alone requires approximately 421{,}000 armour --- beyond any achievable gear. The gap is structural: conversion suppresses the effective hit size before it enters the formula, making the same armour 4$\times$ more efficient per point. The 8--15 passive points Smith commits to armour scaling are freed on Shaman for damage, sustain, or additional defensive layers. This is not a performance margin --- it is a structural release of the build's binding constraint.
 
     \item \textbf{Witchhunter: Sorcery Ward and the Absorption-Layer Ceiling.} The Witchhunter (Mercenary ascendancy) achieves the highest single-hit survival ceiling of the archetypes examined in this paper. Two ascendancy notables (Obsessive Rituals + Ceremonial Ablution) convert armour and evasion investment into a Sorcery Ward absorption pool (SW = 30\% of post-penalty armour+evasion, capped at 32{,}000) that intercepts all post-armour hit damage before it reaches life. At 60{,}000 geared armour (30{,}000 post-penalty) and L = 3{,}000 HP, SW = 9{,}000 --- absorbing the full post-armour remainder of a 10{,}000 raw hit with zero life damage. The derived survival ceiling is approximately H = 14{,}485, substantially exceeding both Shaman and Smith at comparable passive investment. No unique item is required.
 
@@ -233,7 +233,7 @@ The passive points Shaman does not spend on armour go to damage, sustain, or add
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Character Sheet Deterministic Dynamics: Optimality, Opportunity Cost, and Efficient Attainment of Survival}
 
-The armour formula's failure at scale is most clearly demonstrated by comparing two archetypes often discussed as alternatives: the Smith of Kitava (dedicated armour scaling) and the Shaman (physical-to-elemental conversion). This section presents that comparison as a worked example of three claims central to the paper's thesis:
+The armour formula's failure at scale is most clearly demonstrated by comparing two archetypes: the Titan baseline (pure-armour scaling, 100{,}000 armour, no conversion) and the Shaman (physical-to-elemental conversion). This section presents that comparison as a worked example of three claims central to the paper's thesis. \textit{Note:} Smith of Kitava's full ascendancy --- which adds 35\% physical-to-elemental conversion, the $Y$-factor armour-to-elemental multiplier, and Blade Catcher --- is analyzed in the Smith of Kitava section; throughout Section~3, the pure-armour column and the label ``Smith'' in prose both refer to the Titan structural ceiling.
 
 \begin{enumerate}
     \item \textbf{Armour has a hard ceiling and a structural weakness} --- PoE~2's physical DR cap of 90\% bounds armour's advantage from above; the formula's quadratic degradation with hit size means DR collapses precisely when survival matters most.
@@ -243,14 +243,14 @@ The armour formula's failure at scale is most clearly demonstrated by comparing 
 
 \subsection*{Build Parameters}
 
-Three configurations are compared throughout this section. \textbf{Shaman (0 armour)} is the true baseline: 75\% physical-to-elemental conversion and 85\% elemental resistance caps, with zero passive investment in armour nodes. This is the Shaman before any armour-specific decision has been made. \textbf{Smith of Kitava} is parameterised by the 12--20$\times L$ corridor: to survive $H = 10{,}000$, Smith requires at minimum $L = 5{,}001$ effective HP; at the optimal corridor ceiling ($A = 20 \times L_{\min} = 100{,}000$), Smith takes exactly 5{,}000 damage and survives with 1 HP. This is the \textit{minimum viable} Smith configuration --- any lower armour or life combination within the corridor fails. The \textbf{Baseline} (25{,}000 armour, no conversion) provides the armour formula's reference floor.
+Three configurations are compared throughout this section. \textbf{Shaman (0 armour)} is the true baseline: 75\% physical-to-elemental conversion and 85\% elemental resistance caps, with zero passive investment in armour nodes. This is the Shaman before any armour-specific decision has been made. \textbf{Titan baseline (pure-armour archetype)} is parameterised by the 12--20$\times L$ corridor: to survive $H = 10{,}000$, the pure-armour archetype requires at minimum $L = 5{,}001$ effective HP; at the corridor ceiling ($A = 20 \times L_{\min} = 100{,}000$), it takes exactly 5{,}000 damage and survives with 1 HP. This is the \textit{minimum viable} pure-armour configuration --- any lower armour or life within the corridor fails. The \textbf{Baseline} (25{,}000 armour, no conversion) provides the armour formula's reference floor.
 
 \begin{table}[htbp]
 \centering
 \caption{\textbf{Build Parameters for Cross-Archetype Comparison}}
 \begin{tabular}{lrrrr}
 \toprule
-\textbf{Parameter} & \textbf{Baseline} & \textbf{Shaman (0 arm)} & \textbf{Shaman (25k arm$^\dagger$)} & \textbf{Smith (corridor min)} \\
+\textbf{Parameter} & \textbf{Baseline} & \textbf{Shaman (0 arm)} & \textbf{Shaman (25k arm$^\dagger$)} & \textbf{Titan / Pure Armour} \\
 \midrule
 \rowcolor{rowalt} Armour Rating & 25{,}000 & 0 & 25{,}000 & 100{,}000 \\
 Conversion (phys $\to$ ele) & 0\% & 75\% & 75\% & 0\% \\
@@ -289,7 +289,7 @@ At $H = 10{,}000$: $0.3625 \times 10{,}000 = 3{,}625$ damage taken. A Shaman wit
 {\small
 \begin{tabular}{lrrrrr}
 \toprule
-\textbf{Incoming Hit} & \textbf{Baseline (25k)} & \textbf{Smith (100k)} & \textbf{Shaman (0 arm)} & \textbf{Shaman (25k arm$^\dagger$)} & \textbf{Smith vs.\ Shaman-0} \\
+\textbf{Incoming Hit} & \textbf{Baseline (25k)} & \textbf{Titan / Pure Armour (100k)} & \textbf{Shaman (0 arm)} & \textbf{Shaman (25k arm$^\dagger$)} & \textbf{Titan vs.\ Shaman-0} \\
 \midrule
 100
   & \cellcolor{tierA}90.0\%$^*$
@@ -389,7 +389,7 @@ H = 100{:} \quad \frac{100{,}000}{100{,}000 + 1{,}000} = 99.0\% \xrightarrow{\te
 
 In the capped regime, Smith's 4$\times$ armour advantage over the Baseline produces zero additional benefit --- both land at 90\% DR regardless. The formula \textit{feels} infallible at small hits, and within the cap it is. The cap also means Smith's physical takes are: 10 damage at H=100, 50 at H=500, 100 at H=1{,}000 --- not the 1, 24, 91 values the uncapped formula would imply.
 
-The 0-armour Shaman is at 63.75\% in this regime --- meaningfully below Smith's capped 90\%. At H=1{,}000, the 250 physical residual lands at full value on a 0-armour Shaman; Smith absorbs 90\% and takes only 100. For general mapping content where hit sizes stay below H$\approx$2{,}000, Smith retains a real per-hit advantage over the zero-armour Shaman. \textit{This is the window where Smith's investment pays off.}
+The 0-armour Shaman is at 63.75\% in this regime --- meaningfully below the capped 90\%. At H=1{,}000, the 250 physical residual lands at full value on a 0-armour Shaman; the pure-armour archetype absorbs 90\% and takes only 100. For any hit size below $H = 5{,}686$ (the exact crossover), the pure-armour archetype retains a real per-hit advantage over the zero-armour Shaman. \textit{This is the window where armour investment pays off.}
 
 \namedsubsection{The Crossover: Where Conversion Outperforms Armour}
 
@@ -407,7 +407,7 @@ The Shaman (0 arm) remains at 63.75\% throughout. The crossover --- where Smith'
 \frac{100{,}000}{100{,}000 + 10H} = 0.6375 \quad \Rightarrow \quad H = 5{,}686
 \]
 
-Above $H = 5{,}686$: the 0-armour Shaman outperforms Smith of Kitava (100k armour). Smith has no mechanism to suppress $H$; every additional 1{,}000 raw damage adds 10{,}000 to the formula's denominator. Conversion intercepts this by reducing $H$ at the source --- the formula sees a 2{,}500 physical component instead of a 10{,}000 hit, and the remaining 75\% never enters the formula at all.
+Above $H = 5{,}686$: the 0-armour Shaman outperforms the pure-armour archetype (100k armour). The Titan baseline has no mechanism to suppress $H$; every additional 1{,}000 raw damage adds 10{,}000 to the formula's denominator. Conversion intercepts this by reducing $H$ at the source --- the formula sees a 2{,}500 physical component instead of a 10{,}000 hit, and the remaining 75\% never enters the formula at all.
 
 \begin{figure}[htbp]
 \centering
@@ -434,7 +434,7 @@ Above $H = 5{,}686$: the 0-armour Shaman outperforms Smith of Kitava (100k armou
 \addplot[color=red!80!black, thick] coordinates {
     (0,90) (1111,90) (2000,83.3) (4000,71.4) (5686,63.75) (8000,55.6) (10000,50)
 };
-\addlegendentry{Smith of Kitava (A=100k, corridor min.)}
+\addlegendentry{Titan Baseline / Pure Armour (A=100k)}
 
 % Shaman 0-armour (flat horizontal)
 \addplot[color=blue!80!black, thick, dashed] coordinates {
@@ -461,11 +461,15 @@ Above $H = 5{,}686$: the 0-armour Shaman outperforms Smith of Kitava (100k armou
 
 \end{axis}
 \end{tikzpicture}
-\caption{\textbf{Total Effective Mitigation vs.\ Hit Size --- 90\% DR Cap Applied.} Smith of Kitava (red solid): capped at 90\% for $H \leq 1{,}111$, then declining to 50\% at the endgame ceiling. Shaman with no armour investment (blue dashed): a horizontal line at 63.75\% --- conversion and resistance are hit-size independent. Shaman with 25k armour and armour-to-elemental (teal dotted): a near-flat line from 96.4\% to 80.8\%, outperforming Smith at \textit{every} hit size because resistance layers push composite mitigation above the 90\% armour cap on small hits and conversion maintains efficiency on large hits. The crossover between Smith and 0-armour Shaman at $H=5{,}686$ marks where the 0-armour conversion build begins outperforming the corridor-optimal armour build.}
+\caption{\textbf{Total Effective Mitigation vs.\ Hit Size --- 90\% DR Cap Applied.} Titan baseline / pure-armour archetype (red solid): capped at 90\% for $H \leq 1{,}111$, then declining to 50\% at the endgame ceiling. Shaman with no armour investment (blue dashed): a horizontal line at 63.75\% --- conversion and resistance are hit-size independent. Shaman with 25k armour and armour-to-elemental (teal dotted): a near-flat line from 96.4\% to 80.8\%, outperforming the Titan baseline at \textit{every} hit size because resistance layers push composite mitigation above the 90\% armour cap on small hits and conversion maintains efficiency on large hits. The crossover at $H=5{,}686$ marks where the 0-armour conversion build begins outperforming the corridor-optimal pure-armour build.}
 \label{fig:mitigation_comparison}
 \end{figure}
 
-The figure captures the structural argument in one image. Smith's curve is a step function: horizontal at the 90\% cap, then falling off a cliff at $H = 1{,}111$. Shaman's 0-armour line is horizontal throughout. The crossover is not a close call at the endgame scale --- at $H = 10{,}000$, Smith is at 50\% while Shaman (0 arm) is at 63.75\%. All endgame boss strikes and map pinnacle encounters with genuine one-shot potential occur above $H = 2{,}000$; the majority of lethal content is above $H = 5{,}000$, which places it above the crossover. Smith's 90\% capped advantage applies only to non-lethal chip damage.
+The figure captures the structural argument in one image. The Titan baseline's curve is a step function: horizontal at the 90\% cap, then declining to 50\% at $H = 10{,}000$. Shaman's 0-armour line is horizontal throughout. The crossover at $H = 5{,}686$ is the boundary below which the pure-armour archetype holds a real per-hit advantage.
+
+Whether the practical endgame hit ceiling falls above or below $H = 5{,}686$ is an open empirical question. Community sources report the Arbiter of Ash's meteor and firestorm phases at approximately $H \approx 2{,}000$ per hit --- well below the crossover, which would place the Titan archetype in a dominant Pareto position against the 0-armour Shaman for all reachable content. However, characters with 5{,}000$+$ effective HP are consistently one-shot by Arbiter of Ash mechanics, implying either substantially higher hit values than the wiki figure or multiplicative modifiers not captured in the listed magnitude. One methodology for resolving this empirically: observe the initial and post-hit Energy Shield values of a surviving ES character in the encounter --- the delta, back-calculated through the DR formula at known armour, yields an estimate of true $H$.
+
+Until top-end hit magnitudes are empirically confirmed, this paper targets the pessimistic ceiling ($H = 10{,}000$) --- the scenario where conversion archetypes are unambiguously superior. If confirmed endgame content clusters below $H = 5{,}686$, the Titan archetype and Smith of Kitava may dominate the practical Pareto optimization frontier at higher opportunity cost and passive point expenditure.
 
 \namedsubsection{The Armour Investment Decision}
 
@@ -487,7 +491,7 @@ The savings is \textbf{exactly 1{,}250 effective HP} --- the physical component 
 \rowcolor{rowalt} 0 armour (baseline) & 2{,}500 & 1{,}125 & 3{,}625 & 3{,}625 \\
 25k armour only (no A-to-E) & 1{,}250 & 1{,}125 & 2{,}375 & 2{,}375 \\
 \rowcolor{rowalt} 25k armour + 100\% A-to-E (asc.) & 1{,}250 & 673 & 1{,}923 & 1{,}923 \\
-\rowcolor{rowhi} Smith of Kitava (100k) & 5{,}000 & --- & 5{,}000 & 5{,}001 \\
+\rowcolor{rowhi} Titan / Pure Armour (100k) & 5{,}000 & --- & 5{,}000 & 5{,}001 \\
 \bottomrule
 \end{tabular}
 \smallskip
@@ -530,7 +534,7 @@ The life-pool oscillation is reduced to noise. The health globe reads as stable 
 \textbf{Build} & \textbf{Damage Taken} & \textbf{Min HP to Survive} & \textbf{Survives at 3{,}625 HP?} & \textbf{HP Remaining} \\
 \midrule
 \rowcolor{rowalt} Baseline (25k arm.) & 8{,}000 & 8{,}001 & No & $-$4{,}376 \\
-Smith of Kitava (100k) & 5{,}000 & 5{,}001 & No & $-$1{,}376 \\
+Titan / Pure Armour (100k) & 5{,}000 & 5{,}001 & No & $-$1{,}376 \\
 \rowcolor{rowalt} \textbf{Shaman (0 arm, 75\% conv.)} & \textbf{3{,}625} & \textbf{3{,}626} & \textbf{No (by 1 HP)} & \textbf{$-$1} \\
 Shaman (25k arm, full stack) & 1{,}923 & 1{,}924 & Yes (comfortable) & $+$1{,}702 \\
 \rowcolor{rowhi} Shaman (min-maxed) & 1{,}388 & 1{,}389 & Yes (ample margin) & $+$2{,}237 \\
@@ -568,7 +572,7 @@ The core eHP requirement from the survival tables in this section does not chang
 Shaman (0 arm) & 3{,}625 & 10\% partial & Life $/ 0.9 \geq$ 3{,}625 & $L / 9 \approx 363$ \\
 \rowcolor{rowalt} Shaman (0 arm) & 3{,}625 & Full MOM & Life $+$ Mana $\geq$ 3{,}625 & any split $\geq$ 3{,}625 \\
 Shaman (25k arm, full stack) & 1{,}923 & Full MOM & Life $+$ Mana $\geq$ 1{,}923 & any split $\geq$ 1{,}923 \\
-\rowcolor{rowhi} Smith of Kitava (100k) & 5{,}000 & Full MOM & Life $+$ Mana $\geq$ 5{,}001 & any split $\geq$ 5{,}001 \\
+\rowcolor{rowhi} Titan / Pure Armour (100k) & 5{,}000 & Full MOM & Life $+$ Mana $\geq$ 5{,}001 & any split $\geq$ 5{,}001 \\
 \bottomrule
 \end{tabular}
 \smallskip
@@ -577,7 +581,7 @@ Shaman (25k arm, full stack) & 1{,}923 & Full MOM & Life $+$ Mana $\geq$ 1{,}923
 \end{minipage}
 \end{table}
 
-The comparative advantage of MOM on Shaman vs.\ Smith is not a compounding of conversion efficiency --- it is that Shaman arrives with a lower damage requirement, so the mana (or life) budget needed to cover the MOM pool is proportionally smaller. A 0-armour Shaman pursuing full MOM needs a combined pool of 3{,}625 from any mix of life and mana. Smith needs 5{,}001 --- and must build that pool on top of 100{,}000 armour, compressing the character-sheet budget across three resources simultaneously. The risk profile of a depleted mana pool is also worse on Smith: mana recovery returns 5{,}000 eHP to Smith's shield; the same event returns only 3{,}625 on Shaman, but the Shaman's life pool is the entire floor during recovery while Smith's is capped at 3{,}001 (if split evenly).
+The comparative advantage of MOM on Shaman vs.\ the pure-armour archetype is not a compounding of conversion efficiency --- it is that Shaman arrives with a lower damage requirement, so the mana (or life) budget needed to cover the MOM pool is proportionally smaller. A 0-armour Shaman pursuing full MOM needs a combined pool of 3{,}625 from any mix of life and mana. The Titan baseline needs 5{,}001 --- and must build that pool on top of 100{,}000 armour, compressing the character-sheet budget across three resources simultaneously.
 
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Witchhunter: Sorcery Ward and the Absorption-Layer Paradigm}
@@ -807,7 +811,7 @@ The following table uses the same build parameters as prior sections (25{,}000 a
 }
 \smallskip
 \begin{minipage}{\linewidth}
-\small\textit{``Inf.\ Base'' = Infernalist baseline: 50\% fire, 20\% chaos (CI = 0), 30\% physical. ``Inf.\ Full'' = Infernalist full: 55\% fire, 20\% chaos (CI = 0), 5\% random, 20\% physical. Shaman column reproduced from Section 3 for reference (25k armour configuration). All configurations use 25{,}000 armour, 100\% armour-to-elemental, 85\% max elemental resistance. For consistency with the 0-armour Shaman baseline established in Section~3: 0-armour Infernalist Baseline takes 3{,}750 at H=10{,}000 (3{,}000 physical + 750 fire after 85\% res; CI eliminates the 20\% chaos component regardless of armour); 0-armour Infernalist Full takes 2{,}900 (2{,}000 physical + 825 fire + 75 random). Infernalist Full outperforms the 0-armour Shaman (3{,}625) even at zero armour, because CI eliminates 2{,}000 damage categorically and the reduced physical residual (20\%) keeps the formula's denominator small. Infernalist Baseline (3{,}750) does not: the 30\% physical residual costs more than CI recovers at 0 armour. Note that the Infernalist Baseline takes \textit{more} damage than the 25k-armour Shaman at all hit sizes despite CI, because the larger physical residual (30\% vs 25\%) more than offsets the chaos exemption at this armour level. The Full configuration resolves this and outperforms Shaman at every hit size.}
+\small\textit{``Inf.\ Base'' = Infernalist baseline: 50\% fire, 20\% chaos (CI = 0), 30\% physical. ``Inf.\ Full'' = Infernalist full: 55\% fire, 20\% chaos (CI = 0), 5\% random, 20\% physical. Shaman column reproduced from Section 3 for reference (25k armour configuration). All configurations use 25{,}000 armour, 100\% armour-to-elemental, 85\% max elemental resistance. For consistency with the 0-armour Shaman baseline established in Section~3: 0-armour Infernalist Baseline takes 3{,}750 at H=10{,}000 (3{,}000 physical + 750 fire after 85\% res; CI eliminates the 20\% chaos component regardless of armour); 0-armour Infernalist Full takes 2{,}900 (2{,}000 physical + 825 fire + 75 random). Infernalist Full outperforms the 0-armour Shaman (3{,}625) even at zero armour, because CI eliminates 2{,}000 damage categorically and the lower physical residual (20\% vs.\ 25\%) means only 2{,}000 physical damage lands at full value rather than 2{,}500. Infernalist Baseline (3{,}750) does not: the 30\% physical residual costs more than CI recovers at 0 armour. Note that the Infernalist Baseline takes \textit{more} damage than the 25k-armour Shaman at all hit sizes despite CI, because the larger physical residual (30\% vs 25\%) more than offsets the chaos exemption at this armour level. The Full configuration resolves this and outperforms Shaman at every hit size.}
 \end{minipage}
 \end{table}
 
@@ -820,7 +824,7 @@ At first glance, negating 20\% of a 10{,}000 hit (2{,}000 damage hard avoided) s
     \item Infernalist Base: 30\% residual physical (3{,}000 effective hit) $\to$ armour DR = 45.5\% $\to$ 1{,}636 taken
 \end{itemize}
 
-The 386-unit increase in physical damage taken (1{,}636 vs 1{,}250) exceeds the 500-unit reduction from the CI fire-contribution shift. CI is extremely efficient at avoiding the chaos component --- but the baseline conversion stack leaves enough physical residual that the armour formula's larger denominator costs more than CI saves, at this armour value.
+The 386-unit increase in physical damage taken (1{,}636 vs 1{,}250) explains the apparent paradox. CI eliminates the full 2{,}000 chaos component with absolute certainty --- the entire 20\% physical-to-chaos portion is reduced to zero under CI's immunity, compared to whatever partial reduction a non-CI build could apply via chaos resistance. But this immunity does not close the gap with Shaman; the additional physical residual (30\% vs 25\%) costs more than CI saves at this armour level.
 
 This resolves cleanly when the Full optional stack is active. Reducing physical residual to 20\% (2{,}000 effective hit) gives 55.6\% armour DR and 889 damage taken --- well below Shaman's physical component --- producing the 1{,}469 total that outperforms Shaman.
 
