@@ -1799,7 +1799,7 @@ The Smith occupies B-Tier in this paper's ranking: its achievable VHP multiplier
 
 \namedsubsection{Optimal Smith Configuration: Armour-to-Elemental and Veil of Night}
 
-The comparative analysis in Section 3 treated Smith of Kitava as a pure-armour archetype with no elemental handling layer. A structurally superior configuration adds two elements: passive investment in ``X\% of Armour applies to Elemental Damage'' nodes and a 35\% physical-to-elemental conversion source. The armour target remains the 12--20$\times L$ corridor that binds all armour-based builds; the configuration does not change the planning constraint, it changes what each armour point accomplishes.
+The comparative analysis in Section 3 treated Smith of Kitava as a pure-armour archetype with no elemental handling layer. A structurally superior configuration adds two elements: passive investment in ``X\% of Armour applies to Elemental Damage'' nodes and a 35\% physical-to-elemental conversion source. The configuration substantially reduces the armour planning constraint. With 35\% conversion, the physical residual entering the formula shrinks from $H$ to $0.65H$; the elemental handling layer routes the remaining 35\% through armour DR rather than resistance alone. The minimum armour to survive the endgame ceiling falls to 5.0--10.5$\times L$ depending on $Y$-factor and resistance configuration --- against the Titan's 20$\times L$ hard-cap corridor derived in Section~1. The conversion changes not just what each armour point accomplishes, but how many armour points the build must commit.
 
 With 35\% conversion, the incoming hit splits into a physical component of $0.65H$ and an elemental component of $0.35H$. The elemental component evaluates against armour scaled by the armour-to-elemental percentage $Y$:
 
@@ -1848,7 +1848,112 @@ The correct build order is: acquire armour-to-elemental passive nodes first --- 
 
 \textbf{The critical strike frontier.} Smith of Kitava's structural advantage in critical strike map content adds a further dimension to this configuration. Blade Catcher converts critical strikes so they deal base damage (removing the critical multiplier) and defends those hits at 200\% of armour rating --- effectively $2A$ in the DR formula for crits. Combined with Internal Layer, the Smith is structurally unaffected by critical strikes in a way no other archetype in this paper achieves. In crit-heavy content, Smith's effective armour doubles on the hits that would otherwise be lethal, pushing physical crit DR well above what the base armour value alone suggests; the armour-to-elemental layer extends this advantage to the converted elemental components of those same crits.
 
-The complete endgame Smith configuration --- 12--20$\times L$ armour within the corridor, $Y$-stacking to reach 75\%+ elemental DR, Veil of Night as a pure life multiplier, Blade Catcher providing crit immunity and $2A$ effective defence on crits --- achieves a defensive profile that is inferior to Shaman in general endgame content but that dominates the critical strike map frontier. In that content specifically, the hits that would one-shot other archetypes land at base damage against double effective armour, and the elemental components of those crits are handled by the armour formula rather than by resistances. Smith occupies a narrower but genuine niche: the armour-based specialist for content where critical strikes are the primary threat.
+The complete endgame Smith configuration --- armour within the conversion-adjusted demand range (quantified in the following subsection), $Y$-stacking to reach 75\%+ elemental DR, Veil of Night as a pure life multiplier, Blade Catcher providing crit immunity and $2A$ effective defence on crits --- achieves a defensive profile that is inferior to Shaman in general endgame content but that dominates the critical strike map frontier. In that content specifically, the hits that would one-shot other archetypes land at base damage against double effective armour, and the elemental components of those crits are handled by the armour formula rather than by resistances. Smith occupies a narrower but genuine niche: the armour-based specialist for content where critical strikes are the primary threat.
+
+\namedsubsection{Conversion-Adjusted Armour Demand: The SoK Corridor vs Titan}
+
+For the Titan with no conversion, the minimum armour to survive a hit $D = 2L$ on pool $L$ is $A^* = 20L$ (Section~1). With 35\% conversion, the physical residual entering the armour formula is $0.65H$ and the elemental component is handled by the armour-to-elemental layer, so the total survival condition is:
+
+\[
+\underbrace{\frac{4{,}225 \cdot H^2}{A + 6{,}500}}_{\text{physical taken}} + \underbrace{\frac{1{,}225 \cdot H^2 \cdot (1-r)}{Y \cdot A + 3{,}500}}_{\text{elemental taken}} \leq L
+\]
+
+No closed form isolates $A$ in the combined system, but numerical solution at $H = 10{,}000$, $L = 5{,}000$ yields:
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Minimum Armour to Survive H=10{,}000 on L=5{,}000 --- SoK (35\% Conversion) vs Titan}}
+\begin{tabular}{llrrc}
+\toprule
+\textbf{Configuration} & \textbf{Elemental coverage} & \textbf{$A^*$ (min.)} & \textbf{$A^*$ as $\times L$} & \textbf{vs Titan} \\
+\midrule
+\rowcolor{rowalt} Titan (no conversion, $r=75$\%) & N/A (pure armour) & 100{,}000 & 20.0$\times$ & baseline \\
+SoK $Y=1.0$, Veil of Night ($r=0$\%) & Armour DR only & 52{,}500 & 10.5$\times$ & $-$47{,}500 \\
+\rowcolor{rowalt} SoK $Y=2.0$, Veil of Night ($r=0$\%) & Armour DR only & 41{,}500 & 8.3$\times$ & $-$58{,}500 \\
+SoK $Y=3.0$, Veil of Night ($r=0$\%) & Armour DR only & 37{,}000 & 7.4$\times$ & $-$63{,}000 \\
+\rowcolor{rowalt} SoK $Y=1.0$, standard ($r=75$\%) & Armour DR + resistance & 29{,}000 & 5.8$\times$ & $-$71{,}000 \\
+SoK $Y=2.0$, standard ($r=75$\%) & Armour DR + resistance & 26{,}000 & 5.2$\times$ & $-$74{,}000 \\
+\rowcolor{rowhi} SoK $Y=3.0$, standard ($r=75$\%) & Armour DR + resistance & 25{,}000 & 5.0$\times$ & $-$75{,}000 \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{$A^*$ is the minimum armour at which total damage taken equals exactly $L = 5{,}000$ (0 HP remaining after the hit). Practical builds target $A$ well above $A^*$ for survival margin. With standard resistance ($r = 75$\%): $Y$-stacking above $Y = 1.0$ provides modest additional reduction (5.8$\times$ $\to$ 5.0$\times$) because 75\% resistance already handles most of the elemental component. With Veil of Night ($r = 0$\%): $Y$-stacking is load-bearing (10.5$\times$ $\to$ 7.4$\times$), as armour DR is the only tool for the elemental component. In both regimes, SoK's armour demand is dramatically lower than the Titan's 20$\times L$ floor.}
+\end{minipage}
+\end{table}
+
+Smith of Kitava's build identity follows directly: \textit{armour efficient enough at lower investment, freeing budget for life, damage, and additional defensive layers}. At $L = 5{,}000$, the full-investment build running 80{,}000 armour operates at roughly $3$--$4\times A^*$ above the survival minimum, giving substantial margin without the Titan's full 100{,}000 armour commitment.
+
+\namedsubsection{Y-Factor Mitigation at Standard Investment ($A = 80{,}000$)}
+
+At $A = 80{,}000$ (upper end of the conversion-adjusted corridor for $L = 5{,}000$), physical damage taken is fixed across all configurations:
+
+\[
+\text{DR}_{\text{phys}} = \frac{80{,}000}{145{,}000} = 55.2\% \quad \Rightarrow \quad 6{,}500 \times 0.448 = 2{,}912 \text{ physical taken (all configs)}
+\]
+
+The $Y$-factor affects only the elemental component, with distinct impact profiles depending on whether Veil of Night is active:
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{SoK Mitigation by $Y$-Factor and Resistance Configuration ($A = 80{,}000$, $H = 10{,}000$)}}
+\begin{tabular}{llrrrr}
+\toprule
+\textbf{$Y$} & \textbf{Resistance} & \textbf{Ele DR} & \textbf{Ele Taken} & \textbf{Total Taken} & \textbf{Mitigation} \\
+\midrule
+\rowcolor{rowalt} 1.0 & 75\% (standard) & 69.6\% & 266 & 3{,}178 & 68.2\% \\
+2.0 & 75\% (standard) & 82.1\% & 157 & 3{,}069 & 69.3\% \\
+\rowcolor{rowalt} 3.0 & 75\% (standard) & 87.3\% & 111 & 3{,}023 & 69.7\% \\
+\midrule
+1.0 & 0\% (Veil of Night) & 69.6\% & 1{,}065 & 3{,}977 & 60.2\% \\
+\rowcolor{rowalt} 2.0 & 0\% (Veil of Night) & 82.1\% & 628 & 3{,}540 & 64.6\% \\
+3.0 & 0\% (Veil of Night) & 87.3\% & 445 & 3{,}357 & 66.4\% \\
+\midrule
+\rowcolor{rowhi} Reference: Titan ($Y=0$, $r=75$\%) & 75\% & 44.4\% & 0 (no ele) & 5{,}556 & 44.4\% \\
+\bottomrule
+\end{tabular}
+\smallskip
+\begin{minipage}{\linewidth}
+\small\textit{Physical taken = 2{,}912 across all SoK rows (fixed by armour and physical component). Ele Taken = $3{,}500 \times (1 - \text{Ele DR}) \times (1-r)$; all SoK rows use 35\% conversion. \textbf{Standard resistance:} $Y$-stacking above $Y = 1.0$ yields marginal mitigation gains (68.2\% $\to$ 69.7\%) because 75\% resistance already suppresses the elemental component; the elemental taken at $Y = 1.0$ is only 266 of the 1{,}065 pre-resistance value. \textbf{Veil of Night:} $Y$-stacking is the primary mitigation tool for the elemental component --- each $Y$ step delivers a material improvement (60.2\% $\to$ 64.6\% $\to$ 66.4\%). At $Y = 3.0$ with VoN, elemental DR reaches 87.3\% --- within the range that 75\% resistance alone would provide, confirming the theoretical claim that high-$Y$ configurations make Veil of Night's 0\% resistance cost-free. Titan row confirms SoK at any configuration outperforms pure armour by 14--25 percentage points at equal armour investment.}
+\end{minipage}
+\end{table}
+
+\namedsubsection{Smith's Masterwork: Ascendancy Allocation and Build Philosophy}
+
+Smith of Kitava's ascendancy tree is structured around a central defensive cluster, \textbf{Smith's Masterwork}, that converts passive skill point investment into armour at 200 armour per point allocated. This is the mechanism by which the build reaches the 40{,}000--80{,}000 armour range without exhausting gear affixes: passive tree points directed through armour clusters each contribute both the node's listed bonus and the Masterwork conversion rate on top. At 50 passive points in armour nodes, the Masterwork contribution alone adds 10{,}000 armour on top of geared values.
+
+\textbf{The full Masterwork ascendancy path} consumes all eight available ascendancy points across the following nodes:
+
+\begin{enumerate}
+    \item Dedication to Kitava
+    \item Internal Layer
+    \item Leather Bindings
+    \item Molten Symbol
+    \item Flowing Metal
+    \item Heatproofing
+    \item Support Straps
+    \item Kitavan Engravings
+\end{enumerate}
+
+\textbf{Substitution options.} Leather Bindings and Flowing Metal can each be replaced by \textbf{Tribute to Utula} or \textbf{Kitavan Imprint} if the build requires what those nodes provide rather than what the standard pair delivers. These swaps consume the same two ascendancy point pairs and do not change the armour-per-point Masterwork rate; the decision is based on what the specific build needs from those two slots.
+
+\textbf{Recommended investment tiers.}
+
+\begin{itemize}
+    \item \textbf{Full Masterwork (``full coward's ascendancy'').} All eight ascendancy points in the defensive cluster. Fully activates the Masterwork armour-per-point conversion and all layer interactions (Internal Layer physical reduction, Blade Catcher crit conversion, armour-to-elemental stacking). The passive tree is then free to pursue a damage--defence mix, since the ascendancy handles the defensive ceiling without further support from the ascendancy budget. \textit{Recommended for players targeting the endgame armour corridor and prioritising deterministic survival.}
+
+    \item \textbf{Pseudo-complete (6 of 8 points, last two deferred).} The final two ascendancy point pairs require completing the hardest available Trials content, which may not be accessible during active campaign or early endgame progression. Taking the first six nodes activates the majority of the Masterwork ceiling. Regular passive skill points compensate defensively in the interim --- an additional 8--15 passive points in armour and life clusters covers the gap --- while Trial completion is pursued over time. \textit{Recommended for players in active progression who have not yet cleared the relevant Trials.}
+\end{itemize}
+
+\textbf{Passive tree allocation alongside full Masterwork.} The Masterwork conversion rate makes generic armour-cluster passive nodes more efficient on Smith than on any other archetype: each point contributes the node's listed bonus \textit{plus} the 200-armour Masterwork rate. A balanced allocation for the passive tree after filling the ascendancy:
+
+\begin{itemize}
+    \item \textbf{8--15 nodes:} armour clusters (reaching 40{,}000--80{,}000 total armour with Masterwork + gear, placing the build at 8--16$\times L$ above the minimum survival threshold for the VoN configuration)
+    \item \textbf{Heavy investment:} life nodes, targeting $L \geq 4{,}000$--$5{,}000$ (each additional 500 HP raises the armour corridor ceiling and widens the survival margin directly)
+    \item \textbf{Remaining budget:} split between damage scaling and additional defensive layers (evasion, maximum resistance upgrades)
+\end{itemize}
+
+The build's asymmetry is that the ascendancy handles the defensive ceiling through the Masterwork rate, freeing the passive tree for a genuine offensive--defensive tradeoff rather than forcing full commitment to armour clusters to reach the survival threshold.
 
 % ══════════════════════════════════════════════════════════════════════════════
 \newsection{Titan: The Armour Formula at Its Ceiling}
